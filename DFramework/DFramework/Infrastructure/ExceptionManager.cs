@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DFramework.Infrastructure
 {
-    class ExceptionManager
+    public class ExceptionManager
     {
     }
 }
