@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace DFramework.Infrastructure
 {
+    public class ApiResult
+    {
+    }
+
     public class ExceptionManager
     {
     }
