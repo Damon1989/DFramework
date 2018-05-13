@@ -42,12 +42,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\Configuration.cs" />
     <Compile Include="Exceptions\ErrorCode.cs" />
     <Compile Include="Infrastructure\Caching\CacheValue.cs" />
     <Compile Include="Infrastructure\Caching\ICacheManager.cs" />
     <Compile Include="Infrastructure\Caching\Impl\CacheManagerBase.cs" />
     <Compile Include="Infrastructure\Caching\Impl\MemoryCacheManager.cs" />
     <Compile Include="Infrastructure\Caching\Impl\PerHttpRequestCacheManager.cs" />
+    <Compile Include="Infrastructure\CookieHelper.cs" />
     <Compile Include="Infrastructure\ExceptionManager.cs" />
     <Compile Include="IoC\IContainer.cs" />
     <Compile Include="IoC\Injection.cs" />
