@@ -7,6 +7,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dFramework", "dFramework", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFramework", "DFramework\DFramework.csproj", "{BDFD8A53-1C12-44AF-9B80-489C84F453D1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "iPlugins", "iPlugins", "{85E331E4-3429-467E-BF8E-3D91EA1E6B24}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ioc", "Ioc", "{2E628392-FBAF-4329-9E6A-9246E1C0A134}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFramework.Autofac", "DFramework.Autofac\DFramework.Autofac.csproj", "{222013A0-F717-4E0E-B3F5-44F5F877C751}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +23,18 @@ Global
 		{BDFD8A53-1C12-44AF-9B80-489C84F453D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDFD8A53-1C12-44AF-9B80-489C84F453D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDFD8A53-1C12-44AF-9B80-489C84F453D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{222013A0-F717-4E0E-B3F5-44F5F877C751}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{222013A0-F717-4E0E-B3F5-44F5F877C751}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{222013A0-F717-4E0E-B3F5-44F5F877C751}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{222013A0-F717-4E0E-B3F5-44F5F877C751}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BDFD8A53-1C12-44AF-9B80-489C84F453D1} = {3E860CE8-E316-47B4-988D-59E2953244DD}
+		{2E628392-FBAF-4329-9E6A-9246E1C0A134} = {85E331E4-3429-467E-BF8E-3D91EA1E6B24}
+		{222013A0-F717-4E0E-B3F5-44F5F877C751} = {2E628392-FBAF-4329-9E6A-9246E1C0A134}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF3DD962-7081-4227-B858-00F334489CF0}
