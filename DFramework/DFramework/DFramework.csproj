@@ -32,6 +32,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,6 +46,8 @@
     <Compile Include="Infrastructure\Caching\CacheValue.cs" />
     <Compile Include="Infrastructure\Caching\ICacheManager.cs" />
     <Compile Include="Infrastructure\Caching\Impl\CacheManagerBase.cs" />
+    <Compile Include="Infrastructure\Caching\Impl\MemoryCacheManager.cs" />
+    <Compile Include="Infrastructure\Caching\Impl\PerHttpRequestCacheManager.cs" />
     <Compile Include="Infrastructure\ExceptionManager.cs" />
     <Compile Include="IoC\IContainer.cs" />
     <Compile Include="IoC\Injection.cs" />
