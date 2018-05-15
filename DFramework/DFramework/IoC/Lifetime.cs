@@ -18,7 +18,7 @@ namespace DFramework.IoC
         /// </summary>
         Singleton,
 
-        PreRequest,
+        PerRequest,
         Hierarchical
     }
 }

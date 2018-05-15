@@ -51,6 +51,8 @@
     <Compile Include="Infrastructure\Caching\Impl\PerHttpRequestCacheManager.cs" />
     <Compile Include="Infrastructure\CookieHelper.cs" />
     <Compile Include="Infrastructure\ExceptionManager.cs" />
+    <Compile Include="Infrastructure\Utility.cs" />
+    <Compile Include="IoC\AopInjection.cs" />
     <Compile Include="IoC\IContainer.cs" />
     <Compile Include="IoC\Injection.cs" />
     <Compile Include="IoC\IoCFactory.cs" />
