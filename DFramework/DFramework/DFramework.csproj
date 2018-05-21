@@ -52,6 +52,7 @@
     <Compile Include="Infrastructure\CookieHelper.cs" />
     <Compile Include="Infrastructure\ExceptionManager.cs" />
     <Compile Include="Infrastructure\Utility.cs" />
+    <Compile Include="Infrastructure\XmlHelper.cs" />
     <Compile Include="IoC\AopInjection.cs" />
     <Compile Include="IoC\IContainer.cs" />
     <Compile Include="IoC\Injection.cs" />

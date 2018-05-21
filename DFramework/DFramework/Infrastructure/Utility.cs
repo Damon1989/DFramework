@@ -4,12 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
-
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Hosting;
-using System.Xml.Serialization;
-using System.Xml;
 
 namespace DFramework.Infrastructure
 {
@@ -77,88 +72,6 @@ namespace DFramework.Infrastructure
 
         #endregion IP
 
-        public static string XmlSerialize<T>(T entity)
-        {
-            string utf8Result;
-            var serializer = new XmlSerializer(typeof(T));
-            using (var writer = new Utf8StringWriter())
-            {
-                var xm = new XmlSerializerNamespaces();
-                serializer.Serialize(writer, entity, xm);
-                utf8Result = writer.ToString();
-            }
-            return utf8Result;
-        }
-
-        public static T DeXmlSerialize<T>(string xmlString)
-        {
-            T resultObject;
-            var serializer = new XmlSerializer(typeof(T));
-            using (var reader = new StringReader(xmlString))
-            {
-                resultObject = (T)serializer.Deserialize(reader);
-            }
-            return resultObject;
-        }
-
-        public static T DeXmlSerializeByFilePath<T>(string xmlFilePath)
-        {
-            T resultObject;
-            var xmlDocument = new XmlDocument();
-            xmlDocument.Load(GetServerMapPath(xmlFilePath));
-
-            var serializer = new XmlSerializer(typeof(T));
-            using (var reader = new StringReader(xmlDocument.InnerXml))
-            {
-                resultObject = (T)serializer.Deserialize(reader);
-            }
-            return resultObject;
-        }
-
-        public static string[] GetXmlElementNameArray(string xmlFilePath)
-        {
-            var doc = new XmlDocument();
-            doc.Load(GetServerMapPath(xmlFilePath));
-            XmlNode rootNode = doc.DocumentElement;
-
-            if (rootNode == null)
-            {
-                return new string[0];
-            }
-            var array = new List<string>();
-            for (int i = 0; i < rootNode.ChildNodes.Count; i++)
-            {
-                array.Add(rootNode.ChildNodes[i].Name);
-            }
-            return string.Join(",", array).Split(',');
-        }
-
-        public static XmlElement GetXmlElement(string xmlFilePath)
-        {
-            var doc = new XmlDocument();
-            doc.Load(GetServerMapPath(xmlFilePath));
-            return doc.DocumentElement;
-        }
-
-        public static string GetXmlElementValue(XmlElement rootNode, string xmlName)
-        {
-            if (rootNode == null)
-            {
-                return string.Empty;
-            }
-            var result = string.Empty;
-            for (int i = 0; i < rootNode.ChildNodes.Count; i++)
-            {
-                if (!rootNode.ChildNodes[i].Name.Equals(xmlName, StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-                result = rootNode.ChildNodes[i].InnerText;
-                break;
-            }
-            return result;
-        }
-
         public static string GetServerMapPath(string filePath)
         {
             return MapPath(filePath);
@@ -166,7 +79,7 @@ namespace DFramework.Infrastructure
 
         public static string MapPath(string strPath)
         {
-            if (System.Web.HttpContext.Current != null)
+            if (HttpContext.Current != null)
             {
                 return HostingEnvironment.MapPath(strPath);
             }
@@ -180,10 +93,5 @@ namespace DFramework.Infrastructure
                 return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, strPath);
             }
         }
-    }
-
-    public class Utf8StringWriter : StringWriter
-    {
-        public override Encoding Encoding => Encoding.UTF8;
     }
 }
