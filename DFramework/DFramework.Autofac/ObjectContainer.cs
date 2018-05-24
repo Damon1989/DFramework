@@ -12,6 +12,14 @@ using RegistrationExtensions = Autofac.Extras.DynamicProxy.RegistrationExtension
 
 namespace DFramework.Autofac
 {
+    public static class ObjectContainerExtension
+    {
+        public static ILifetimeScope GetAutofacContainer(this IContainer container)
+        {
+            return (container as ObjectContainer)?._container;
+        }
+    }
+
     public class ObjectContainer : IContainer
     {
         internal ILifetimeScope _container;
