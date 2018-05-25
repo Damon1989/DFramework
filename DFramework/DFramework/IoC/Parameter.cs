@@ -2,10 +2,10 @@
 {
     public class Parameter
     {
-        public Parameter(string parameterName, object parameterValue)
+        public Parameter(string name, object value)
         {
-            Name = parameterName;
-            Value = parameterValue;
+            Name = name;
+            Value = value;
         }
 
         public string Name { get; set; }

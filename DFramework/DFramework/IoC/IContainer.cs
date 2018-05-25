@@ -15,10 +15,21 @@ namespace DFramework.Ioc
         /// Create a child container.
         /// </summary>
         /// <returns>The new child container.</returns>
+        ///
         /// A child container shares the parent's configuration,but can be configured with
         /// different settings or lifetime.
         IContainer CreateChildContainer();
 
+        /// <summary>
+        ///  Register a type mapping with the container,where the created instances will
+        ///  use the given LifttimeManager
+        /// </summary>
+        /// <param name="from">System.Type that will be requested.</param>
+        /// <param name="to">System.Type that will actually be returned.</param>
+        /// <param name="name">Name to use for registration,null if a default registration.</param>
+        /// <param name="lifetime"></param>
+        /// <param name="injections"></param>
+        /// <returns></returns>
         IContainer RegisterType(Type from, Type to, string name, Lifetime lifetime, params Injection[] injections);
 
         IContainer RegisterType(Type from, Type to, Lifetime lifetime, params Injection[] injections);

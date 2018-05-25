@@ -1,18 +1,16 @@
 ﻿using DFramework.Config;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac;
 using DFramework.IoC;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using IContainer = Autofac.IContainer;
 using Autofac.Configuration;
+using DFramework.Autofac;
 
-namespace DFramework.Autofac.Config
+namespace DFramework.Config
 {
     public static class DFrameworkConfigurationExtension
     {

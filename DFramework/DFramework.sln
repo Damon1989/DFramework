@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFramework.Log4Net", "DFram
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFramework.JsonNet", "DFramework.JsonNet\DFramework.JsonNet.csproj", "{F555161C-3C75-49E6-8B19-3A53CE7569BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFramework.IoCTests", "DFramework.IoCTests\DFramework.IoCTests.csproj", "{EA56DE68-9B0B-4EC1-B65A-0BE4D3D34053}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{F555161C-3C75-49E6-8B19-3A53CE7569BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F555161C-3C75-49E6-8B19-3A53CE7569BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F555161C-3C75-49E6-8B19-3A53CE7569BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA56DE68-9B0B-4EC1-B65A-0BE4D3D34053}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA56DE68-9B0B-4EC1-B65A-0BE4D3D34053}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA56DE68-9B0B-4EC1-B65A-0BE4D3D34053}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA56DE68-9B0B-4EC1-B65A-0BE4D3D34053}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +58,7 @@ Global
 		{C99AF6B0-7CD2-4504-B2DB-98F3EA806040} = {85E331E4-3429-467E-BF8E-3D91EA1E6B24}
 		{CFC915EE-FF1E-45BA-B9B5-CCFDE9F9B375} = {C99AF6B0-7CD2-4504-B2DB-98F3EA806040}
 		{F555161C-3C75-49E6-8B19-3A53CE7569BD} = {85E331E4-3429-467E-BF8E-3D91EA1E6B24}
+		{EA56DE68-9B0B-4EC1-B65A-0BE4D3D34053} = {2E628392-FBAF-4329-9E6A-9246E1C0A134}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF3DD962-7081-4227-B858-00F334489CF0}

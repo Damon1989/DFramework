@@ -1,8 +1,8 @@
-﻿using DFramework.Config;
-using DFramework.Infrastructure;
+﻿using DFramework.Infrastructure;
 using DFramework.IoC;
+using DFramework.JsonNet;
 
-namespace DFramework.JsonNet.Config
+namespace DFramework.Config
 {
     public static class FrameworkConfigurationExtension
     {

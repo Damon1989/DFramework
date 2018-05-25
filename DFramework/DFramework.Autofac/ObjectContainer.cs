@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac;
 using DFramework.Infrastructure;
 using DFramework.IoC;
@@ -30,7 +27,7 @@ namespace DFramework.Autofac
         {
             _container = container;
             Parent = parent;
-            //RegisterInstance
+            RegisterInstance<IContainer>(this);
         }
 
         public object ContainerInstance => _container;
