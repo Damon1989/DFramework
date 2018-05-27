@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DFramework.Exceptions;
+using DFramework.Infrastructure.Logging;
+using DFramework.IoC;
 
 namespace DFramework.Infrastructure
 {
@@ -65,22 +68,105 @@ namespace DFramework.Infrastructure
         public TResult Result { get; set; }
     }
 
-    public class ExceptionManager
+    public class ExceptionManager : IExceptionManager
     {
+        protected readonly ILogger Logger;
+
+        public ExceptionManager()
+        {
+            Logger = IoCFactory.IsInit()
+                ? IoCFactory.Resolve<ILoggerFactory>().Create(GetType().Name)
+                : null;
+        }
+
+        protected virtual string UnknownMessage { get; set; } = ErrorCode.UnknownError.ToString();
+
         private static string GetExceptionMessage(Exception ex)
         {
 #if DEBUG
             return $"Message:{ex.GetBaseException().Message}\r\nStackTrace:{ex.GetBaseException().StackTrace}";
 #else
-            return ex.GetBaseException().Message;
+                    return ex.GetBaseException().Message;
 #endif
         }
 
-        public static async Task<ApiResult<T>> ProcessAsync<T>(Func<Task<T>> func,
-                                                                bool continueOnCapturedContext = false,
-                                                                bool needRetry = false,
-                                                                int retryCount = 50,
-                                                                Func<Exception, string> getExceptionMessage = null)
+        public virtual ApiResult Process(Action action, bool needRetry = false, int retryCount = 50, Func<Exception, string> getExceptionMessage = null)
+        {
+            ApiResult apiResult = null;
+            getExceptionMessage = getExceptionMessage ?? GetExceptionMessage;
+            do
+            {
+                try
+                {
+                    action();
+                    apiResult = new ApiResult();
+                    needRetry = false;
+                }
+                catch (Exception ex)
+                {
+                    if (!(ex is OptimisticConcurrencyException) || !needRetry)
+                    {
+                        var baseException = ex.GetBaseException();
+                        if (baseException is DomainException)
+                        {
+                            var sysException = baseException as DomainException;
+                            apiResult = new ApiResult(sysException.ErrorCode, getExceptionMessage(sysException));
+                            Logger?.Warn(ex);
+                        }
+                        else
+                        {
+                            apiResult = new ApiResult(ErrorCode.UnknownError, getExceptionMessage(ex));
+                            Logger?.Error(ex);
+                        }
+                        needRetry = false;
+                    }
+                }
+            } while (needRetry && retryCount-- > 0);
+            return apiResult;
+        }
+
+        public virtual ApiResult<T> Process<T>(Func<T> func, bool needRetry, int retryCount, Func<Exception, string> getExceptionMessage)
+        {
+            ApiResult<T> apiResult = null;
+            getExceptionMessage = getExceptionMessage ?? GetExceptionMessage;
+            do
+            {
+                try
+                {
+                    var result = func();
+                    needRetry = false;
+                    apiResult = result != null
+                        ? new ApiResult<T>(result)
+                        : new ApiResult<T>();
+                }
+                catch (Exception ex)
+                {
+                    if (!(ex is OptimisticConcurrencyException) || !needRetry)
+                    {
+                        var baseException = ex.GetBaseException();
+                        if (baseException is DomainException)
+                        {
+                            var sysException = baseException as DomainException;
+                            apiResult = new ApiResult<T>(sysException.ErrorCode, getExceptionMessage(sysException));
+                            Logger?.Warn(ex);
+                        }
+                        else
+                        {
+                            apiResult = new ApiResult<T>(ErrorCode.UnknownError, getExceptionMessage(ex));
+                            Logger?.Error(ex);
+                        }
+                        needRetry = false;
+                    }
+                }
+            } while (needRetry && retryCount-- > 0);
+            return apiResult;
+        }
+
+        public virtual async Task<ApiResult<T>> ProcessAsync<T>(Func<Task<T>> func,
+                                                          bool continueOnCapturedContext = false,
+                                                          bool needRetry = false,
+                                                          int retryCount = 50,
+                                                          Func<Exception, string> getExceptionMessage = null)
         {
             ApiResult<T> apiResult = null;
             getExceptionMessage = getExceptionMessage ?? GetExceptionMessage;
@@ -92,23 +178,37 @@ namespace DFramework.Infrastructure
                     apiResult = new ApiResult<T>(result);
                     needRetry = false;
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    apiResult = new ApiResult<T>(ErrorCode.UnknownError, getExceptionMessage(e));
-                    needRetry = false;
+                    if (!(ex is OptimisticConcurrencyException) || !needRetry)
+                    {
+                        var baseException = ex.GetBaseException();
+                        if (baseException is DomainException)
+                        {
+                            var sysException = baseException as DomainException;
+                            apiResult = new ApiResult<T>(sysException.ErrorCode, getExceptionMessage(sysException));
+                            Logger?.Warn(ex);
+                        }
+                        else
+                        {
+                            apiResult = new ApiResult<T>(ErrorCode.UnknownError, getExceptionMessage(ex));
+                            Logger?.Error(ex);
+                        }
+                        needRetry = false;
+                    }
                 }
             } while (needRetry && retryCount-- > 0);
             return apiResult;
         }
 
-        public static async Task<ApiResult> ProcessAsync(Func<Task> func,
-            bool continueOnCapturedContext = false,
-            bool needRetry = false,
-            int retryCount = 50,
-            Func<Exception, string> getExceptionMessage = null)
+        public virtual async Task<ApiResult> ProcessAsync(Func<Task> func,
+                                                          bool continueOnCapturedContext = false,
+                                                          bool needRetry = false,
+                                                          int retryCount = 50,
+                                                          Func<Exception, string> getExceptionMessage = null)
         {
-            getExceptionMessage = getExceptionMessage ?? GetExceptionMessage;
             ApiResult apiResult = null;
+            getExceptionMessage = getExceptionMessage ?? GetExceptionMessage;
             do
             {
                 try
@@ -117,55 +217,24 @@ namespace DFramework.Infrastructure
                     needRetry = false;
                     apiResult = new ApiResult();
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    apiResult = new ApiResult(ErrorCode.UnknownError, getExceptionMessage(e));
-                    needRetry = false;
-                }
-            } while (needRetry && retryCount-- > 0);
-            return apiResult;
-        }
-
-        public static ApiResult Process(Action action,
-                                        bool needRetry = false,
-                                        int retryCount = 50)
-        {
-            ApiResult apiResult = null;
-            do
-            {
-                try
-                {
-                    action.Invoke();
-                    apiResult = new ApiResult();
-                }
-                catch (Exception e)
-                {
-                    apiResult = new ApiResult(ErrorCode.UnknownError);
-                }
-            } while (needRetry && retryCount-- > 0);
-            return apiResult;
-        }
-
-        public static ApiResult<T> Process<T>(Func<T> func,
-            bool needRetry = false,
-            int retryCount = 50,
-            Func<Exception, string> getExceptionMessage = null)
-        {
-            ApiResult<T> apiResult = null;
-            getExceptionMessage = getExceptionMessage ?? GetExceptionMessage;
-            do
-            {
-                try
-                {
-                    var result = func();
-                    needRetry = false;
-                    apiResult = result != null ? new ApiResult<T>(result)
-                                                : new ApiResult<T>();
-                }
-                catch (Exception e)
-                {
-                    apiResult = new ApiResult<T>(ErrorCode.UnknownError, getExceptionMessage(e));
-                    needRetry = false;
+                    if (!(ex is OptimisticConcurrencyException) || !needRetry)
+                    {
+                        var baseException = ex.GetBaseException();
+                        if (baseException is DomainException)
+                        {
+                            var sysException = baseException as DomainException;
+                            apiResult = new ApiResult(sysException.ErrorCode, getExceptionMessage(sysException));
+                            Logger?.Warn(ex);
+                        }
+                        else
+                        {
+                            apiResult = new ApiResult(ErrorCode.UnknownError, getExceptionMessage(ex));
+                            Logger?.Error(ex);
+                        }
+                        needRetry = false;
+                    }
                 }
             } while (needRetry && retryCount-- > 0);
             return apiResult;

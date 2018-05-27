@@ -55,8 +55,8 @@ namespace DFramework.JsonNet
     {
         private static readonly ConcurrentDictionary<string, JsonSerializerSettings> SettingDictionary = new ConcurrentDictionary<string, JsonSerializerSettings>();
 
-        private static readonly ILogger JsonLogger = IoCFactory.IsInit()
-            ? IoCFactory.Resolve<ILoggerFactory>().Create(typeof(JsonHelper).Name) : null;
+        private static readonly ILogger JsonLogger = null;//IoCFactory.IsInit()
+                                                          //? IoCFactory.Resolve<ILoggerFactory>().Create(typeof(JsonHelper).Name) : null;
 
         internal static JsonSerializerSettings InternalGetCustomJsonSerializerSettings(bool serializeNonPublic,
                                                                                        bool loopSerialize,

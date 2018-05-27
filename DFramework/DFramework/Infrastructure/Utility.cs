@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Hosting;
 
@@ -17,14 +18,20 @@ namespace DFramework.Infrastructure
 
         public static IEnumerable<T> ForEach<T>(this IEnumerable<T> source, Action<T> act)
         {
-            foreach (var element in source.OrEmptyIfNull())
+            var forEach = source as T[] ?? source.ToArray();
+            foreach (var element in forEach.OrEmptyIfNull())
             {
                 act(element);
             }
-            return source;
+            return forEach;
         }
 
         #region IP
+
+        public static IPAddress GetLocalIPV4()
+        {
+            return HostIPv4;
+        }
 
         /// <summary>
         /// 获取本机IP

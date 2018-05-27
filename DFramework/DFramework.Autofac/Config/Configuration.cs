@@ -39,7 +39,7 @@ namespace DFramework.Config
 
         public static Configuration UseAutofacContainer(this Configuration configuration,
                                                         IContainer container = null,
-                                                        string configFile = "autofac.xml")
+                                                        string configFile = "autofacfile.xml")
         {
             if (IoCFactory.IsInit())
             {
