@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Web;
@@ -11,6 +12,8 @@ namespace DFramework.Infrastructure
 {
     public static class Utility
     {
+        #region ForEach
+
         public static IEnumerable<T> OrEmptyIfNull<T>(this IEnumerable<T> source)
         {
             return source ?? Enumerable.Empty<T>();
@@ -25,6 +28,8 @@ namespace DFramework.Infrastructure
             }
             return forEach;
         }
+
+        #endregion ForEach
 
         #region IP
 
@@ -79,6 +84,8 @@ namespace DFramework.Infrastructure
 
         #endregion IP
 
+        #region FilePath
+
         public static string GetServerMapPath(string filePath)
         {
             return MapPath(filePath);
@@ -99,6 +106,28 @@ namespace DFramework.Infrastructure
                 }
                 return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, strPath);
             }
+        }
+
+        #endregion FilePath
+
+        public static LambdaExpression GetLambdaExpression(Type type, string propertyName)
+        {
+            var param = Expression.Parameter(type);
+            Expression body = param;
+            foreach (var member in propertyName.Split(','))
+            {
+                body = Expression.PropertyOrField(body, member);
+            }
+
+            return Expression.Lambda(body, param);
+        }
+
+        public static LambdaExpression GetLambdaExpression(Type type, Expression expression)
+        {
+            var propertyName = expression.ToString();
+            var index = propertyName.IndexOf('.');
+            propertyName = propertyName.Substring(index + 1);
+            return GetLambdaExpression(type, propertyName);
         }
     }
 }

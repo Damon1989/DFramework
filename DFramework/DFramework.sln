@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFramework.JsonNetTests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFramework.Log4NetTests", "DFramework.Log4NetTests\DFramework.Log4NetTests.csproj", "{6A9B8C71-5091-4D61-8670-A5EEF033D3A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFramework.ExpressionTests", "DFramework.ExpressionTests\DFramework.ExpressionTests.csproj", "{F6986024-DAF7-4C1E-931B-F4CE7EABE93D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{6A9B8C71-5091-4D61-8670-A5EEF033D3A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A9B8C71-5091-4D61-8670-A5EEF033D3A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A9B8C71-5091-4D61-8670-A5EEF033D3A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6986024-DAF7-4C1E-931B-F4CE7EABE93D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6986024-DAF7-4C1E-931B-F4CE7EABE93D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6986024-DAF7-4C1E-931B-F4CE7EABE93D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6986024-DAF7-4C1E-931B-F4CE7EABE93D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 		{EA56DE68-9B0B-4EC1-B65A-0BE4D3D34053} = {2E628392-FBAF-4329-9E6A-9246E1C0A134}
 		{29D09D9A-B691-4119-B378-03F340B337A4} = {85E331E4-3429-467E-BF8E-3D91EA1E6B24}
 		{6A9B8C71-5091-4D61-8670-A5EEF033D3A8} = {C99AF6B0-7CD2-4504-B2DB-98F3EA806040}
+		{F6986024-DAF7-4C1E-931B-F4CE7EABE93D} = {85E331E4-3429-467E-BF8E-3D91EA1E6B24}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF3DD962-7081-4227-B858-00F334489CF0}
