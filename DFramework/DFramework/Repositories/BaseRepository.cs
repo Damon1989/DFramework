@@ -150,67 +150,95 @@ namespace DFramework.Repositories
 
         public TAggregateRoot GetByKey(params object[] keyValues)
         {
-            throw new NotImplementedException();
+            return DoGetByKey(keyValues);
         }
 
         public Task<TAggregateRoot> GetByKeyAsync(params object[] keyValues)
         {
-            throw new NotImplementedException();
+            return DoGetByKeyAsync(keyValues);
         }
 
-        public IQueryable<TAggregateRoot> PageFind(int pageIndex, int pageSize, Expression<Func<TAggregateRoot, bool>> expression, params OrderExpression[] orderExpressions)
+        public IQueryable<TAggregateRoot> PageFind(int pageIndex,
+                                                    int pageSize,
+                                                    Expression<Func<TAggregateRoot, bool>> expression,
+                                                    params OrderExpression[] orderExpressions)
         {
-            throw new NotImplementedException();
+            return DoPageFind(pageIndex, pageSize, Specification<TAggregateRoot>.Eval(expression), orderExpressions);
         }
 
-        public IQueryable<TAggregateRoot> PageFind(int pageIndex, int pageSize, Expression<Func<TAggregateRoot, bool>> expression, ref long totalCount, params OrderExpression[] orderExpressions)
+        public IQueryable<TAggregateRoot> PageFind(int pageIndex,
+                                                    int pageSize,
+                                                    Expression<Func<TAggregateRoot, bool>> expression,
+                                                    ref long totalCount,
+                                                    params OrderExpression[] orderExpressions)
         {
-            throw new NotImplementedException();
+            return DoPageFind(pageIndex, pageSize, Specification<TAggregateRoot>.Eval(expression), ref totalCount,
+                orderExpressions);
         }
 
-        public IQueryable<TAggregateRoot> PageFind(int pageIndex, int pageSize, ISpecification<TAggregateRoot> specification, params OrderExpression[] orderbyExpressions)
+        public IQueryable<TAggregateRoot> PageFind(int pageIndex,
+                                                    int pageSize,
+                                                    ISpecification<TAggregateRoot> specification,
+                                                    params OrderExpression[] orderbyExpressions)
         {
-            throw new NotImplementedException();
+            return DoPageFind(pageIndex, pageSize, specification, orderbyExpressions);
         }
 
-        public IQueryable<TAggregateRoot> PageFind(int pageIndex, int pageSize, ISpecification<TAggregateRoot> speccifiaction, ref long totalCount, params OrderExpression[] orderByExpressions)
+        public IQueryable<TAggregateRoot> PageFind(int pageIndex,
+                                                    int pageSize,
+                                                    ISpecification<TAggregateRoot> speccifiaction,
+                                                    ref long totalCount,
+                                                    params OrderExpression[] orderByExpressions)
         {
-            throw new NotImplementedException();
+            return DoPageFind(pageIndex, pageSize, speccifiaction, ref totalCount, orderByExpressions);
         }
 
-        public Task<Tuple<IQueryable<TAggregateRoot>, long>> PageFindAsync(int pageIndex, int pageSize, Expression<Func<TAggregateRoot, bool>> specification, params OrderExpression[] orderExpressions)
+        public Task<Tuple<IQueryable<TAggregateRoot>, long>> PageFindAsync(int pageIndex,
+                                                                            int pageSize,
+                                                                            Expression<Func<TAggregateRoot, bool>> specification,
+                                                                            params OrderExpression[] orderExpressions)
         {
-            throw new NotImplementedException();
+            return DoPageFindAsync(pageIndex, pageSize, Specification<TAggregateRoot>.Eval(specification), orderExpressions);
         }
 
-        public Task<Tuple<IQueryable<TAggregateRoot>, long>> PageFindAsync(int pageIndex, int pageSize, ISpecification<TAggregateRoot> specification, params OrderExpression[] orderExpressions)
+        public Task<Tuple<IQueryable<TAggregateRoot>, long>> PageFindAsync(int pageIndex,
+                                                                            int pageSize,
+                                                                            ISpecification<TAggregateRoot> specification,
+                                                                            params OrderExpression[] orderExpressions)
         {
-            throw new NotImplementedException();
+            return DoPageFindAsync(pageIndex, pageSize, specification, orderExpressions);
         }
+
+        protected abstract void DoReload(TAggregateRoot entity);
+
+        protected abstract Task DoReloadAsync(TAggregateRoot entity);
 
         public void Reload(TAggregateRoot entity)
         {
-            throw new NotImplementedException();
+            DoReload(entity);
         }
 
         public Task ReloadAsync(TAggregateRoot entity)
         {
-            throw new NotImplementedException();
+            return DoReloadAsync(entity);
         }
 
         public void Remove(TAggregateRoot entity)
         {
-            throw new NotImplementedException();
+            DoRemove(entity);
         }
 
         public void Remove(IEnumerable<TAggregateRoot> entities)
         {
-            throw new NotImplementedException();
+            foreach (var entity in entities)
+            {
+                DoRemove(entity);
+            }
         }
 
         public void Update(TAggregateRoot entity)
         {
-            throw new NotImplementedException();
+            DoUpdate(entity);
         }
     }
 }
