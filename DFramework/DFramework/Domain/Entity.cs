@@ -11,7 +11,7 @@ namespace DFramework.Domain
 {
     public static class PocoContextInitializer
     {
-        public static void InitializeQueryableCollection(this IDbContext context, object entity)
+        public static void InitializeQueryableCollections(this IDbContext context, object entity)
         {
             (entity as Entity)?.SetDomainContext(context);
         }

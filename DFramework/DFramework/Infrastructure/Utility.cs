@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Hosting;
@@ -110,6 +111,8 @@ namespace DFramework.Infrastructure
 
         #endregion FilePath
 
+        #region Lambda
+
         public static LambdaExpression GetLambdaExpression(Type type, string propertyName)
         {
             var param = Expression.Parameter(type);
@@ -128,6 +131,43 @@ namespace DFramework.Infrastructure
             var index = propertyName.IndexOf('.');
             propertyName = propertyName.Substring(index + 1);
             return GetLambdaExpression(type, propertyName);
+        }
+
+        #endregion Lambda
+
+        public static T GetValueByKey<T>(this object obj, string name)
+        {
+            var retValue = default(T);
+            object objValue = null;
+            try
+            {
+                var property = obj.GetType()
+                    .GetProperty(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                if (property != null)
+                {
+                    objValue = FastInvoke.GetMethodInvoker(property.GetGetMethod(true))(obj, null);
+                }
+
+                if (objValue != null)
+                {
+                    retValue = (T)objValue;
+                }
+            }
+            catch (Exception)
+            {
+                retValue = default(T);
+            }
+            return retValue;
+        }
+
+        public static void SetValueByKey(this object obj, string name, object value)
+        {
+            var property = obj.GetType()
+                .GetProperty(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (property != null)
+            {
+                FastInvoke.GetMethodInvoker(property.GetSetMethod(true))(obj, new[] { value });
+            }
         }
     }
 }
