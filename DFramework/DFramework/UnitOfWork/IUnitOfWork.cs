@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
-using IsolationLevel = System.Data.IsolationLevel;
 
 namespace DFramework.UnitOfWork
 {

@@ -6,23 +6,19 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
+using IsolationLevel = System.Transactions.IsolationLevel;
 
 namespace DFramework.UnitOfWork
 {
     public class MockUnitOfWork : IUnitOfWork
     {
-        public void Commit(System.Data.IsolationLevel isolationLevel = System.Data.IsolationLevel.ReadCommitted,
+        public void Commit(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted,
                            TransactionScopeOption scopeOption = TransactionScopeOption.Required)
         {
         }
 
-        public Task CommitAsync(System.Data.IsolationLevel isolationLevel = System.Data.IsolationLevel.ReadCommitted,
+        public Task CommitAsync(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted,
                                 TransactionScopeOption scopeOption = TransactionScopeOption.Required)
-        {
-            return Task.FromResult<object>(null);
-        }
-
-        public Task CommitAsync(CancellationToken cancellationToken, System.Data.IsolationLevel isolationLevel = System.Data.IsolationLevel.ReadCommitted, TransactionScopeOption scopeOption = TransactionScopeOption.Required)
         {
             return Task.FromResult<object>(null);
         }
@@ -33,6 +29,13 @@ namespace DFramework.UnitOfWork
 
         public void Dispose()
         {
+        }
+
+        public Task CommitAsync(CancellationToken cancellationToken,
+            IsolationLevel isolationLevel = IsolationLevel.ReadCommitted,
+            TransactionScopeOption scopeOption = TransactionScopeOption.Required)
+        {
+            throw new NotImplementedException();
         }
     }
 }

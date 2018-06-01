@@ -169,5 +169,10 @@ namespace DFramework.Infrastructure
                 FastInvoke.GetMethodInvoker(property.GetSetMethod(true))(obj, new[] { value });
             }
         }
+
+        public static IQueryable<T> GetPageElements<T>(this IQueryable<T> query, int pageIndex, int pageSize)
+        {
+            return query.Skip(pageIndex * pageSize).Take(pageSize);
+        }
     }
 }

@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bus\IBus.cs" />
+    <Compile Include="Command\ICommand.cs" />
     <Compile Include="Config\Configuration.cs" />
     <Compile Include="Domain\AggregateRoot.cs" />
     <Compile Include="Domain\Entity.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Event\IAggregateRootEvent.cs" />
     <Compile Include="Event\IDomainExceptionEvent.cs" />
     <Compile Include="Event\IEvent.cs" />
+    <Compile Include="Event\IEventBus.cs" />
     <Compile Include="Exceptions\DomainException.cs" />
     <Compile Include="Exceptions\ErrorCode.cs" />
     <Compile Include="Infrastructure\Caching\CacheExtensions.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Infrastructure\Logging\LoggerLevelController.cs" />
     <Compile Include="Infrastructure\Logging\MockLogger.cs" />
     <Compile Include="Infrastructure\Logging\MockLoggerFactory.cs" />
+    <Compile Include="Infrastructure\QueryExtension.cs" />
     <Compile Include="Infrastructure\Utility.cs" />
     <Compile Include="Infrastructure\XmlHelper.cs" />
     <Compile Include="IoC\AopInjection.cs" />
