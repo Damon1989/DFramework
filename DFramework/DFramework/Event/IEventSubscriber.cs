@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DFramework.Event;
+﻿using DFramework.Message;
 
-namespace DFramework.Message
+namespace DFramework.Event
 {
     public interface IEventSubscriber<in TEvent> :
         IMessageHandler<TEvent> where TEvent : class, IEvent

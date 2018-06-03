@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DFramework.Event;
-using DFramework.Message;
+using DFramework.Exceptions;
 
 namespace DFramework.Domain
 {
@@ -43,6 +43,13 @@ namespace DFramework.Domain
             HandleEvent(@event);
             @event.AggregateRootName = AggregateRootName;
             _eventQueue.Enqueue(@event);
+        }
+
+        protected virtual void OnException<TDomainException>(TDomainException exception)
+            where TDomainException : IAggregateRootExceptionEvent
+        {
+            exception.AggregateRootName = AggregateRootName;
+            throw new DomainException(exception);
         }
 
         private void HandleEvent<TDomainEvent>(TDomainEvent @event) where TDomainEvent : class, IAggregateRootEvent

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DFramework.Message.Impl;
 
 namespace DFramework.Message
@@ -14,7 +11,7 @@ namespace DFramework.Message
         string MessageId { get; }
         string CorrelationId { get; set; }
         string ReplyToEndPoint { get; }
-        object Reply { get; }
+        object Reply { get; set; }
         object Message { get; }
         DateTime SentTime { get; }
         string Topic { get; }
