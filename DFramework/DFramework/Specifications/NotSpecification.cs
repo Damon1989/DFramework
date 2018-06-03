@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DFramework.Specifications
 {
+    [Semantics(Semantics.Not)]
     public class NotSpecification<T> : Specification<T>
     {
         private readonly ISpecification<T> spec;

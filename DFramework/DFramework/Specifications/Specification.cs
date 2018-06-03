@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DFramework.Specifications
 {
@@ -21,28 +17,23 @@ namespace DFramework.Specifications
 
         public ISpecification<T> Add(ISpecification<T> other)
         {
-            throw new NotImplementedException();
+            return new AndSpecification<T>(this, other);
         }
 
         public ISpecification<T> Or(ISpecification<T> other)
         {
-            throw new NotImplementedException();
+            return new OrSpecification<T>(this, other);
         }
 
         public ISpecification<T> AndNot(ISpecification<T> other)
         {
-            throw new NotImplementedException();
+            return new AndNotSpecification<T>(this, other);
         }
 
         public ISpecification<T> Not()
         {
-            throw new NotImplementedException();
+            return new NotSpecification<T>(this);
         }
-
-        //public Expression<Func<T, bool>> GetExpression()
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         public abstract Expression<Func<T, bool>> GetExpression();
     }

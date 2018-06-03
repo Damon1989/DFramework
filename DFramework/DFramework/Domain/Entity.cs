@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using DFramework.Infrastructure;
 using DFramework.Repositories;
 
@@ -68,7 +66,8 @@ namespace DFramework.Domain
             (this as AggregateRoot)?.Rollback();
         }
 
-        public TContext GetDbContext<TContext>() where TContext : class
+        public TContext GetDbContext<TContext>()
+            where TContext : class
         {
             return _domainContext as TContext;
         }

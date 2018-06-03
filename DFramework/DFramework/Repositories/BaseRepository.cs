@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using DFramework.Specifications;
 
 namespace DFramework.Repositories
 {
+    /// <summary>
+    /// Represents the base class for repositories.
+    /// </summary>
+    /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
     public abstract class BaseRepository<TAggregateRoot> : IRepository<TAggregateRoot>
             where TAggregateRoot : class
     {
+        #region Protected Methods
+
         protected abstract TAggregateRoot DoGetByKey(params object[] keyValues);
 
         protected abstract Task<TAggregateRoot> DoGetByKeyAsync(params object[] keyValues);
@@ -65,6 +70,10 @@ namespace DFramework.Repositories
 
         protected abstract Task<long> DoCountAsync(Expression<Func<TAggregateRoot, bool>> specification);
 
+        #endregion Protected Methods
+
+        #region Count
+
         public long Count(ISpecification<TAggregateRoot> specification)
         {
             return DoCount(specification);
@@ -84,6 +93,10 @@ namespace DFramework.Repositories
         {
             return DoCountAsync(specification);
         }
+
+        #endregion Count
+
+        #region Exists
 
         protected abstract bool DoExists(ISpecification<TAggregateRoot> specification);
 
@@ -109,6 +122,10 @@ namespace DFramework.Repositories
             return DoExistsAsync(Specification<TAggregateRoot>.Eval(specification));
         }
 
+        #endregion Exists
+
+        #region Find
+
         protected abstract TAggregateRoot DoFind(ISpecification<TAggregateRoot> specification);
 
         protected abstract Task<TAggregateRoot> DoFindAsync(ISpecification<TAggregateRoot> specification);
@@ -122,6 +139,20 @@ namespace DFramework.Repositories
         {
             return DoFind(Specification<TAggregateRoot>.Eval(specification));
         }
+
+        public Task<TAggregateRoot> FindAsync(ISpecification<TAggregateRoot> specification)
+        {
+            return DoFindAsync(specification);
+        }
+
+        public Task<TAggregateRoot> FindAsync(Expression<Func<TAggregateRoot, bool>> specification)
+        {
+            return DoFindAsync(Specification<TAggregateRoot>.Eval(specification));
+        }
+
+        #endregion Find
+
+        #region FindAll
 
         public IQueryable<TAggregateRoot> FindAll(params OrderExpression[] orderExpressions)
         {
@@ -138,15 +169,9 @@ namespace DFramework.Repositories
             return DoFindAll(Specification<TAggregateRoot>.Eval(specification));
         }
 
-        public Task<TAggregateRoot> FindAsync(ISpecification<TAggregateRoot> specification)
-        {
-            return DoFindAsync(specification);
-        }
+        #endregion FindAll
 
-        public Task<TAggregateRoot> FindAsync(Expression<Func<TAggregateRoot, bool>> specification)
-        {
-            return DoFindAsync(Specification<TAggregateRoot>.Eval(specification));
-        }
+        #region GetBy
 
         public TAggregateRoot GetByKey(params object[] keyValues)
         {
@@ -157,6 +182,10 @@ namespace DFramework.Repositories
         {
             return DoGetByKeyAsync(keyValues);
         }
+
+        #endregion GetBy
+
+        #region PageFind
 
         public IQueryable<TAggregateRoot> PageFind(int pageIndex,
                                                     int pageSize,
@@ -209,6 +238,10 @@ namespace DFramework.Repositories
             return DoPageFindAsync(pageIndex, pageSize, specification, orderExpressions);
         }
 
+        #endregion PageFind
+
+        #region Reload
+
         protected abstract void DoReload(TAggregateRoot entity);
 
         protected abstract Task DoReloadAsync(TAggregateRoot entity);
@@ -223,6 +256,10 @@ namespace DFramework.Repositories
             return DoReloadAsync(entity);
         }
 
+        #endregion Reload
+
+        #region Remove
+
         public void Remove(TAggregateRoot entity)
         {
             DoRemove(entity);
@@ -235,6 +272,8 @@ namespace DFramework.Repositories
                 DoRemove(entity);
             }
         }
+
+        #endregion Remove
 
         public void Update(TAggregateRoot entity)
         {

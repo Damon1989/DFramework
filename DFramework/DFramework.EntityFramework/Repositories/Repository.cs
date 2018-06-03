@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using DFramework.Domain;
 using DFramework.Infrastructure;
 using DFramework.Repositories;
 using DFramework.Specifications;
@@ -69,13 +70,18 @@ namespace DFramework.EntityFramework.Repositories
             ISpecification<TEntity> specification, ref long totalCount,
             params OrderExpression[] orderExpressions)
         {
-            throw new NotImplementedException();
+            var query = DoPageFind(pageIndex, pageSize, specification, orderExpressions);
+            totalCount = Count(specification.GetExpression());
+            return query;
         }
 
-        protected override Task<Tuple<IQueryable<TEntity>, long>> DoPageFindAsync(int pageIndex, int pageSize, ISpecification<TEntity> specification,
+        protected override async Task<Tuple<IQueryable<TEntity>, long>> DoPageFindAsync(int pageIndex, int pageSize,
+            ISpecification<TEntity> specification,
             params OrderExpression[] orderExpressions)
         {
-            throw new NotImplementedException();
+            var query = DoPageFind(pageIndex, pageSize, specification, orderExpressions);
+            var totalCount = await CountAsync(specification.GetExpression()).ConfigureAwait(false);
+            return new Tuple<IQueryable<TEntity>, long>(query, totalCount);
         }
 
         protected override IQueryable<TEntity> DoPageFind(int pageIndex, int pageSize,
@@ -108,62 +114,68 @@ namespace DFramework.EntityFramework.Repositories
 
         protected override void DoAdd(IEnumerable<TEntity> entities)
         {
-            throw new NotImplementedException();
+            foreach (var entity in entities)
+            {
+                DoAdd(entity);
+            }
         }
 
         protected override void DoAdd(TEntity entity)
         {
-            throw new NotImplementedException();
+            DbSet.Add(entity);
         }
 
         protected override long DoCount(ISpecification<TEntity> specification)
         {
-            throw new NotImplementedException();
+            return DbSet.LongCount(specification.GetExpression());
         }
 
         protected override Task<long> DoCountAsync(ISpecification<TEntity> specification)
         {
-            throw new NotImplementedException();
+            return DbSet.LongCountAsync(specification.GetExpression());
         }
 
         protected override long DoCount(Expression<Func<TEntity, bool>> specification)
         {
-            throw new NotImplementedException();
+            return DbSet.LongCount(specification);
         }
 
         protected override Task<long> DoCountAsync(Expression<Func<TEntity, bool>> specification)
         {
-            throw new NotImplementedException();
+            return DbSet.LongCountAsync(specification);
         }
 
         protected override bool DoExists(ISpecification<TEntity> specification)
         {
-            throw new NotImplementedException();
+            return DbSet.Any(specification.GetExpression());
         }
 
-        protected override Task<bool> DoExistsAsync(ISpecification<TEntity> specification)
+        protected override async Task<bool> DoExistsAsync(ISpecification<TEntity> specification)
         {
-            throw new NotImplementedException();
+            return await DbSet.AnyAsync(specification.GetExpression()).ConfigureAwait(false);
         }
 
         protected override TEntity DoFind(ISpecification<TEntity> specification)
         {
-            throw new NotImplementedException();
+            return DbSet.Where(specification.GetExpression()).FirstOrDefault();
         }
 
         protected override Task<TEntity> DoFindAsync(ISpecification<TEntity> specification)
         {
-            throw new NotImplementedException();
+            return DbSet.Where(specification.GetExpression()).FirstOrDefaultAsync();
         }
 
         protected override void DoReload(TEntity entity)
         {
-            throw new NotImplementedException();
+            Container.Entry(entity).Reload();
+            (entity as AggregateRoot)?.Rollback();
         }
 
-        protected override Task DoReloadAsync(TEntity entity)
+        protected override async Task DoReloadAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            await Container.Entry(entity)
+                .ReloadAsync().ConfigureAwait(false);
+            (entity as AggregateRoot)?.Rollback();
         }
     }
 }

@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
-using IsolationLevel = System.Transactions.IsolationLevel;
 
 namespace DFramework.UnitOfWork
 {
     public class MockUnitOfWork : IUnitOfWork
     {
+        public void Dispose()
+        {
+        }
+
         public void Commit(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted,
                            TransactionScopeOption scopeOption = TransactionScopeOption.Required)
         {
@@ -27,15 +26,11 @@ namespace DFramework.UnitOfWork
         {
         }
 
-        public void Dispose()
-        {
-        }
-
         public Task CommitAsync(CancellationToken cancellationToken,
             IsolationLevel isolationLevel = IsolationLevel.ReadCommitted,
             TransactionScopeOption scopeOption = TransactionScopeOption.Required)
         {
-            throw new NotImplementedException();
+            return Task.FromResult<object>(null);
         }
     }
 }

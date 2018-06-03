@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Resources;
-using System.Text;
 using System.Threading.Tasks;
 using DFramework.Domain;
 using DFramework.Ioc;
@@ -20,6 +18,12 @@ namespace DFramework.Repositories
         private readonly Dictionary<Type, IRepository> Repositories;
         private readonly IUnitOfWork UnitOfWork;
 
+        /// <summary>
+        ///  Initializes a new instance of DomainRepository.
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <param name="unitOfWork"></param>
+        /// <param name="container"></param>
         public DomainRepository(object dbContext, IUnitOfWork unitOfWork, IContainer container)
         {
             DbContext = dbContext;
@@ -28,70 +32,82 @@ namespace DFramework.Repositories
             Repositories = new Dictionary<Type, IRepository>();
         }
 
-        public IRepository<TAggergateRoot> GetRepository<TAggergateRoot>() where TAggergateRoot : class
+        public IRepository<TAggergateRoot> GetRepository<TAggergateRoot>()
+            where TAggergateRoot : class
         {
             IRepository repository;
             if (!Repositories.TryGetValue(typeof(IRepository<TAggergateRoot>), out repository))
             {
                 repository = Container.Resolve<IRepository<TAggergateRoot>>(new Parameter("dbContext", DbContext),
-                    new Parameter("unitOfWork", UnitOfWork));
+                                                                            new Parameter("unitOfWork", UnitOfWork));
                 Repositories.Add(typeof(IRepository<TAggergateRoot>), repository);
             }
 
             return repository as IRepository<TAggergateRoot>;
         }
 
-        public void Add<TAggregateRoot>(IEnumerable<TAggregateRoot> entities) where TAggregateRoot : class
+        public void Add<TAggregateRoot>(IEnumerable<TAggregateRoot> entities)
+            where TAggregateRoot : class
         {
             GetRepository<TAggregateRoot>().Add(entities);
         }
 
-        public void Add<TaggergateRoot>(TaggergateRoot entity) where TaggergateRoot : class
+        public void Add<TaggergateRoot>(TaggergateRoot entity)
+            where TaggergateRoot : class
         {
             GetRepository<TaggergateRoot>().Add(entity);
         }
 
-        public TAggergateRoot GetByKey<TAggergateRoot>(params object[] keyValue) where TAggergateRoot : class
+        public TAggergateRoot GetByKey<TAggergateRoot>(params object[] keyValue)
+            where TAggergateRoot : class
         {
             return GetRepository<TAggergateRoot>().GetByKey(keyValue);
         }
 
-        public Task<TAggergateRoot> GetByKeyAsync<TAggergateRoot>(params object[] keyValues) where TAggergateRoot : class
+        public Task<TAggergateRoot> GetByKeyAsync<TAggergateRoot>(params object[] keyValues)
+            where TAggergateRoot : class
         {
             return GetRepository<TAggergateRoot>().GetByKeyAsync(keyValues);
         }
 
-        public long Count<TAggergateRoot>(ISpecification<TAggergateRoot> specification) where TAggergateRoot : class
+        public long Count<TAggergateRoot>(ISpecification<TAggergateRoot> specification)
+            where TAggergateRoot : class
         {
             return GetRepository<TAggergateRoot>().Count(specification);
         }
 
-        public Task<long> CountAsync<TAggergateRoot>(ISpecification<TAggergateRoot> specification) where TAggergateRoot : class
+        public Task<long> CountAsync<TAggergateRoot>(ISpecification<TAggergateRoot> specification)
+            where TAggergateRoot : class
         {
             return GetRepository<TAggergateRoot>().CountAsync(specification);
         }
 
-        public long Count<TAggergateRoot>(Expression<Func<TAggergateRoot, bool>> specification) where TAggergateRoot : class
+        public long Count<TAggergateRoot>(Expression<Func<TAggergateRoot, bool>> specification)
+            where TAggergateRoot : class
         {
             return GetRepository<TAggergateRoot>().Count(specification);
         }
 
-        public Task<long> CountAsync<TAggergateRoot>(Expression<Func<TAggergateRoot, bool>> specification) where TAggergateRoot : class
+        public Task<long> CountAsync<TAggergateRoot>(Expression<Func<TAggergateRoot, bool>> specification)
+            where TAggergateRoot : class
         {
             return GetRepository<TAggergateRoot>().CountAsync(specification);
         }
 
-        public void Reload<TEntity>(TEntity entity) where TEntity : Entity
+        public void Reload<TEntity>(TEntity entity)
+            where TEntity : Entity
         {
             GetRepository<TEntity>().Reload(entity);
         }
 
-        public Task ReloadAsync<TEntity>(TEntity entity) where TEntity : Entity
+        public Task ReloadAsync<TEntity>(TEntity entity)
+            where TEntity : Entity
         {
             return GetRepository<TEntity>().ReloadAsync(entity);
         }
 
-        public IQueryable<TAggergateRoot> FindAll<TAggergateRoot>(params OrderExpression[] orderExpressions) where TAggergateRoot : class
+        public IQueryable<TAggergateRoot> FindAll<TAggergateRoot>(params OrderExpression[] orderExpressions)
+            where TAggergateRoot : class
         {
             return GetRepository<TAggergateRoot>().FindAll(orderExpressions);
         }
@@ -108,42 +124,50 @@ namespace DFramework.Repositories
             return GetRepository<TAggergateRoot>().FindAll(specification, orderExpressions);
         }
 
-        public TAggergateRoot Find<TAggergateRoot>(ISpecification<TAggergateRoot> specification) where TAggergateRoot : class
+        public TAggergateRoot Find<TAggergateRoot>(ISpecification<TAggergateRoot> specification)
+            where TAggergateRoot : class
         {
             return GetRepository<TAggergateRoot>().Find(specification);
         }
 
-        public Task<TAggergateRoot> FindAsync<TAggergateRoot>(ISpecification<TAggergateRoot> specification) where TAggergateRoot : class
+        public Task<TAggergateRoot> FindAsync<TAggergateRoot>(ISpecification<TAggergateRoot> specification)
+            where TAggergateRoot : class
         {
             return GetRepository<TAggergateRoot>().FindAsync(specification);
         }
 
-        public TAggergateRoot Find<TAggergateRoot>(Expression<Func<TAggergateRoot, bool>> specification) where TAggergateRoot : class
+        public TAggergateRoot Find<TAggergateRoot>(Expression<Func<TAggergateRoot, bool>> specification)
+            where TAggergateRoot : class
         {
             return GetRepository<TAggergateRoot>().Find(specification);
         }
 
-        public Task<TAggergateRoot> FindAsync<TAggergateRoot>(Expression<Func<TAggergateRoot, bool>> specification) where TAggergateRoot : class
+        public Task<TAggergateRoot> FindAsync<TAggergateRoot>(Expression<Func<TAggergateRoot, bool>> specification)
+            where TAggergateRoot : class
         {
             return GetRepository<TAggergateRoot>().FindAsync(specification);
         }
 
-        public bool Exists<TAggregateRoot>(ISpecification<TAggregateRoot> specification) where TAggregateRoot : class
+        public bool Exists<TAggregateRoot>(ISpecification<TAggregateRoot> specification)
+            where TAggregateRoot : class
         {
             return GetRepository<TAggregateRoot>().Exists(specification);
         }
 
-        public Task<bool> ExistsAsync<TAggregateRoot>(ISpecification<TAggregateRoot> specification) where TAggregateRoot : class
+        public Task<bool> ExistsAsync<TAggregateRoot>(ISpecification<TAggregateRoot> specification)
+            where TAggregateRoot : class
         {
             return GetRepository<TAggregateRoot>().ExistsAsync(specification);
         }
 
-        public bool Exists<TAggregateRoot>(Expression<Func<TAggregateRoot, bool>> specification) where TAggregateRoot : class
+        public bool Exists<TAggregateRoot>(Expression<Func<TAggregateRoot, bool>> specification)
+            where TAggregateRoot : class
         {
             return GetRepository<TAggregateRoot>().Exists(specification);
         }
 
-        public Task<bool> ExistsAsync<TAggregateRoot>(Expression<Func<TAggregateRoot, bool>> specification) where TAggregateRoot : class
+        public Task<bool> ExistsAsync<TAggregateRoot>(Expression<Func<TAggregateRoot, bool>> specification)
+            where TAggregateRoot : class
         {
             return GetRepository<TAggregateRoot>().ExistsAsync(specification);
         }
@@ -163,38 +187,58 @@ namespace DFramework.Repositories
             GetRepository<TAggregateRoot>().Update(entity);
         }
 
-        public IQueryable<TAggregateRoot> PageFind<TAggregateRoot>(int pageIndex, int pageSize, Expression<Func<TAggregateRoot, bool>> specification,
-            params OrderExpression[] orderExpressions) where TAggregateRoot : class
+        public IQueryable<TAggregateRoot> PageFind<TAggregateRoot>(int pageIndex,
+                                                                   int pageSize,
+                                                                   Expression<Func<TAggregateRoot, bool>> specification,
+                                                                   params OrderExpression[] orderExpressions)
+            where TAggregateRoot : class
         {
             return GetRepository<TAggregateRoot>().PageFind(pageIndex, pageSize, specification, orderExpressions);
         }
 
-        public IQueryable<TAggregateRoot> PageFind<TAggregateRoot>(int pageIndex, int pageSize, Expression<Func<TAggregateRoot, bool>> specification, ref long totalCount,
-            params OrderExpression[] orderExpressions) where TAggregateRoot : class
+        public IQueryable<TAggregateRoot> PageFind<TAggregateRoot>(int pageIndex,
+                                                                   int pageSize,
+                                                                   Expression<Func<TAggregateRoot, bool>> specification,
+                                                                   ref long totalCount,
+                                                                   params OrderExpression[] orderExpressions)
+            where TAggregateRoot : class
         {
             return GetRepository<TAggregateRoot>().PageFind(pageIndex, pageSize, specification, ref totalCount, orderExpressions);
         }
 
-        public Task<Tuple<IQueryable<TAggregateRoot>, long>> PageFindAsync<TAggregateRoot>(int pageIndex, int pageSize, Expression<Func<TAggregateRoot, bool>> specification,
-            params OrderExpression[] orderExpressions) where TAggregateRoot : class
+        public Task<Tuple<IQueryable<TAggregateRoot>, long>> PageFindAsync<TAggregateRoot>(int pageIndex,
+                                                                                           int pageSize,
+                                                                                           Expression<Func<TAggregateRoot, bool>> specification,
+                                                                                           params OrderExpression[] orderExpressions)
+                                                                                           where TAggregateRoot : class
         {
             return GetRepository<TAggregateRoot>().PageFindAsync(pageIndex, pageSize, specification, orderExpressions);
         }
 
-        public IQueryable<TAggregateRoot> PageFind<TAggregateRoot>(int pageIndex, int pageSize, ISpecification<TAggregateRoot> specification, ref long totalCount,
-            params OrderExpression[] orderExpressions) where TAggregateRoot : class
+        public IQueryable<TAggregateRoot> PageFind<TAggregateRoot>(int pageIndex,
+                                                                   int pageSize,
+                                                                   ISpecification<TAggregateRoot> specification,
+                                                                   ref long totalCount,
+                                                                   params OrderExpression[] orderExpressions)
+            where TAggregateRoot : class
         {
             return GetRepository<TAggregateRoot>().PageFind(pageIndex, pageSize, specification, ref totalCount, orderExpressions);
         }
 
-        public Task<Tuple<IQueryable<TAggregateRoot>, long>> PageFindAsync<TAggregateRoot>(int pageIndex, int pageSize, ISpecification<TAggregateRoot> specification,
-            params OrderExpression[] orderExpressions) where TAggregateRoot : class
+        public Task<Tuple<IQueryable<TAggregateRoot>, long>> PageFindAsync<TAggregateRoot>(int pageIndex,
+                                                                                           int pageSize,
+                                                                                           ISpecification<TAggregateRoot> specification,
+                                                                                           params OrderExpression[] orderExpressions)
+            where TAggregateRoot : class
         {
             return GetRepository<TAggregateRoot>().PageFindAsync(pageIndex, pageSize, specification, orderExpressions);
         }
 
-        public IQueryable<TAggregateRoot> PageFind<TAggregateRoot>(int pageIndex, int pageSize, ISpecification<TAggregateRoot> specification,
-            params OrderExpression[] orderExpressions) where TAggregateRoot : class
+        public IQueryable<TAggregateRoot> PageFind<TAggregateRoot>(int pageIndex,
+                                                                   int pageSize,
+                                                                   ISpecification<TAggregateRoot> specification,
+                                                                   params OrderExpression[] orderExpressions)
+            where TAggregateRoot : class
         {
             return GetRepository<TAggregateRoot>().PageFind(pageIndex, pageSize, specification, orderExpressions);
         }

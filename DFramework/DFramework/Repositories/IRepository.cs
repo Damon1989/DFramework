@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using DFramework.Specifications;
 
@@ -12,13 +11,26 @@ namespace DFramework.Repositories
     {
     }
 
+    /// <summary>
+    ///  Represents the repositories
+    /// </summary>
+    /// <typeparam name="TAggergateRoot">The type of the aggregation root with which the repository is working.</typeparam>
     public interface IRepository<TAggergateRoot> : IRepository
         where TAggergateRoot : class
     {
+        /// <summary>
+        ///  Adds an entity to the repository.
+        /// </summary>
+        /// <param name="entities"></param>
         void Add(IEnumerable<TAggergateRoot> entities);
 
         void Add(TAggergateRoot entity);
 
+        /// <summary>
+        ///  Gets the entity instance from repository by a given key.
+        /// </summary>
+        /// <param name="keyValues"></param>
+        /// <returns></returns>
         TAggergateRoot GetByKey(params object[] keyValues);
 
         Task<TAggergateRoot> GetByKeyAsync(params object[] keyValues);
@@ -31,6 +43,15 @@ namespace DFramework.Repositories
 
         Task<long> CountAsync(Expression<Func<TAggergateRoot, bool>> specification);
 
+        /// <summary>
+        ///  Finds all the aggregate roots from repository,sorting by using the provided sort predicate
+        ///  and the specified sort order.
+        /// </summary>
+        /// <param name="orderExpressions"></param>
+        /// <returns>
+        /// All the aggregate roots get from the repository,with the aggregate roots being sorted by using
+        /// the provided sort predicate and the sort order.
+        /// </returns>
         IQueryable<TAggergateRoot> FindAll(params OrderExpression[] orderExpressions);
 
         IQueryable<TAggergateRoot> FindAll(ISpecification<TAggergateRoot> specification,
@@ -39,6 +60,11 @@ namespace DFramework.Repositories
         IQueryable<TAggergateRoot> FindAll(Expression<Func<TAggergateRoot, bool>> specification,
                                             params OrderExpression[] orderExpressions);
 
+        /// <summary>
+        ///  Finds a single aggregate root that matches the given specification
+        /// </summary>
+        /// <param name="specification">the specification with which the aggregate root should match.</param>
+        /// <returns> The instance of the aggregate root.</returns>
         TAggergateRoot Find(ISpecification<TAggergateRoot> specification);
 
         Task<TAggergateRoot> FindAsync(ISpecification<TAggergateRoot> specification);
@@ -47,6 +73,11 @@ namespace DFramework.Repositories
 
         Task<TAggergateRoot> FindAsync(Expression<Func<TAggergateRoot, bool>> specification);
 
+        /// <summary>
+        ///  Checks whether the aggregate root which matches the given specification exists.
+        /// </summary>
+        /// <param name="specification"></param>
+        /// <returns></returns>
         bool Exists(ISpecification<TAggergateRoot> specification);
 
         Task<bool> ExistsAsync(ISpecification<TAggergateRoot> specification);
@@ -55,6 +86,10 @@ namespace DFramework.Repositories
 
         Task<bool> ExistsAsync(Expression<Func<TAggergateRoot, bool>> specification);
 
+        /// <summary>
+        ///  Removes the entity from the repository.
+        /// </summary>
+        /// <param name="entity"> The entity to be removed.</param>
         void Remove(TAggergateRoot entity);
 
         void Remove(IEnumerable<TAggergateRoot> entities);
@@ -62,6 +97,11 @@ namespace DFramework.Repositories
         void Reload(TAggergateRoot entity);
 
         Task ReloadAsync(TAggergateRoot entity);
+
+        /// <summary>
+        ///  Updates the entity in the repository,
+        /// </summary>
+        /// <param name="entity">The eneity to be updated.</param>
 
         void Update(TAggergateRoot entity);
 
