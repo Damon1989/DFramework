@@ -86,9 +86,9 @@ namespace DFramework.EntityFramework
             catch (DbEntityValidationException ex)
             {
                 var errorMessage = string.Join(";", ex.EntityValidationErrors
-                    .SelectMany(eve => eve.ValidationErrors
-                        .Select(e => new { eve.Entry, Error = e })
-                        .Select(e =>
+                        .SelectMany(eve => eve.ValidationErrors
+                            .Select(e => new { eve.Entry, Error = e })
+                            .Select(e =>
                             $"{e.Entry?.Entity?.GetType().Name}:{e.Error?.PropertyName} / {e.Error?.ErrorMessage}")));
                 throw new Exception(errorMessage, ex);
             }
@@ -108,8 +108,8 @@ namespace DFramework.EntityFramework
             try
             {
                 ChangeTracker.Entries()
-                    .Where(e => e.State == EntityState.Added)
-                    .ForEach(e => { this.InitializeQueryableCollections(e.Entity); });
+                             .Where(e => e.State == EntityState.Added)
+                             .ForEach(e => { this.InitializeQueryableCollections(e.Entity); });
                 return await base.SaveChangesAsync(cancellationToken);
             }
             catch (DbUpdateConcurrencyException ex)

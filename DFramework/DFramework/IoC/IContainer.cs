@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using DFramework.IoC;
 
-namespace DFramework.Ioc
+namespace DFramework.IoC
 {
     public interface IContainer : IDisposable
     {

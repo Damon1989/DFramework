@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFramework.EntityFramework"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFramework.AspNet", "DFramework.AspNet\DFramework.AspNet.csproj", "{5B6F114A-6CCF-40F7-A300-708EE466588D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFramework.FileUploadTest", "DFramework.FileUploadTest\DFramework.FileUploadTest.csproj", "{B2D6A801-E73C-4154-AAE1-4D059FF716A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{5B6F114A-6CCF-40F7-A300-708EE466588D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B6F114A-6CCF-40F7-A300-708EE466588D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B6F114A-6CCF-40F7-A300-708EE466588D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2D6A801-E73C-4154-AAE1-4D059FF716A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2D6A801-E73C-4154-AAE1-4D059FF716A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2D6A801-E73C-4154-AAE1-4D059FF716A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2D6A801-E73C-4154-AAE1-4D059FF716A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,6 +103,7 @@ Global
 		{AAD9F833-7493-4DF3-A4D7-7C5003A432A5} = {85E331E4-3429-467E-BF8E-3D91EA1E6B24}
 		{9A143FB8-9456-40E1-B027-BDE84C1E5035} = {AAD9F833-7493-4DF3-A4D7-7C5003A432A5}
 		{5B6F114A-6CCF-40F7-A300-708EE466588D} = {85E331E4-3429-467E-BF8E-3D91EA1E6B24}
+		{B2D6A801-E73C-4154-AAE1-4D059FF716A3} = {85E331E4-3429-467E-BF8E-3D91EA1E6B24}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF3DD962-7081-4227-B858-00F334489CF0}

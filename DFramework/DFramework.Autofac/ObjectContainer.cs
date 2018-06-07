@@ -4,7 +4,7 @@ using System.Linq;
 using Autofac;
 using DFramework.Infrastructure;
 using DFramework.IoC;
-using IContainer = DFramework.Ioc.IContainer;
+using IContainer = DFramework.IoC.IContainer;
 using RegistrationExtensions = Autofac.Extras.DynamicProxy.RegistrationExtensions;
 
 namespace DFramework.Autofac

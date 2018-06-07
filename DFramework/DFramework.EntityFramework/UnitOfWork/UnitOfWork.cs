@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -20,7 +18,8 @@ namespace DFramework.EntityFramework
         protected Exception _exception;
         protected ILogger _logger;
 
-        public UnitOfWork(IEventBus eventBus, ILoggerFactory loggerFactory)
+        public UnitOfWork(IEventBus eventBus,
+                          ILoggerFactory loggerFactory)
         {
             _dbContexts = new List<MSDbContext>();
             _eventBus = eventBus;
@@ -79,7 +78,7 @@ namespace DFramework.EntityFramework
         public Task CommitAsync(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted,
             TransactionScopeOption scopeOption = TransactionScopeOption.Required)
         {
-            throw new NotImplementedException();
+            return CommitAsync(CancellationToken.None, isolationLevel, scopeOption);
         }
 
         public virtual async Task CommitAsync(CancellationToken cancellationToken, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted,

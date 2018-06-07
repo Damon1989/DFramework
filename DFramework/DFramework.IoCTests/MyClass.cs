@@ -1,4 +1,4 @@
-﻿using DFramework.Ioc;
+﻿using DFramework.IoC;
 
 namespace DFramework.IoCTests
 {
