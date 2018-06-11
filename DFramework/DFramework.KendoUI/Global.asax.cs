@@ -25,29 +25,68 @@ namespace DFramework.KendoUI
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            Configuration.Instance
-                .UseAutofacContainer()
-                .RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-                .RegisterCommonComponents()
-                .UseLog4Net("KendoUI")
-                .UseJsonNet();
+            //Configuration.Instance
+            //    .UseAutofacContainer()
+            //    .RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+            //    .RegisterCommonComponents()
+            //    .UseLog4Net("KendoUI")
+            //    .UseJsonNet();
 
-            var container = IoCFactory.Instance.CurrentContainer;
+            //var container = IoCFactory.Instance.CurrentContainer;
 
-            RegisterTypes(container, Lifetime.Hierarchical);
+            //RegisterTypes(container, Lifetime.Hierarchical);
 
-            var childContainer = container.CreateChildContainer();
-            RegisterTypes(childContainer, Lifetime.PerRequest);
+            //var childContainer = container.CreateChildContainer();
+            //RegisterTypes(childContainer, Lifetime.PerRequest);
 
             //System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver = new HierarchicalDependencyResolver(container);
-            DependencyResolver.SetResolver(new AutofacDependencyResolver(childContainer.GetAutofacContainer()));
-        }
+            //DependencyResolver.SetResolver(new AutofacDependencyResolver(childContainer.GetAutofacContainer()));
 
-        public static void RegisterTypes(IContainer container, Lifetime lifetime)
-        {
-            Configuration.Instance.RegisterEntityFrameworkComponents(container, lifetime);
-            container.RegisterType<KendoDbContext, KendoDbContext>(lifetime);
-            container.RegisterType<IKendoUIRepository, KendoUIRepository>(lifetime);
+            var mvcContainer = IoCConfig.GetMvcConfigurationContainer();
+            mvcContainer.RegisterType<Node, Node>();
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(mvcContainer.GetAutofacContainer()));
         }
+    }
+}
+
+public class IoCConfig
+{
+    public static IContainer GetConfigurationContainer()
+    {
+        return container.Value;
+    }
+
+    public static IContainer GetMvcConfigurationContainer()
+    {
+        return mvcContainer.Value;
+    }
+
+    private static Lazy<IContainer> container = new Lazy<IContainer>(() =>
+    {
+        Configuration.Instance
+            .UseAutofacContainer()
+        .RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+            .RegisterCommonComponents()
+            //.UseLog4Net("KendoUI")
+            .UseJsonNet();
+
+        var container = IoCFactory.Instance.CurrentContainer;
+
+        RegisterTypes(container, Lifetime.Hierarchical);
+        return container;
+    });
+
+    private static Lazy<IContainer> mvcContainer = new Lazy<IContainer>(() =>
+      {
+          var container = GetConfigurationContainer().CreateChildContainer();
+          RegisterTypes(container, Lifetime.Hierarchical);
+          return container;
+      });
+
+    public static void RegisterTypes(IContainer container, Lifetime lifetime)
+    {
+        Configuration.Instance.RegisterEntityFrameworkComponents(container, lifetime);
+        container.RegisterType<KendoDbContext, KendoDbContext>(lifetime);
+        container.RegisterType<IKendoUIRepository, KendoUIRepository>(lifetime);
     }
 }
