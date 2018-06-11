@@ -1,0 +1,217 @@
+﻿@{
+
+}
+
+<h2>Index</h2>
+<input id="datepicker" />
+
+<input id="autocomplete" />
+<div id="grid"></div>
+
+<div id="example"></div>
+<div id="example1"></div>
+<div id="example2"></div>
+
+<div id="myform">
+    <input type="text" name="firstName" validationMessage="必填项" required="" />
+    <input type="text" name="lastName" required="" />
+    <button id="save" type="button">Save</button>
+</div>
+
+<div id="view">
+    <input data-bind="value:name" />
+    <button data-bind="click:displayGreeting">Display Greeting</button>
+</div>
+
+<div id="foo" data-bind="attr:{data-foo:fooValue,data-bar:barValue}">
+    123
+</div>
+<input id="check" type="checkbox" data-bind="checked:isChecked" />
+<div id="clickview">
+    <span data-bind="click:showDescription">Show description</span>
+    <span data-bind="visible:isDescriptionShown,text:description"></span>
+</div>
+
+<div id="viewevent">
+    <span data-bind="events:{mouseover:showDescription,mouseout:hideDescription}">Show description1</span>
+    <span data-bind="visible:isDescriptionShown,text:description"></span>
+</div>
+
+<img id="logo" data-bind="attr:{src:imageSource,alt:imageAlt}" />
+<script id="javascriptTemplate" type="text/x-kendo-template">
+    <ul>
+        # for(var i=0;i < data.length;i++){#
+        <li>#= data[i] #</li>
+        # } #
+    </ul>
+</script>
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#datepicker").kendoDatePicker();
+
+            $("#autocomplete").kendoAutoComplete(["1", "2", "3", "11", "112"]);
+
+            $("#grid").kendoGrid({
+                height: 200,
+                columns: [
+                    {
+                        field: "FirstName",
+                        title: "First Name"
+                    },
+                    {
+                        field: "LastName",
+                        title: "Last Name"
+                    }
+                ],
+                dataSource: {
+                    data: [
+                        {
+                            FirstName: "john",
+                            LastName: "Doe"
+                        },
+                        {
+                            FirstName: "jane",
+                            LastName: "Doe"
+                        },
+                        {
+                            FirstName: "john",
+                            LastName: "Doe"
+                        },
+                        {
+                            FirstName: "jane",
+                            LastName: "Doe"
+                        },
+                        {
+                            FirstName: "john",
+                            LastName: "Doe"
+                        },
+                        {
+                            FirstName: "jane",
+                            LastName: "Doe"
+                        },
+                        {
+                            FirstName: "john",
+                            LastName: "Doe"
+                        },
+                        {
+                            FirstName: "jane",
+                            LastName: "Doe"
+                        },
+                        {
+                            FirstName: "john",
+                            LastName: "Doe"
+                        },
+                        {
+                            FirstName: "jane",
+                            LastName: "Doe"
+                        },
+                        {
+                            FirstName: "john",
+                            LastName: "Doe"
+                        },
+                        {
+                            FirstName: "jane",
+                            LastName: "Doe"
+                        },
+                        {
+                            FirstName: "john",
+                            LastName: "Doe"
+                        },
+                        {
+                            FirstName: "jane",
+                            LastName: "Doe"
+                        },
+                        {
+                            FirstName: "john",
+                            LastName: "Doe"
+                        },
+                        {
+                            FirstName: "jane",
+                            LastName: "Doe"
+                        }
+                    ]
+                }
+            });
+
+            var template = kendo.template("<div id='box'>My Name is #= firstName #</div>");
+            var data = { firstName: "Todo" };
+            var result = template(data);
+            $("#example").html(result);
+
+            var template1 = kendo.template("<div id='box'>#: firstName #</div>");
+            var data1 = { firstName: "<b>TODO</b>" };
+            var result1 = template1(data1);
+            $("#example1").html(result1);
+
+            var template2 = kendo.template($("#javascriptTemplate").html());
+
+            var data2 = ["ToAdd", "Steve", "Burke"];
+            var result2 = template2(data2);
+            $("#example2").html(result2);
+
+            var validator = $("#myform").kendoValidator().data("kendoValidator");
+
+            $("#save").on("click",
+                function () {
+                    if (validator.validate()) {
+                        console.log("save");
+
+                    }
+                });
+
+            var viewModel = kendo.observable({
+                name: "John Doe",
+                displayGreeting: function () {
+                    var name = this.get("name");
+                    console.log("Hello, " + name + "!!!");
+                }
+            });
+            kendo.bind($("#view"), viewModel);
+
+            var viewModel1 = kendo.observable({
+                imageSource: "http://res2m.age06.com/Thumb/cms1/484f7481-9ac4-40cb-8001-342b1fd0e8c5.png",
+                imageAlt: "age06"
+            });
+
+            kendo.bind($("#logo"), viewModel1);
+
+            var viewModel2 = kendo.observable({
+                fooValue: "foo",
+                barValue: "bar"
+            });
+
+            kendo.bind($("#foo"), viewModel2);
+
+            var viewModel3 = kendo.observable({
+                isChecked: true
+            });
+
+            kendo.bind($("#check"), viewModel3);
+
+            var viewModel4 = kendo.observable({
+                description: "Description",
+                isDescriptionShown: false,
+                showDescription: function (e) {
+                    this.set("isDescriptionShown", true);
+                }
+            });
+
+            kendo.bind($("#clickview"), viewModel4);
+
+            var viewModel5 = kendo.observable({
+                description: "Description11111111",
+                isDescriptionShown: false,
+                showDescription: function (e) {
+                    this.set("isDescriptionShown", true);
+                },
+                hideDescription: function (e) {
+                    this.set("isDescriptionShown", false);
+                }
+            });
+
+            kendo.bind($("#viewevent"), viewModel5);
+        });
+    </script>
+}

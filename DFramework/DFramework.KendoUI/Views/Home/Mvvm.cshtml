@@ -1,0 +1,48 @@
+﻿@{
+}
+
+<span data-bind="html: name"></span>
+<div id="view">
+    <div data-bind="invisible: isInvisible">
+        some content
+    </div>
+    <button data-bind="click: show">Show</button>
+</div>
+
+<select data-bind="style:{color:selectedColor},value:selectedColor" multiple="multiple">
+    <option value="red">Red</option>
+    <option value="green">Green</option>
+    <option value="blue">Blue</option>
+</select>
+@section scripts{
+    <script type="text/javascript">
+        var viewModel = kendo.observable({
+            //name: "John Doe"
+            name: "<strong>John Doe</strong>"
+        });
+
+        kendo.bind($("span"), viewModel);
+
+        var viewModel1 = kendo.observable({
+            isInvisible: true,
+            show: function () {
+                console.log(this.get("isInvisible"));
+                console.log(this.get("isInvisible"));
+                if (this.get("isInvisible")) {
+                    this.set("isInvisible", false);
+                } else {
+                    this.set("isInvisible", true);
+                }
+
+            }
+        });
+
+        kendo.bind($("#view"), viewModel1);
+
+        var viewModel2 = kendo.observable({
+            selectedColor: "green"
+        });
+
+        kendo.bind($("select"), viewModel2);
+    </script>
+}

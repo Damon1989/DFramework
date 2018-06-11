@@ -14,17 +14,26 @@ namespace DFramework.EntityFramework
     public class UnitOfWork : IUnitOfWork
     {
         protected List<MSDbContext> _dbContexts;
-        protected IEventBus _eventBus;
+
+        //protected IEventBus _eventBus;
         protected Exception _exception;
+
         protected ILogger _logger;
 
-        public UnitOfWork(IEventBus eventBus,
-                          ILoggerFactory loggerFactory)
+        public UnitOfWork(
+            ILoggerFactory loggerFactory)
         {
             _dbContexts = new List<MSDbContext>();
-            _eventBus = eventBus;
             _logger = loggerFactory.Create(GetType().Name);
         }
+
+        //public UnitOfWork(IEventBus eventBus,
+        //                  ILoggerFactory loggerFactory)
+        //{
+        //    _dbContexts = new List<MSDbContext>();
+        //    _eventBus = eventBus;
+        //    _logger = loggerFactory.Create(GetType().Name);
+        //}
 
         public void Dispose()
         {
@@ -56,7 +65,7 @@ namespace DFramework.EntityFramework
                             {
                                 if (e.Entity is AggregateRoot root)
                                 {
-                                    _eventBus.Publish(root.GetDomainEvents());
+                                    //_eventBus?.Publish(root.GetDomainEvents());
                                 }
                             });
                     });
@@ -97,7 +106,7 @@ namespace DFramework.EntityFramework
                         {
                             if (e.Entity is AggregateRoot)
                             {
-                                _eventBus.Publish((e.Entity as AggregateRoot).GetDomainEvents());
+                                //_eventBus?.Publish((e.Entity as AggregateRoot).GetDomainEvents());
                             }
                         });
                     }

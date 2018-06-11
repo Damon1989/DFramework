@@ -10,13 +10,18 @@ namespace DFramework.FileUploadTest
     {
         private static void Main(string[] args)
         {
-            var files = new Dictionary<string, string> { { "1", "c:\\test\\1.pdf" } };
+            //var files = new Dictionary<string, string> { { "1", "c:\\test\\1.book" } };
 
-            Console.WriteLine(HttpPost(m_address, null, files));
-            Console.ReadLine();
+            //Console.WriteLine(HttpPost(m_address, null, files));
+
+            UploadFile("c:\\test\\1.book", "c:\\test\\" + Guid.NewGuid().ToString().Replace("-", ""));
+            UploadFile("c:\\test\\demo1.rar", "c:\\test\\" + Guid.NewGuid().ToString().Replace("-", ""));
+            UploadFile("c:\\test\\1.rar", "c:\\test\\" + Guid.NewGuid().ToString().Replace("-", ""));
+            //Console.ReadLine();
         }
 
-        private static string m_address = "http://localhost:30863/LessonWork/UploadYcFileToLessonWork/4a6788f7-63d7-44ad-9909-cf87022fca65/fc7025c7-979c-4e58-a2a3-7a38841d997c";
+        //private static string m_address = "http://localhost:30863/LessonWork/UploadYcFileToLessonWork/4a6788f7-63d7-44ad-9909-cf87022fca65/9cfd222f-7886-44fe-b571-eb76f8bd505d";
+        private static string m_address = "http://kct.age06.com/Age06.ImplementSupport/LessonWork/UploadYcFileToLessonWork/4a6788f7-63d7-44ad-9909-cf87022fca65/cdd77fb3-5595-4f36-9882-88cb47fc3d83";
 
         public static string HttpPost(string url, Dictionary<string, string> postData, Dictionary<string, string> files)
         {
@@ -85,6 +90,13 @@ namespace DFramework.FileUploadTest
             //返回结果网页（html）代码
             string content = sr.ReadToEnd();
             return content;
+        }
+
+        public static void UploadFile(string sourceFilePath, string targetFilePath)
+        {
+            var sourceStream = new FileStream(sourceFilePath, FileMode.Open);
+            var targetStream = new FileStream(targetFilePath, FileMode.Create);
+            sourceStream.CopyTo(targetStream);
         }
     }
 }

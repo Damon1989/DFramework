@@ -273,7 +273,15 @@ namespace DFramework.Autofac
 
         public T Resolve<T>(params Parameter[] parameters)
         {
-            return _container.Resolve<T>(GetResolvedParameters(parameters));
+            try
+            {
+                return _container.Resolve<T>(GetResolvedParameters(parameters));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public T Resolve<T>(string name, params Parameter[] parameters)
