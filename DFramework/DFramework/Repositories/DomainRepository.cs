@@ -37,9 +37,8 @@ namespace DFramework.Repositories
             IRepository repository;
             if (!Repositories.TryGetValue(typeof(IRepository<TAggergateRoot>), out repository))
             {
-                //repository = Container.Resolve<IRepository<TAggergateRoot>>(new Parameter("dbContext", DbContext),
-                //                                                            new Parameter("unitOfWork", UnitOfWork));
-                repository = Container.Resolve<IRepository<TAggergateRoot>>();
+                repository = Container.Resolve<IRepository<TAggergateRoot>>(new Parameter("dbContext", DbContext),
+                                                                            new Parameter("unitOfWork", UnitOfWork));
                 Repositories.Add(typeof(IRepository<TAggergateRoot>), repository);
             }
 

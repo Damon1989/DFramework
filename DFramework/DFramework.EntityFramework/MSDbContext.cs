@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using DFramework.Domain;
 using DFramework.Infrastructure;
 using DFramework.Repositories;
+using OptimisticConcurrencyException = System.Data.OptimisticConcurrencyException;
 
 namespace DFramework.EntityFramework
 {
@@ -60,11 +61,11 @@ namespace DFramework.EntityFramework
         public virtual void Rollback()
         {
             ChangeTracker.Entries()
-                .Where(e => e.State == EntityState.Added || e.State == EntityState.Deleted)
-                .ForEach(e => { e.State = EntityState.Detached; });
+                         .Where(e => e.State == EntityState.Added || e.State == EntityState.Deleted)
+                         .ForEach(e => { e.State = EntityState.Detached; });
             var refreshableObjects = ChangeTracker.Entries()
-                .Where(e => e.State == EntityState.Modified || e.State == EntityState.Unchanged)
-                .Select(e => e.Entity);
+                                                  .Where(e => e.State == EntityState.Modified || e.State == EntityState.Unchanged)
+                                                  .Select(e => e.Entity);
             _objectContext.Refresh(RefreshMode.StoreWins, refreshableObjects);
             ChangeTracker.Entries().ForEach(e => { (e.Entity as AggregateRoot)?.Rollback(); });
         }
@@ -74,8 +75,8 @@ namespace DFramework.EntityFramework
             try
             {
                 ChangeTracker.Entries()
-                    .Where(e => e.State == EntityState.Added)
-                    .ForEach(e => { this.InitializeQueryableCollections(e.Entity); });
+                             .Where(e => e.State == EntityState.Added)
+                             .ForEach(e => { this.InitializeQueryableCollections(e.Entity); });
                 return base.SaveChanges();
             }
             catch (DbUpdateConcurrencyException ex)

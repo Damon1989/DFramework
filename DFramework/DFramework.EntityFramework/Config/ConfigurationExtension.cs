@@ -10,7 +10,8 @@ namespace DFramework.EntityFramework.Config
     public static class ConfigurationExtension
     {
         public static Configuration RegisterEntityFrameworkComponents(this Configuration configuration,
-            IContainer container, Lifetime lifetime = Lifetime.Hierarchical)
+                                                                      IContainer container,
+                                                                      Lifetime lifetime = Lifetime.Hierarchical)
         {
             container = container ?? IoCFactory.Instance.CurrentContainer;
             return configuration.RegisterUnitOfWork(container, lifetime)
@@ -24,8 +25,8 @@ namespace DFramework.EntityFramework.Config
         }
 
         public static Configuration RegisterUnitOfWork(this Configuration configuration,
-            IContainer container,
-            Lifetime lifetime = Lifetime.Hierarchical)
+                                                       IContainer container,
+                                                       Lifetime lifetime = Lifetime.Hierarchical)
         {
             container = container ?? IoCFactory.Instance.CurrentContainer;
             container.RegisterType<IUnitOfWork, UnitOfWork>(lifetime);

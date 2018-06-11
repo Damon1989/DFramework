@@ -35,6 +35,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -93,8 +94,10 @@
     <Compile Include="Infrastructure\XmlHelper.cs" />
     <Compile Include="IoC\AopInjection.cs" />
     <Compile Include="IoC\IContainer.cs" />
+    <Compile Include="IoC\ILogInterceptionBehavior.cs" />
     <Compile Include="IoC\Injection.cs" />
     <Compile Include="IoC\IoCFactory.cs" />
+    <Compile Include="IoC\IoCInstanceProvider.cs" />
     <Compile Include="IoC\Lifetime.cs" />
     <Compile Include="IoC\Parameter.cs" />
     <Compile Include="Event\IEventSubscriber.cs" />
