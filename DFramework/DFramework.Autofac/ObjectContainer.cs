@@ -56,7 +56,9 @@ namespace DFramework.Autofac
             builder.RegisterInstance(instance)
                 .As(t)
                 .InstanceLifetime(lifetime);
+
             builder.Update(_container.ComponentRegistry);
+
             return this;
         }
 
@@ -99,7 +101,7 @@ namespace DFramework.Autofac
             dynamic registrationBuilder;
             if (string.IsNullOrEmpty(name))
             {
-                if (to.IsGenericType)
+                if (to.IsGenericType)     //泛型
                 {
                     registrationBuilder = builder.RegisterGeneric(to).As(from);
                 }

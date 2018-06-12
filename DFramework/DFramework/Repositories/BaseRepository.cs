@@ -14,39 +14,7 @@ namespace DFramework.Repositories
     public abstract class BaseRepository<TAggregateRoot> : IRepository<TAggregateRoot>
             where TAggregateRoot : class
     {
-        #region Protected Methods
-
-        protected abstract TAggregateRoot DoGetByKey(params object[] keyValues);
-
-        protected abstract Task<TAggregateRoot> DoGetByKeyAsync(params object[] keyValues);
-
-        protected virtual IQueryable<TAggregateRoot> DoFindAll(params OrderExpression[] orderExpressions)
-        {
-            return DoFindAll(new AllSpecification<TAggregateRoot>(), orderExpressions);
-        }
-
-        protected abstract IQueryable<TAggregateRoot> DoFindAll(ISpecification<TAggregateRoot> specification,
-            params OrderExpression[] orderExpressions);
-
-        protected abstract void DoRemove(TAggregateRoot entity);
-
-        protected abstract void DoUpdate(TAggregateRoot entity);
-
-        protected abstract IQueryable<TAggregateRoot> DoPageFind(int pageIndex,
-                                                                int pageSize,
-                                                                ISpecification<TAggregateRoot> specification,
-                                                                ref long totalCount,
-                                                                params OrderExpression[] orderExpressions);
-
-        protected abstract Task<Tuple<IQueryable<TAggregateRoot>, long>> DoPageFindAsync(int pageIndex,
-                                                                                        int pageSize,
-                                                                                        ISpecification<TAggregateRoot> specification,
-                                                                                        params OrderExpression[] orderExpressions);
-
-        protected abstract IQueryable<TAggregateRoot> DoPageFind(int pageIndex,
-                                                                int pageSize,
-                                                                ISpecification<TAggregateRoot> specification,
-                                                                params OrderExpression[] orderExpressions);
+        #region Add
 
         protected abstract void DoAdd(IEnumerable<TAggregateRoot> entities);
 
@@ -62,6 +30,10 @@ namespace DFramework.Repositories
             DoAdd(entity);
         }
 
+        #endregion Add
+
+        #region Count
+
         protected abstract long DoCount(ISpecification<TAggregateRoot> specification);
 
         protected abstract Task<long> DoCountAsync(ISpecification<TAggregateRoot> specification);
@@ -69,10 +41,6 @@ namespace DFramework.Repositories
         protected abstract long DoCount(Expression<Func<TAggregateRoot, bool>> specification);
 
         protected abstract Task<long> DoCountAsync(Expression<Func<TAggregateRoot, bool>> specification);
-
-        #endregion Protected Methods
-
-        #region Count
 
         public long Count(ISpecification<TAggregateRoot> specification)
         {
@@ -154,6 +122,14 @@ namespace DFramework.Repositories
 
         #region FindAll
 
+        protected virtual IQueryable<TAggregateRoot> DoFindAll(params OrderExpression[] orderExpressions)
+        {
+            return DoFindAll(new AllSpecification<TAggregateRoot>(), orderExpressions);
+        }
+
+        protected abstract IQueryable<TAggregateRoot> DoFindAll(ISpecification<TAggregateRoot> specification,
+            params OrderExpression[] orderExpressions);
+
         public IQueryable<TAggregateRoot> FindAll(params OrderExpression[] orderExpressions)
         {
             return DoFindAll(orderExpressions);
@@ -173,6 +149,10 @@ namespace DFramework.Repositories
 
         #region GetBy
 
+        protected abstract TAggregateRoot DoGetByKey(params object[] keyValues);
+
+        protected abstract Task<TAggregateRoot> DoGetByKeyAsync(params object[] keyValues);
+
         public TAggregateRoot GetByKey(params object[] keyValues)
         {
             return DoGetByKey(keyValues);
@@ -186,6 +166,22 @@ namespace DFramework.Repositories
         #endregion GetBy
 
         #region PageFind
+
+        protected abstract IQueryable<TAggregateRoot> DoPageFind(int pageIndex,
+            int pageSize,
+            ISpecification<TAggregateRoot> specification,
+            ref long totalCount,
+            params OrderExpression[] orderExpressions);
+
+        protected abstract Task<Tuple<IQueryable<TAggregateRoot>, long>> DoPageFindAsync(int pageIndex,
+            int pageSize,
+            ISpecification<TAggregateRoot> specification,
+            params OrderExpression[] orderExpressions);
+
+        protected abstract IQueryable<TAggregateRoot> DoPageFind(int pageIndex,
+            int pageSize,
+            ISpecification<TAggregateRoot> specification,
+            params OrderExpression[] orderExpressions);
 
         public IQueryable<TAggregateRoot> PageFind(int pageIndex,
                                                     int pageSize,
@@ -260,6 +256,8 @@ namespace DFramework.Repositories
 
         #region Remove
 
+        protected abstract void DoRemove(TAggregateRoot entity);
+
         public void Remove(TAggregateRoot entity)
         {
             DoRemove(entity);
@@ -275,9 +273,15 @@ namespace DFramework.Repositories
 
         #endregion Remove
 
+        #region update
+
+        protected abstract void DoUpdate(TAggregateRoot entity);
+
         public void Update(TAggregateRoot entity)
         {
             DoUpdate(entity);
         }
+
+        #endregion update
     }
 }

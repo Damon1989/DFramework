@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.Entity;
-using System.Data.Entity.Core;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
@@ -34,14 +33,16 @@ namespace DFramework.EntityFramework
             }
         }
 
-        public void Reload<TEntity>(TEntity entity) where TEntity : class
+        public void Reload<TEntity>(TEntity entity)
+            where TEntity : class
         {
             var entry = Entry(entity);
             entry.Reload();
             (entry as AggregateRoot)?.Rollback();
         }
 
-        public async Task ReloadAsync<TEntity>(TEntity entity) where TEntity : class
+        public async Task ReloadAsync<TEntity>(TEntity entity)
+            where TEntity : class
         {
             var entry = Entry(entity);
             await entry.ReloadAsync()

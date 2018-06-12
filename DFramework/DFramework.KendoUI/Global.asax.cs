@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Autofac.Integration.Mvc;
@@ -11,6 +12,7 @@ using DFramework.Config;
 using DFramework.EntityFramework.Config;
 using DFramework.IoC;
 using DFramework.IoC.WebAPi;
+using DFramework.KendoUI.App_Start;
 using DFramework.KendoUI.Domain;
 using DFramework.KendoUI.Models;
 using DFramework.KendoUI.Repositories.Impl;
@@ -22,28 +24,14 @@ namespace DFramework.KendoUI
     {
         protected void Application_Start()
         {
+            GlobalConfiguration.Configure(WebApiConfig.Register);
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            //Configuration.Instance
-            //    .UseAutofacContainer()
-            //    .RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-            //    .RegisterCommonComponents()
-            //    .UseLog4Net("KendoUI")
-            //    .UseJsonNet();
-
-            //var container = IoCFactory.Instance.CurrentContainer;
-
-            //RegisterTypes(container, Lifetime.Hierarchical);
-
-            //var childContainer = container.CreateChildContainer();
-            //RegisterTypes(childContainer, Lifetime.PerRequest);
-
-            //System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver = new HierarchicalDependencyResolver(container);
-            //DependencyResolver.SetResolver(new AutofacDependencyResolver(childContainer.GetAutofacContainer()));
+            var container = IoCConfig.GetConfigurationContainer();
+            GlobalConfiguration.Configuration.DependencyResolver = new HierarchicalDependencyResolver(container);
 
             var mvcContainer = IoCConfig.GetMvcConfigurationContainer();
-            mvcContainer.RegisterType<Node, Node>();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(mvcContainer.GetAutofacContainer()));
         }
     }
@@ -67,7 +55,7 @@ public class IoCConfig
             .UseAutofacContainer()
         .RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
             .RegisterCommonComponents()
-            //.UseLog4Net("KendoUI")
+            .UseLog4Net("KendoUI")
             .UseJsonNet();
 
         var container = IoCFactory.Instance.CurrentContainer;
@@ -86,7 +74,7 @@ public class IoCConfig
     public static void RegisterTypes(IContainer container, Lifetime lifetime)
     {
         Configuration.Instance.RegisterEntityFrameworkComponents(container, lifetime);
-        container.RegisterType<KendoDbContext, KendoDbContext>(lifetime);
         container.RegisterType<IKendoUIRepository, KendoUIRepository>(lifetime);
+        container.RegisterType<KendoDbContext, KendoDbContext>(lifetime);
     }
 }

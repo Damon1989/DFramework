@@ -13,31 +13,32 @@ namespace DFramework.EntityFramework
 {
     public class UnitOfWork : IUnitOfWork
     {
-        protected List<MSDbContext> _dbContexts;
+        protected List<MSDbContext> DbContexts;
 
-        //protected IEventBus _eventBus;
-        protected Exception _exception;
+        protected IEventBus EventBus;
+        protected Exception Exception;
 
-        protected ILogger _logger;
+        protected ILogger Logger;
 
         public UnitOfWork(
             ILoggerFactory loggerFactory)
         {
-            _dbContexts = new List<MSDbContext>();
-            _logger = loggerFactory.Create(GetType().Name);
+            DbContexts = new List<MSDbContext>();
+            Logger = loggerFactory.Create(GetType().Name);
         }
 
-        //public UnitOfWork(IEventBus eventBus,
-        //                  ILoggerFactory loggerFactory)
-        //{
-        //    _dbContexts = new List<MSDbContext>();
-        //    _eventBus = eventBus;
-        //    _logger = loggerFactory.Create(GetType().Name);
-        //}
+        public UnitOfWork(
+                          ILoggerFactory loggerFactory,
+            IEventBus eventBus)
+        {
+            DbContexts = new List<MSDbContext>();
+            EventBus = eventBus;
+            Logger = loggerFactory.Create(GetType().Name);
+        }
 
         public void Dispose()
         {
-            _dbContexts.ForEach(_dbCx => _dbCx.Dispose());
+            DbContexts.ForEach(_dbCx => _dbCx.Dispose());
         }
 
         protected virtual void BeforeCommit()
@@ -57,7 +58,7 @@ namespace DFramework.EntityFramework
                     new TransactionOptions { IsolationLevel = isolationLevel },
                     TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    _dbContexts.ForEach(dbContext =>
+                    DbContexts.ForEach(dbContext =>
                     {
                         dbContext.SaveChanges();
                         dbContext.ChangeTracker.Entries()
@@ -65,7 +66,7 @@ namespace DFramework.EntityFramework
                             {
                                 if (e.Entity is AggregateRoot root)
                                 {
-                                    //_eventBus?.Publish(root.GetDomainEvents());
+                                    EventBus?.Publish(root.GetDomainEvents());
                                 }
                             });
                     });
@@ -99,14 +100,14 @@ namespace DFramework.EntityFramework
                     new TransactionOptions { IsolationLevel = isolationLevel },
                     TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    foreach (var dbContext in _dbContexts)
+                    foreach (var dbContext in DbContexts)
                     {
                         await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
                         dbContext.ChangeTracker.Entries().ForEach(e =>
                         {
                             if (e.Entity is AggregateRoot)
                             {
-                                //_eventBus?.Publish((e.Entity as AggregateRoot).GetDomainEvents());
+                                EventBus?.Publish((e.Entity as AggregateRoot).GetDomainEvents());
                             }
                         });
                     }
@@ -128,14 +129,14 @@ namespace DFramework.EntityFramework
 
         public void Rollback()
         {
-            _dbContexts.ForEach(dbCx => { dbCx.Rollback(); });
+            DbContexts.ForEach(dbCx => { dbCx.Rollback(); });
         }
 
         internal void RegisterDbContext(MSDbContext dbContext)
         {
-            if (!_dbContexts.Exists(dbCtx => dbCtx.Equals(dbContext)))
+            if (!DbContexts.Exists(dbCtx => dbCtx.Equals(dbContext)))
             {
-                _dbContexts.Add(dbContext);
+                DbContexts.Add(dbContext);
             }
         }
     }

@@ -76,7 +76,8 @@ namespace DFramework.EntityFramework
                 entry.State = EntityState.Unchanged;
         }
 
-        public static IQueryable<TElement> GetQueryable<TElement>(this Entity entity, string collectionName)
+        public static IQueryable<TElement> GetQueryable<TElement>(this Entity entity,
+                                                                  string collectionName)
             where TElement : class
         {
             IQueryable<TElement> query = null;

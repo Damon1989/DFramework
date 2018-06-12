@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using DFramework.EntityFramework;
 using DFramework.EntityFramework.Repositories;
 using DFramework.IoC;
 using DFramework.KendoUI.Domain;
@@ -14,7 +15,7 @@ namespace DFramework.KendoUI.Repositories.Impl
     {
         protected KendoDbContext _db;
 
-        public KendoUIRepository(object dbContext, IUnitOfWork unitOfWork, IContainer container)
+        public KendoUIRepository(KendoDbContext dbContext, IUnitOfWork unitOfWork, IContainer container)
             : base(dbContext, unitOfWork, container)
         {
         }

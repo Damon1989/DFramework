@@ -32,7 +32,7 @@ namespace DFramework.KendoUI.Controllers
             var node = new Node();
             _domainRepository.Add(node);
             _kendoDbContext.Nodes.Add(node);
-            //_appUnitOfWork.Commit();
+            _appUnitOfWork.Commit();
             return View();
         }
 

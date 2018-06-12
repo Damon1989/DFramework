@@ -12,10 +12,10 @@ namespace DFramework.Repositories
 {
     public class DomainRepository : IDomainRepository
     {
-        private readonly IContainer Container;
+        private readonly IContainer _container;
         protected object DbContext;
-        private readonly Dictionary<Type, IRepository> Repositories;
-        private readonly IUnitOfWork UnitOfWork;
+        private readonly Dictionary<Type, IRepository> _repositories;
+        private readonly IUnitOfWork _unitOfWork;
 
         /// <summary>
         ///  Initializes a new instance of DomainRepository.
@@ -26,20 +26,19 @@ namespace DFramework.Repositories
         public DomainRepository(object dbContext, IUnitOfWork unitOfWork, IContainer container)
         {
             DbContext = dbContext;
-            UnitOfWork = unitOfWork;
-            Container = container;
-            Repositories = new Dictionary<Type, IRepository>();
+            _unitOfWork = unitOfWork;
+            _container = container;
+            _repositories = new Dictionary<Type, IRepository>();
         }
 
         public IRepository<TAggergateRoot> GetRepository<TAggergateRoot>()
             where TAggergateRoot : class
         {
-            IRepository repository;
-            if (!Repositories.TryGetValue(typeof(IRepository<TAggergateRoot>), out repository))
+            if (!_repositories.TryGetValue(typeof(IRepository<TAggergateRoot>), out IRepository repository))
             {
-                repository = Container.Resolve<IRepository<TAggergateRoot>>(new Parameter("dbContext", DbContext),
-                                                                            new Parameter("unitOfWork", UnitOfWork));
-                Repositories.Add(typeof(IRepository<TAggergateRoot>), repository);
+                repository = _container.Resolve<IRepository<TAggergateRoot>>(new Parameter("dbContext", DbContext),
+                                                                             new Parameter("unitOfWork", _unitOfWork));
+                _repositories.Add(typeof(IRepository<TAggergateRoot>), repository);
             }
 
             return repository as IRepository<TAggergateRoot>;
@@ -51,10 +50,10 @@ namespace DFramework.Repositories
             GetRepository<TAggregateRoot>().Add(entities);
         }
 
-        public void Add<TaggergateRoot>(TaggergateRoot entity)
-            where TaggergateRoot : class
+        public void Add<TAggergateRoot>(TAggergateRoot entity)
+            where TAggergateRoot : class
         {
-            GetRepository<TaggergateRoot>().Add(entity);
+            GetRepository<TAggergateRoot>().Add(entity);
         }
 
         public TAggergateRoot GetByKey<TAggergateRoot>(params object[] keyValue)
