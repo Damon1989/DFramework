@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
 using DFramework.KendoUI.Domain;
 using DFramework.KendoUI.Models;
-using DFramework.Repositories;
 using DFramework.UnitOfWork;
 
 namespace DFramework.KendoUI.Controllers
@@ -37,6 +33,16 @@ namespace DFramework.KendoUI.Controllers
         }
 
         public ActionResult Mvvm()
+        {
+            return View();
+        }
+
+        public ActionResult Alert()
+        {
+            return View();
+        }
+
+        public ActionResult Select2()
         {
             return View();
         }

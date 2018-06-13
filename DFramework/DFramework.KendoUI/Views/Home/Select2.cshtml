@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Select2";
+}
+
+<h2>Select2</h2>
+<select class="js-example-basic-single" name="state[]" multiple="multiple">
+    <option value="AL">Alabama</option>
+    <option value="WY">Wyoming</option>
+    <option value="AL2">Alabama2</option>
+    <option value="WY2">Wyoming2</option>
+    <option value="AL3">Alabama3</option>
+    <option value="WY3">Wyoming3</option>
+    <option value="AL4">Alabama4</option>
+    <option value="WY4">Wyoming4</option>
+</select>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $('.js-example-basic-single').select2({
+                placeholder: 'Select an option'
+            });
+        })
+    </script>
+}

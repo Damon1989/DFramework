@@ -52,7 +52,8 @@ namespace DFramework.Domain
             throw new DomainException(exception);
         }
 
-        private void HandleEvent<TDomainEvent>(TDomainEvent @event) where TDomainEvent : class, IAggregateRootEvent
+        private void HandleEvent<TDomainEvent>(TDomainEvent @event)
+            where TDomainEvent : class, IAggregateRootEvent
         {
             var subscriber = this as IEventSubscriber<TDomainEvent>;
             subscriber?.Handler(@event);

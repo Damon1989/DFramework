@@ -62,7 +62,7 @@ namespace DFramework.Domain
                 throw new NullReferenceException(nameof(_domainContext));
             }
             await _domainContext.ReloadAsync(this)
-                .ConfigureAwait(false);
+                                .ConfigureAwait(false);
             (this as AggregateRoot)?.Rollback();
         }
 

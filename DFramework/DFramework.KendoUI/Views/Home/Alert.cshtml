@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Alert";
+}
+
+<h2>Alert</h2>
+<input type="button" data-info="info,info1" data-event="alertinfo0,alertinfo1" value="alert" />
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $.subscribe("alertinfo0",
+                function (e, data) {
+                    console.log("0");
+                    alert("1");
+                });
+
+            $.subscribe("alertinfo1",
+                function (e, data) {
+                    console.log(data);
+                    console.log("1");
+                });
+        });
+    </script>
+}
