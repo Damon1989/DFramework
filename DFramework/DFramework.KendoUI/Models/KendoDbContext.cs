@@ -11,6 +11,18 @@ namespace DFramework.KendoUI.Models
         {
             try
             {
+                var department = new Department();
+                department.Add("001", "部门1", "");
+                context.Departments.Add(department);
+
+                var subDepartment = new Department();
+                subDepartment.Add("001001", "部门2", department.Id);
+                context.Departments.Add(subDepartment);
+
+                var user = new User();
+                user.Add("姓名", department.Id);
+                context.Users.Add(user);
+                context.SaveChanges();
                 // init database
                 base.Seed(context);
             }
@@ -30,6 +42,8 @@ namespace DFramework.KendoUI.Models
 
         public DbSet<File> Files { get; set; }
         public DbSet<Node> Nodes { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<User> Users { get; set; }
 
 #if DEBUG
 
@@ -42,6 +56,8 @@ namespace DFramework.KendoUI.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Department>().ToTable("basic_Department");
+            modelBuilder.Entity<User>().ToTable("basic_User");
             base.OnModelCreating(modelBuilder);
         }
     }

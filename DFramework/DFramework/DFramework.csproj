@@ -34,6 +34,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
@@ -89,7 +90,9 @@
     <Compile Include="Infrastructure\Logging\LoggerLevelController.cs" />
     <Compile Include="Infrastructure\Logging\MockLogger.cs" />
     <Compile Include="Infrastructure\Logging\MockLoggerFactory.cs" />
+    <Compile Include="Infrastructure\ObjectId.cs" />
     <Compile Include="Infrastructure\QueryExtension.cs" />
+    <Compile Include="Infrastructure\RadixEncoding.cs" />
     <Compile Include="Infrastructure\Utility.cs" />
     <Compile Include="Infrastructure\XmlHelper.cs" />
     <Compile Include="IoC\AopInjection.cs" />

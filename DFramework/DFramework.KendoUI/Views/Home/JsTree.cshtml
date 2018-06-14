@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "JsTree";
+}
+@section css{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+
+}
+123
+<div id="result"></div>
+<div id="data"></div>
+<div id="frmt" style="width: 200px"></div>
+<div id="ajax"></div>
+
+@section scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $.jstree.defaults.core.themes.variant = "large";
+            $('#data').jstree({
+                'core': {
+                    'data': [
+                        {
+                            'text': "Root node",
+                            "chilren": [
+                                { "text": "Child node 1" },
+                                { "text": "Child node 2" }
+                            ]
+                        }
+                    ]
+                },
+                'plugins': ['checkbox']
+            });
+
+            $('#frmt').on('init.jstree', function () {
+                console.log("------------------");
+            }).on('changed.jstree', function (e, data) {
+                var i, j, r = [];
+                for (i = 0, j = data.selected.length; i < j; i++) {
+                    r.push(data.instance.get_node(data.selected[i]).text);
+                }
+
+                $("#result").html('selected:' + r.join(','));
+
+            }).jstree({
+                'core': {
+                    'data': [
+                        {
+                            'text': "Root node",
+                            'state': { "opened": true },
+                            'children': [
+                                {
+                                    'text': "Child node 1",
+                                    'state': { "selected": true },
+                                    "icon": "jstree-file"
+                                }, {
+                                    'text': "Child node 3",
+                                    'state': { "selected": true },
+                                    "icon": "jstree-file"
+                                }, {
+                                    'text': "Child node 2",
+                                    'state': { "disabled": true }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "checkbox": {
+                    "keep_selected_style": true
+                }
+                ,
+                'plugins': ['sort', 'wholerow']
+                //,
+                //'plugins': ['checkbox', 'wholerow']
+            });
+
+            $('#ajax').jstree({
+                'core': {
+                    'data': {
+                        'url': "../../config/root.json"
+                    }
+                }
+            });
+        })
+    </script>
+}

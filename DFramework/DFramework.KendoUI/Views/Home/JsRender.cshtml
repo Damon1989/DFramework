@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "JsRender";
+}
+
+<h2>JsRender</h2>
+<div id="result"></div>
+<script id="theTmpl" type="text/x-jsrender">
+    <div>
+        <em>Name：{{:name}}</em>
+        {{if showNickname && nickname}}
+        (Goes by <em>{{:nickname}}</em>)
+        {{/if}}
+    </div>
+</script>
+
+@section scripts
+{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/0.9.90/jsrender.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var data = [
+                {
+                    "name": "Robert",
+                    "nickname": "Bob",
+                    "showNickname": true
+                },
+                {
+                    "name": "Susan",
+                    "nickname": "Sue",
+                    "showNickname": false
+                }
+            ];
+            $("#result").html($.templates("#theTmpl").render(data));
+        })
+    </script>
+}

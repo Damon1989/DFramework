@@ -241,6 +241,7 @@
     <Content Include="Content\fonts\glyphs\WebComponentsIcons.eot" />
     <Content Include="Content\fonts\glyphs\WebComponentsIcons.ttf" />
     <Content Include="Content\fonts\glyphs\WebComponentsIcons.woff" />
+    <Content Include="Config\root.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\common.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -260,9 +261,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Domain\AggregateRoot.cs" />
+    <Compile Include="Domain\CommonStatus.cs" />
+    <Compile Include="Domain\Department.cs" />
     <Compile Include="Domain\File.cs" />
     <Compile Include="Domain\Node.cs" />
     <Compile Include="Domain\NodeStatus.cs" />
+    <Compile Include="Domain\User.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -283,6 +288,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Home\Alert.cshtml" />
     <Content Include="Views\Home\Select2.cshtml" />
+    <Content Include="Views\Home\JsTree.cshtml" />
+    <Content Include="Views\Home\JsRender.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
