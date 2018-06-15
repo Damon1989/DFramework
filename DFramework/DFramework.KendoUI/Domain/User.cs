@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using DFramework.Infrastructure;
 
@@ -17,6 +18,8 @@ namespace DFramework.KendoUI.Domain
         public string Email { get; set; }
         public CommonStatus Status { get; set; }
         public bool IsAdmin { get; set; }
+
+        public virtual ICollection<Asset> Assets { get; set; }
 
         public void Add(string name,
             string departmentId,

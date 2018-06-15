@@ -210,5 +210,22 @@ namespace DFramework.Infrastructure
             }
             return result;
         }
+
+        public static T DeepClone<T>(this T obj)
+        {
+            return obj.ToJson().ToJsonObject<T>();
+            //object retval;
+            //using (var ms = new MemoryStream())
+            //{
+            //    var bf = new BinaryFormatter();
+            //    //序列化成流
+            //    bf.Serialize(ms, obj);
+            //    ms.Seek(0, SeekOrigin.Begin);
+            //    //反序列化成对象
+            //    retval = bf.Deserialize(ms);
+            //    ms.Close();
+            //}
+            //return (T) retval;
+        }
     }
 }

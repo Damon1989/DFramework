@@ -262,12 +262,16 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Domain\AggregateRoot.cs" />
+    <Compile Include="Domain\Asset.cs" />
+    <Compile Include="Domain\Vocabulary\AssetVocabulary.cs" />
     <Compile Include="Domain\CommonStatus.cs" />
     <Compile Include="Domain\Department.cs" />
     <Compile Include="Domain\File.cs" />
     <Compile Include="Domain\Node.cs" />
     <Compile Include="Domain\NodeStatus.cs" />
+    <Compile Include="Domain\Vocabulary\RegionVocabulary.cs" />
     <Compile Include="Domain\User.cs" />
+    <Compile Include="Domain\Vocabulary\Vocabulary.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
