@@ -1,8 +1,16 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
 using System.Web.Mvc;
 using DFramework.KendoUI.Domain;
 using DFramework.KendoUI.Models;
 using DFramework.UnitOfWork;
+using DFramework.Zxing;
+using ZXing;
+using ZXing.Common;
 
 namespace DFramework.KendoUI.Controllers
 {
@@ -42,6 +50,11 @@ namespace DFramework.KendoUI.Controllers
             return View();
         }
 
+        public ActionResult Alterts()
+        {
+            return View();
+        }
+
         public ActionResult Select2()
         {
             return View();
@@ -54,6 +67,34 @@ namespace DFramework.KendoUI.Controllers
 
         public ActionResult JsRender()
         {
+            return View();
+        }
+
+        public ActionResult BarCode()
+        {
+            ZXingHelper.GenerateBarCode("023456789012");
+            return View();
+        }
+
+        public ActionResult ReadBarCode()
+        {
+            var result = ZXingHelper.ReadCode($"{AppDomain.CurrentDomain.BaseDirectory}/EAN_13-023456789012.jpg");
+            ViewBag.Result = result;
+            return View();
+        }
+
+        public ActionResult QrCode()
+        {
+            ZXingHelper.GenerateQrCode("123456927123", logoFilePath: $"{AppDomain.CurrentDomain.BaseDirectory}Images\\logo.png");
+            ZXingHelper.GenerateQrCode("123456927023", logoFilStream: new FileStream($"{AppDomain.CurrentDomain.BaseDirectory}Images\\logo.png", FileMode.Open));
+            var result = ZXingHelper.ReadCode(
+                $"{AppDomain.CurrentDomain.BaseDirectory}Zxing\\qrcode\\2018\\6\\QR_CODE\\123456927123.jpg",
+                BarcodeFormat.QR_CODE);
+            var result1 = ZXingHelper.ReadCode(
+                $"{AppDomain.CurrentDomain.BaseDirectory}Zxing\\qrcode\\2018\\6\\QR_CODE\\123456927023.jpg",
+                BarcodeFormat.QR_CODE);
+            ViewBag.Result = result;
+            ViewBag.Result1 = result1;
             return View();
         }
     }

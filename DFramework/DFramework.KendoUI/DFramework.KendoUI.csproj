@@ -185,6 +185,12 @@
     <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
     </Reference>
+    <Reference Include="zxing, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net461\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net461\zxing.presentation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure">
@@ -219,6 +225,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Images\logo.png" />
     <Content Include="Scripts\bootstrap-alert.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -294,6 +301,10 @@
     <Content Include="Views\Home\Select2.cshtml" />
     <Content Include="Views\Home\JsTree.cshtml" />
     <Content Include="Views\Home\JsRender.cshtml" />
+    <Content Include="Views\Home\Alterts.cshtml" />
+    <Content Include="Views\Home\BarCode.cshtml" />
+    <Content Include="Views\Home\ReadBarCode.cshtml" />
+    <Content Include="Views\Home\QrCode.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -328,6 +339,10 @@
     <ProjectReference Include="..\DFramework.Log4Net\DFramework.Log4Net.csproj">
       <Project>{cfc915ee-ff1e-45ba-b9b5-ccfde9f9b375}</Project>
       <Name>DFramework.Log4Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DFramework.Zxing\DFramework.Zxing.csproj">
+      <Project>{55511e2b-277c-4635-9ea8-34e4dafab860}</Project>
+      <Name>DFramework.Zxing</Name>
     </ProjectReference>
     <ProjectReference Include="..\DFramework\DFramework.csproj">
       <Project>{bdfd8a53-1c12-44af-9b80-489c84f453d1}</Project>
