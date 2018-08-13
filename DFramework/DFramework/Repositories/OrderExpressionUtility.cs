@@ -10,28 +10,14 @@ namespace DFramework.Repositories
                                                                         OrderExpression orderExpression,
                                                                         bool hasSorted = false)
         {
-            var orderByCMD = string.Empty;
+            string orderByCmd;
             if (hasSorted)
             {
-                if (orderExpression.SortOrder == SortOrder.Descending)
-                {
-                    orderByCMD = "ThenByDescending";
-                }
-                else
-                {
-                    orderByCMD = "ThenBy";
-                }
+                orderByCmd = orderExpression.SortOrder == SortOrder.Descending ? "ThenByDescending" : "ThenBy";
             }
             else
             {
-                if (orderExpression.SortOrder == SortOrder.Descending)
-                {
-                    orderByCMD = "OrderByDescending";
-                }
-                else
-                {
-                    orderByCMD = "OrderBy";
-                }
+                orderByCmd = orderExpression.SortOrder == SortOrder.Descending ? "OrderByDescending" : "OrderBy";
             }
 
             LambdaExpression le = null;
@@ -52,7 +38,7 @@ namespace DFramework.Repositories
 
             var orderByCallExpression =
                 Expression.Call(typeof(Queryable),
-                    orderByCMD,
+                    orderByCmd,
                     new[] { typeof(TEntity), le.Body.Type },
                     query.Expression,
                     le);

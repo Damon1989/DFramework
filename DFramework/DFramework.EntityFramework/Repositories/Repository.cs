@@ -26,6 +26,7 @@ namespace DFramework.EntityFramework.Repositories
             {
                 throw new Exception("repository could not work without dbContext");
             }
+            //dbContext 添加
             (unitOfWork as UnitOfWork)?.RegisterDbContext(dbContext);
             Container = dbContext;
         }

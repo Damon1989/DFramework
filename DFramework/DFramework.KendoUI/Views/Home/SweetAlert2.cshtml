@@ -1,0 +1,49 @@
+﻿@{
+    //Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SweetAlert2</title>
+    <link rel="stylesheet" href="@Url.Content("http://mishengqiang.com/sweetalert2/css/sweetalert2.min.css")" />
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.js")"></script>
+    <script src="@Url.Content("http://mishengqiang.com/sweetalert2/js/sweetalert2.js")"></script>
+</head>
+<body>
+    <div>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+        //swal('任何一个傻瓜都会用电脑');
+        //swal(
+        //    '互联网？',
+        //    '还在吗？',
+        //    'question'
+        //);
+        //swal(
+        //    '干得漂亮！',
+        //    '你点击了按钮！',
+        //    'success'
+        //);
+        swal({
+            title: '确定删除吗？',
+            text: '你将无法恢复它！',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '确定删除！',
+        }).then(function () {
+            swal(
+                '删除！',
+                '你的文件已经被删除。',
+                'success'
+            );
+        })
+    })
+</script>

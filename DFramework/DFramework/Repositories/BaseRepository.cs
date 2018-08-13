@@ -168,68 +168,68 @@ namespace DFramework.Repositories
         #region PageFind
 
         protected abstract IQueryable<TAggregateRoot> DoPageFind(int pageIndex,
-            int pageSize,
-            ISpecification<TAggregateRoot> specification,
-            ref long totalCount,
-            params OrderExpression[] orderExpressions);
+                                                                                                            int pageSize,
+                                                                                                            ISpecification<TAggregateRoot> specification,
+                                                                                                            ref long totalCount,
+                                                                                                            params OrderExpression[] orderExpressions);
 
         protected abstract Task<Tuple<IQueryable<TAggregateRoot>, long>> DoPageFindAsync(int pageIndex,
-            int pageSize,
-            ISpecification<TAggregateRoot> specification,
-            params OrderExpression[] orderExpressions);
+                                                                                                                                                        int pageSize,
+                                                                                                                                                        ISpecification<TAggregateRoot> specification,
+                                                                                                                                                        params OrderExpression[] orderExpressions);
 
         protected abstract IQueryable<TAggregateRoot> DoPageFind(int pageIndex,
-            int pageSize,
-            ISpecification<TAggregateRoot> specification,
-            params OrderExpression[] orderExpressions);
+                                                                                                            int pageSize,
+                                                                                                            ISpecification<TAggregateRoot> specification,
+                                                                                                            params OrderExpression[] orderExpressions);
 
         public IQueryable<TAggregateRoot> PageFind(int pageIndex,
-                                                    int pageSize,
-                                                    Expression<Func<TAggregateRoot, bool>> expression,
-                                                    params OrderExpression[] orderExpressions)
+                                                                                    int pageSize,
+                                                                                    Expression<Func<TAggregateRoot, bool>> expression,
+                                                                                    params OrderExpression[] orderExpressions)
         {
             return DoPageFind(pageIndex, pageSize, Specification<TAggregateRoot>.Eval(expression), orderExpressions);
         }
 
         public IQueryable<TAggregateRoot> PageFind(int pageIndex,
-                                                    int pageSize,
-                                                    Expression<Func<TAggregateRoot, bool>> expression,
-                                                    ref long totalCount,
-                                                    params OrderExpression[] orderExpressions)
+                                                                                    int pageSize,
+                                                                                    Expression<Func<TAggregateRoot, bool>> expression,
+                                                                                    ref long totalCount,
+                                                                                    params OrderExpression[] orderExpressions)
         {
             return DoPageFind(pageIndex, pageSize, Specification<TAggregateRoot>.Eval(expression), ref totalCount,
                 orderExpressions);
         }
 
         public IQueryable<TAggregateRoot> PageFind(int pageIndex,
-                                                    int pageSize,
-                                                    ISpecification<TAggregateRoot> specification,
-                                                    params OrderExpression[] orderbyExpressions)
+                                                                                    int pageSize,
+                                                                                    ISpecification<TAggregateRoot> specification,
+                                                                                    params OrderExpression[] orderbyExpressions)
         {
             return DoPageFind(pageIndex, pageSize, specification, orderbyExpressions);
         }
 
         public IQueryable<TAggregateRoot> PageFind(int pageIndex,
-                                                    int pageSize,
-                                                    ISpecification<TAggregateRoot> speccifiaction,
-                                                    ref long totalCount,
-                                                    params OrderExpression[] orderByExpressions)
+                                                                                    int pageSize,
+                                                                                    ISpecification<TAggregateRoot> speccifiaction,
+                                                                                    ref long totalCount,
+                                                                                    params OrderExpression[] orderByExpressions)
         {
             return DoPageFind(pageIndex, pageSize, speccifiaction, ref totalCount, orderByExpressions);
         }
 
         public Task<Tuple<IQueryable<TAggregateRoot>, long>> PageFindAsync(int pageIndex,
-                                                                            int pageSize,
-                                                                            Expression<Func<TAggregateRoot, bool>> specification,
-                                                                            params OrderExpression[] orderExpressions)
+                                                                                                                                int pageSize,
+                                                                                                                                Expression<Func<TAggregateRoot, bool>> expression,
+                                                                                                                                params OrderExpression[] orderExpressions)
         {
-            return DoPageFindAsync(pageIndex, pageSize, Specification<TAggregateRoot>.Eval(specification), orderExpressions);
+            return DoPageFindAsync(pageIndex, pageSize, Specification<TAggregateRoot>.Eval(expression), orderExpressions);
         }
 
         public Task<Tuple<IQueryable<TAggregateRoot>, long>> PageFindAsync(int pageIndex,
-                                                                            int pageSize,
-                                                                            ISpecification<TAggregateRoot> specification,
-                                                                            params OrderExpression[] orderExpressions)
+                                                                                                                                int pageSize,
+                                                                                                                                ISpecification<TAggregateRoot> specification,
+                                                                                                                                params OrderExpression[] orderExpressions)
         {
             return DoPageFindAsync(pageIndex, pageSize, specification, orderExpressions);
         }

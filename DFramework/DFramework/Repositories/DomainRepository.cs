@@ -34,12 +34,12 @@ namespace DFramework.Repositories
         public IRepository<TAggergateRoot> GetRepository<TAggergateRoot>()
             where TAggergateRoot : class
         {
-            if (!_repositories.TryGetValue(typeof(IRepository<TAggergateRoot>), out IRepository repository))
-            {
-                repository = _container.Resolve<IRepository<TAggergateRoot>>(new Parameter("dbContext", DbContext),
-                                                                             new Parameter("unitOfWork", _unitOfWork));
-                _repositories.Add(typeof(IRepository<TAggergateRoot>), repository);
-            }
+            if (_repositories.TryGetValue(typeof(IRepository<TAggergateRoot>), out IRepository repository))
+            { return repository as IRepository<TAggergateRoot>; }
+
+            repository = _container.Resolve<IRepository<TAggergateRoot>>(new Parameter("dbContext", DbContext),
+                new Parameter("unitOfWork", _unitOfWork));
+            _repositories.Add(typeof(IRepository<TAggergateRoot>), repository);
 
             return repository as IRepository<TAggergateRoot>;
         }

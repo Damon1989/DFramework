@@ -1,0 +1,42 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>JsRegular</title>
+</head>
+<body>
+    <div>
+    </div>
+</body>
+</html>
+
+<script>
+
+    //var testStr = "now test001 test002";
+    //var re = /test(\d+)/;
+    //var r = re.exec(testStr);
+    //alert(r);
+    //alert(r.length); //2   返回内容的长度
+    //alert(r.input); //now test001 test002    代表每次匹配成功的字符串
+    //alert(r[0]);   //test001
+    //alert(r[1]);  //001    代表每次匹配成功字符串中的第一个子项 (\d+)
+    //alert(r.index);   //  4   每次匹配成功的字符串中的第一个字符的位置
+    var testStr = "now test001 test002";
+    var re = /test(\d+)/g;
+    var r = "";
+
+    //匹配两次 每次匹配都接着上一次的位置开始匹配，一直匹配到最后r就为false,就停止匹配了 匹配到test001 test002
+    while (r = re.exec(testStr)) {
+        alert(r);//返回每次匹配成功的字符串，以及子项，分别弹出 ：test001 001,test002  002
+        alert(r.input); //分别弹出：   now test001 test002    now test001 test002
+        alert(r[0]);   //代表每次匹配成功的字符串  分别弹出：  test001     test002
+        alert(r[1]);  //代表每次匹配成功字符串中的第一个子项 (\d+)  分别弹出：001   002
+        alert(r.index);   // 每次匹配成功的字符串中的第一个字符的位置，分别弹出：4  12
+        alert(r.length); //分别弹出：2   2
+    }
+</script>

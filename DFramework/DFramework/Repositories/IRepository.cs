@@ -29,7 +29,7 @@ namespace DFramework.Repositories
         /// <summary>
         ///  Gets the entity instance from repository by a given key.
         /// </summary>
-        /// <param name="keyValues"></param>
+        /// <param name="keyValues">The key of the entity</param>
         /// <returns></returns>
         TAggergateRoot GetByKey(params object[] keyValues);
 
@@ -39,9 +39,9 @@ namespace DFramework.Repositories
 
         Task<long> CountAsync(ISpecification<TAggergateRoot> specification);
 
-        long Count(Expression<Func<TAggergateRoot, bool>> specification);
+        long Count(Expression<Func<TAggergateRoot, bool>> expression);
 
-        Task<long> CountAsync(Expression<Func<TAggergateRoot, bool>> specification);
+        Task<long> CountAsync(Expression<Func<TAggergateRoot, bool>> expression);
 
         /// <summary>
         ///  Finds all the aggregate roots from repository,sorting by using the provided sort predicate
@@ -57,7 +57,7 @@ namespace DFramework.Repositories
         IQueryable<TAggergateRoot> FindAll(ISpecification<TAggergateRoot> specification,
                                             params OrderExpression[] orderExpressions);
 
-        IQueryable<TAggergateRoot> FindAll(Expression<Func<TAggergateRoot, bool>> specification,
+        IQueryable<TAggergateRoot> FindAll(Expression<Func<TAggergateRoot, bool>> expression,
                                             params OrderExpression[] orderExpressions);
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace DFramework.Repositories
 
         TAggergateRoot Find(Expression<Func<TAggergateRoot, bool>> specification);
 
-        Task<TAggergateRoot> FindAsync(Expression<Func<TAggergateRoot, bool>> specification);
+        Task<TAggergateRoot> FindAsync(Expression<Func<TAggergateRoot, bool>> expression);
 
         /// <summary>
         ///  Checks whether the aggregate root which matches the given specification exists.
@@ -82,9 +82,9 @@ namespace DFramework.Repositories
 
         Task<bool> ExistsAsync(ISpecification<TAggergateRoot> specification);
 
-        bool Exists(Expression<Func<TAggergateRoot, bool>> specification);
+        bool Exists(Expression<Func<TAggergateRoot, bool>> expression);
 
-        Task<bool> ExistsAsync(Expression<Func<TAggergateRoot, bool>> specification);
+        Task<bool> ExistsAsync(Expression<Func<TAggergateRoot, bool>> expression);
 
         /// <summary>
         ///  Removes the entity from the repository.
@@ -106,30 +106,30 @@ namespace DFramework.Repositories
         void Update(TAggergateRoot entity);
 
         IQueryable<TAggergateRoot> PageFind(int pageIndex,
-                                            int pageSize,
-                                            Expression<Func<TAggergateRoot, bool>> expression,
-                                            params OrderExpression[] orderExpressions);
+                                                                        int pageSize,
+                                                                        Expression<Func<TAggergateRoot, bool>> expression,
+                                                                        params OrderExpression[] orderExpressions);
 
         IQueryable<TAggergateRoot> PageFind(int pageIndex,
-                                            int pageSize,
-                                            Expression<Func<TAggergateRoot, bool>> expression,
-                                            ref long totalCount,
-                                            params OrderExpression[] orderExpressions);
-
-        Task<Tuple<IQueryable<TAggergateRoot>, long>> PageFindAsync(int pageIndex,
                                                                     int pageSize,
-                                                                    Expression<Func<TAggergateRoot, bool>> specification,
+                                                                    Expression<Func<TAggergateRoot, bool>> expression,
+                                                                    ref long totalCount,
                                                                     params OrderExpression[] orderExpressions);
 
+        Task<Tuple<IQueryable<TAggergateRoot>, long>> PageFindAsync(int pageIndex,
+                                                                                                                    int pageSize,
+                                                                                                                    Expression<Func<TAggergateRoot, bool>> expression,
+                                                                                                                    params OrderExpression[] orderExpressions);
+
         IQueryable<TAggergateRoot> PageFind(int pageIndex,
-                                            int pageSize,
-                                            ISpecification<TAggergateRoot> specification,
-                                            params OrderExpression[] orderbyExpressions);
+                                                                    int pageSize,
+                                                                    ISpecification<TAggergateRoot> specification,
+                                                                    params OrderExpression[] orderbyExpressions);
 
         IQueryable<TAggergateRoot> PageFind(int pageIndex, int pageSize,
-                                            ISpecification<TAggergateRoot> speccifiaction,
-                                            ref long totalCount,
-                                            params OrderExpression[] orderByExpressions);
+                                                                    ISpecification<TAggergateRoot> speccifiaction,
+                                                                    ref long totalCount,
+                                                                    params OrderExpression[] orderByExpressions);
 
         Task<Tuple<IQueryable<TAggergateRoot>, long>> PageFindAsync(int pageIndex,
                                                                     int pageSize,

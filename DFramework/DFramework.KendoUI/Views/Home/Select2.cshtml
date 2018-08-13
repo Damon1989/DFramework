@@ -14,12 +14,19 @@
     <option value="WY4">Wyoming4</option>
 </select>
 
+<button type="button" onClick="search();">查询</button>
+
 @section scripts{
     <script type="text/javascript">
         $(function () {
             $('.js-example-basic-single').select2({
                 placeholder: 'Select an option'
             });
+
         })
+
+        var search = function () {
+            console.log($('.js-example-basic-single').val());
+        }
     </script>
 }

@@ -78,6 +78,9 @@
     <Compile Include="Infrastructure\FastInvoke.cs" />
     <Compile Include="Infrastructure\IExceptionManager.cs" />
     <Compile Include="Infrastructure\IJsonConvert.cs" />
+    <Compile Include="Infrastructure\IO\DirectoryHelper.cs" />
+    <Compile Include="Infrastructure\IO\Extensions\StreamExtensions.cs" />
+    <Compile Include="Infrastructure\IO\FileHelper.cs" />
     <Compile Include="Infrastructure\JsonHelper.cs" />
     <Compile Include="Infrastructure\Logging\AopEnteringLog.cs" />
     <Compile Include="Infrastructure\Logging\AopExceptionLog.cs" />

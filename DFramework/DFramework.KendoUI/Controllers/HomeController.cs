@@ -65,7 +65,22 @@ namespace DFramework.KendoUI.Controllers
             return View();
         }
 
+        public ActionResult JsTreeStyle()
+        {
+            return View();
+        }
+
+        public ActionResult JsRegular()
+        {
+            return View();
+        }
+
         public ActionResult JsRender()
+        {
+            return View();
+        }
+
+        public ActionResult SweetAlert2()
         {
             return View();
         }
