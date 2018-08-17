@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dFramework", "dFramework", "{3E860CE8-E316-47B4-988D-59E2953244DD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0.dFramework", "0.dFramework", "{3E860CE8-E316-47B4-988D-59E2953244DD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFramework", "DFramework\DFramework.csproj", "{BDFD8A53-1C12-44AF-9B80-489C84F453D1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "iPlugins", "iPlugins", "{85E331E4-3429-467E-BF8E-3D91EA1E6B24}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.iPlugins", "1.iPlugins", "{85E331E4-3429-467E-BF8E-3D91EA1E6B24}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ioc", "Ioc", "{2E628392-FBAF-4329-9E6A-9246E1C0A134}"
 EndProject
@@ -40,6 +40,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFramework.IoC.WebAPi", "DFramework.IoC.WebAPi\DFramework.IoC.WebAPi.csproj", "{EE227E32-FA88-41C9-B3BF-51FC5F6FA95C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFramework.Zxing", "DFramework.Zxing\DFramework.Zxing.csproj", "{55511E2B-277C-4635-9EA8-34E4DAFAB860}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFramework.ServiceBusDemo", "DFramework.ServiceBusDemo\DFramework.ServiceBusDemo.csproj", "{83AE18BA-9A6D-491E-86DA-C92957D3E195}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dframework.SingleSignOn", "Dframework.SingleSignOn\Dframework.SingleSignOn.csproj", "{C6CAE2AF-DAE9-4A02-80B6-CFA19A52FAEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +107,14 @@ Global
 		{55511E2B-277C-4635-9EA8-34E4DAFAB860}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55511E2B-277C-4635-9EA8-34E4DAFAB860}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55511E2B-277C-4635-9EA8-34E4DAFAB860}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83AE18BA-9A6D-491E-86DA-C92957D3E195}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83AE18BA-9A6D-491E-86DA-C92957D3E195}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83AE18BA-9A6D-491E-86DA-C92957D3E195}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83AE18BA-9A6D-491E-86DA-C92957D3E195}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6CAE2AF-DAE9-4A02-80B6-CFA19A52FAEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6CAE2AF-DAE9-4A02-80B6-CFA19A52FAEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6CAE2AF-DAE9-4A02-80B6-CFA19A52FAEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6CAE2AF-DAE9-4A02-80B6-CFA19A52FAEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +137,8 @@ Global
 		{32B91976-EFE3-4488-B0D9-458AEB617F5C} = {85E331E4-3429-467E-BF8E-3D91EA1E6B24}
 		{EE227E32-FA88-41C9-B3BF-51FC5F6FA95C} = {2E628392-FBAF-4329-9E6A-9246E1C0A134}
 		{55511E2B-277C-4635-9EA8-34E4DAFAB860} = {85E331E4-3429-467E-BF8E-3D91EA1E6B24}
+		{83AE18BA-9A6D-491E-86DA-C92957D3E195} = {85E331E4-3429-467E-BF8E-3D91EA1E6B24}
+		{C6CAE2AF-DAE9-4A02-80B6-CFA19A52FAEE} = {85E331E4-3429-467E-BF8E-3D91EA1E6B24}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF3DD962-7081-4227-B858-00F334489CF0}

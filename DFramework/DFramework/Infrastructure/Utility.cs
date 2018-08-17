@@ -227,5 +227,49 @@ namespace DFramework.Infrastructure
             //}
             //return (T) retval;
         }
+
+        public static TAttribute GetCustomAttribute<TAttribute>(this object obj, bool inherit = true)
+        where TAttribute : class
+        {
+            if (obj is Type)
+            {
+                var attrs = (obj as Type).GetCustomAttributes(typeof(TAttribute), inherit);
+                if (attrs != null)
+                {
+                    return attrs.FirstOrDefault() as TAttribute;
+                }
+            }
+            else if (obj is FieldInfo)
+            {
+                var attrs = ((FieldInfo)obj).GetCustomAttributes(typeof(TAttribute), inherit);
+                if (attrs != null && attrs.Length > 0)
+                {
+                    return attrs.FirstOrDefault(attr => attr is TAttribute) as TAttribute;
+                }
+            }
+            else if (obj is PropertyInfo)
+            {
+                var attrs = ((PropertyInfo)obj).GetCustomAttributes(inherit);
+                if (attrs != null && attrs.Length > 0)
+                {
+                    return attrs.FirstOrDefault(attr => attr is TAttribute) as TAttribute;
+                }
+            }
+            else if (obj is MethodInfo)
+            {
+                var attrs = (obj as MethodInfo).GetCustomAttributes(inherit);
+                if (attrs != null && attrs.Length > 0)
+                {
+                    return attrs.FirstOrDefault(attr => attrs is TAttribute) as TAttribute;
+                }
+            }
+            else if (obj.GetType().IsDefined(typeof(TAttribute), true))
+            {
+                var attr = Attribute.GetCustomAttribute(obj.GetType(), typeof(TAttribute), inherit) as TAttribute;
+                return attr;
+            }
+
+            return null;
+        }
     }
 }

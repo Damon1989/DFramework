@@ -14,6 +14,8 @@ namespace DFramework.Config
         {
         }
 
+        public bool NeedMessageStore { get; protected set; }
+
         public Configuration RegisterCommonComponents()
         {
             UseNoneLogger();
