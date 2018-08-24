@@ -16,6 +16,8 @@ namespace DFramework.Config
 
         public bool NeedMessageStore { get; protected set; }
 
+        private bool CommitPerMessage { get; set; }
+
         public Configuration RegisterCommonComponents()
         {
             UseNoneLogger();
@@ -44,6 +46,11 @@ namespace DFramework.Config
         {
             IoCFactory.Instance.CurrentContainer.RegisterType<ICacheManager, MemoryCacheManager>(lifetime);
             return this;
+        }
+
+        public bool GetCommitPerMessage()
+        {
+            return CommitPerMessage;
         }
     }
 }

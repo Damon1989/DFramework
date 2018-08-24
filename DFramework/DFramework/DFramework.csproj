@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="Bus\IBus.cs" />
     <Compile Include="Command\ICommand.cs" />
+    <Compile Include="Command\ICommandBus.cs" />
+    <Compile Include="Command\Impl\MockCommandBus.cs" />
     <Compile Include="Config\Configuration.cs" />
     <Compile Include="Domain\AggregateRoot.cs" />
     <Compile Include="Domain\AggregateRootWithIdentity.cs" />
@@ -63,6 +65,7 @@
     <Compile Include="Event\IDomainExceptionEvent.cs" />
     <Compile Include="Event\IEvent.cs" />
     <Compile Include="Event\IEventBus.cs" />
+    <Compile Include="Event\Impl\EventBus.cs" />
     <Compile Include="Exceptions\DomainException.cs" />
     <Compile Include="Exceptions\ErrorCode.cs" />
     <Compile Include="Infrastructure\Caching\CacheExtensions.cs" />
@@ -107,8 +110,14 @@
     <Compile Include="IoC\Lifetime.cs" />
     <Compile Include="IoC\Parameter.cs" />
     <Compile Include="Event\IEventSubscriber.cs" />
+    <Compile Include="MessageQueue\AutoOffsetReset.cs" />
+    <Compile Include="MessageQueue\Configuration.cs" />
+    <Compile Include="MessageQueue\ConsumerConfig.cs" />
     <Compile Include="MessageQueue\ICommitOffsetable.cs" />
     <Compile Include="MessageQueue\IMessageQueueClient.cs" />
+    <Compile Include="MessageQueue\ISlidingDoor.cs" />
+    <Compile Include="MessageQueue\MockMessageQueueClient.cs" />
+    <Compile Include="MessageQueue\SlidingDoor.cs" />
     <Compile Include="Message\IHandlerProvider.cs" />
     <Compile Include="Message\IMessage.cs" />
     <Compile Include="Message\IMessageAsyncHandler.cs" />
@@ -123,7 +132,9 @@
     <Compile Include="Message\Impl\EmptyMessageContext.cs" />
     <Compile Include="Message\Impl\HandlerTypeInfo.cs" />
     <Compile Include="Message\Impl\MessageExtension.cs" />
+    <Compile Include="Message\Impl\MessagePublisher.cs" />
     <Compile Include="Message\Impl\MessageSender.cs" />
+    <Compile Include="Message\Impl\MockMessagePublisher.cs" />
     <Compile Include="Message\Impl\SagaInfo.cs" />
     <Compile Include="Message\MessageCode.cs" />
     <Compile Include="Message\MessageFormatHelper.cs" />
