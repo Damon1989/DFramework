@@ -53,7 +53,7 @@ namespace DFramework.Message.Impl
                     {
                         using (var messageStore = scope.Resolve<IMessageStore>())
                         {
-                            messageStore.RemovePublishedEvent(messageState.MessageID);
+                            messageStore.RemovePublishedEvent(messageState.MessageId);
                         }
                     }
                 });

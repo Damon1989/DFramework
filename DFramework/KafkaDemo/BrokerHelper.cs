@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using KafkaNet;
 using KafkaNet.Model;
 
@@ -20,6 +16,10 @@ namespace KafkaDemo
             _broker = broker;
         }
 
+        /// <summary>
+        ///  获取代理的路由对象
+        /// </summary>
+        /// <returns></returns>
         public BrokerRouter GetBroker()
         {
             var options = new KafkaOptions(new Uri($"http://{_broker}"));

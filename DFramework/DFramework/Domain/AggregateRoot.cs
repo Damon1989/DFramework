@@ -56,7 +56,7 @@ namespace DFramework.Domain
             where TDomainEvent : class, IAggregateRootEvent
         {
             var subscriber = this as IEventSubscriber<TDomainEvent>;
-            subscriber?.Handler(@event);
+            subscriber?.Handle(@event);
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using DFramework.Infrastructure;
 
 namespace DFramework.Message
 {
@@ -42,8 +40,10 @@ namespace DFramework.Message
             return (TResult)result;
         }
 
-        //public async Task<TResult> ReadAsAsync<TResult>(TimeSpan timeout)
-        //{
-        //}
+        public async Task<TResult> ReadAsAsync<TResult>(TimeSpan timeout)
+        {
+            var result = await Reply.Timeout(timeout).ConfigureAwait(false);
+            return (TResult)result;
+        }
     }
 }

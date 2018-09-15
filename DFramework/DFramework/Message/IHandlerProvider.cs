@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DFramework.Message.Impl;
 
 namespace DFramework.Message
 {
     public interface IHandlerProvider
     {
         object GetHandler(Type messageType);
+
+        IList<HandlerTypeInfo> GetHandlerTypes(Type messageType);
     }
 }

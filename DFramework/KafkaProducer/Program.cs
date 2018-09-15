@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using KafkaNet;
 using KafkaNet.Common;
 using KafkaNet.Model;
@@ -13,13 +10,21 @@ namespace KafkaProducer
 {
     internal class Program
     {
+        //https://www.cnblogs.com/Wulex/p/5619425.html#3936856
         private static void Main(string[] args)
         {
-            do
+            var str = "1";
+            foreach (var s in str.Split(','))
             {
-                Produce(GetKafkaBroker(), GetTopicName());
-                System.Threading.Thread.Sleep(3000);
-            } while (true);
+                Console.WriteLine(s);
+            }
+
+            Console.ReadLine();
+            //do
+            //{
+            //    Produce(GetKafkaBroker(), GetTopicName());
+            //    System.Threading.Thread.Sleep(3000);
+            //} while (true);
         }
 
         private static void Produce(string broker, string topic)
@@ -41,33 +46,24 @@ namespace KafkaProducer
 
         private static string GetKafkaBroker()
         {
-            string kafkaBroker = string.Empty;
             const string kafkaBrokerKeyName = "KafkaBroker";
 
-            if (!ConfigurationManager.AppSettings.AllKeys.Contains(kafkaBrokerKeyName))
-            {
-                kafkaBroker = "http://localhost:9092";
-            }
-            else
-            {
-                kafkaBroker = ConfigurationManager.AppSettings[kafkaBrokerKeyName];
-            }
+            var kafkaBroker = ConfigurationManager.AppSettings.AllKeys.Contains(kafkaBrokerKeyName)
+                ? ConfigurationManager.AppSettings[kafkaBrokerKeyName]
+                : "http://localhost:9092";
 
             return kafkaBroker;
         }
 
         private static string GetTopicName()
         {
-            var topicName = string.Empty;
             const string topicNameKeyName = "Topic";
             if (!ConfigurationManager.AppSettings.AllKeys.Contains(topicNameKeyName))
             {
                 throw new Exception("Key \"" + topicNameKeyName + "\" not found in Config file -> configuration/AppSettings");
             }
-            else
-            {
-                topicName = ConfigurationManager.AppSettings[topicNameKeyName];
-            }
+
+            var topicName = ConfigurationManager.AppSettings[topicNameKeyName];
             return topicName;
         }
     }

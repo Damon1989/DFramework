@@ -23,13 +23,13 @@ namespace DFramework.Message
             bool needReply)
         {
             MessageContext = messageContext;
-            MessageID = messageContext.MessageId;
+            MessageId = messageContext.MessageId;
             NeedRetry = needReply;
             SendTaskCompletionSource = sendTaskCompletionSource;
             ReplyTaskCompletionSource = replyTaskCompletionSource;
         }
 
-        public string MessageID { get; set; }
+        public string MessageId { get; set; }
         public bool NeedRetry { get; set; }
         public IMessageContext MessageContext { get; set; }
 

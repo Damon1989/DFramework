@@ -271,5 +271,20 @@ namespace DFramework.Infrastructure
 
             return null;
         }
+
+        public static object GetValueByKey(this object obj, string name)
+        {
+            object objValue = null;
+
+            {
+                var property = obj.GetType()
+                    .GetProperty(name,
+                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                if (property != null)
+                    objValue = FastInvoke.GetMethodInvoker(property.GetGetMethod(true))(obj, null);
+
+                return objValue;
+            }
+        }
     }
 }

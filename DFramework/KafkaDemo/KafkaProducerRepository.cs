@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KafkaDemo
 {
@@ -17,7 +16,7 @@ namespace KafkaDemo
 
         public List<KafkaProducerMessage> GetKafkaProducerMessages()
         {
-            return context.KafkaProducerMessage.ToList();
+            return context.KafkaProducerMessage.AsNoTracking().ToList();
         }
 
         public List<string> GetDistinctTopics()
@@ -27,28 +26,28 @@ namespace KafkaDemo
                 .ToList();
         }
 
-        public KafkaProducerMessage GetKafkaProducerMessageByMessageID(int MessageID)
+        public KafkaProducerMessage GetKafkaProducerMessageByMessageId(int MessageId)
         {
-            return context.KafkaProducerMessage.Find(MessageID);
+            return context.KafkaProducerMessage.Find(MessageId);
         }
 
-        public List<KafkaProducerMessage> GetKafkaProducerMessageByTopic(string TopicName)
+        public List<KafkaProducerMessage> GetKafkaProducerMessageByTopic(string topicName)
         {
             return context.KafkaProducerMessage
-                     .Where(a => a.Topic == TopicName)
+                     .Where(a => a.Topic == topicName)
                      .OrderBy(a => a.KafkaProducerMessageId)
                      .ToList<KafkaProducerMessage>();
         }
 
-        public void InsertKafkaProducerMessage(KafkaProducerMessage Message)
+        public void InsertKafkaProducerMessage(KafkaProducerMessage message)
         {
-            context.KafkaProducerMessage.Add(Message);
+            context.KafkaProducerMessage.Add(message);
             context.SaveChanges();
         }
 
-        public void ArchiveKafkaProducerMessage(int MessageID)
+        public void ArchiveKafkaProducerMessage(int messageId)
         {
-            KafkaProducerMessage m = context.KafkaProducerMessage.Find(MessageID);
+            KafkaProducerMessage m = context.KafkaProducerMessage.Find(messageId);
             KafkaProducerMessageArchive archivedMessage = KafkaProducerMessageToKafkaProducerMessageArchive(m);
 
             using (var dbContextTransaction = context.Database.BeginTransaction())
@@ -68,22 +67,22 @@ namespace KafkaDemo
             }
         }
 
-        public void ArchiveKafkaProducerMessageList(List<KafkaProducerMessage> Messages)
+        public void ArchiveKafkaProducerMessageList(List<KafkaProducerMessage> messages)
         {
-            foreach (KafkaProducerMessage Message in Messages)
+            foreach (KafkaProducerMessage message in messages)
             {
-                ArchiveKafkaProducerMessage(Message.KafkaProducerMessageId);
+                ArchiveKafkaProducerMessage(message.KafkaProducerMessageId);
             }
         }
 
-        public static KafkaProducerMessageArchive KafkaProducerMessageToKafkaProducerMessageArchive(KafkaProducerMessage Message)
+        public static KafkaProducerMessageArchive KafkaProducerMessageToKafkaProducerMessageArchive(KafkaProducerMessage message)
         {
             return new KafkaProducerMessageArchive
             {
-                KafkaProducerMessageId = Message.KafkaProducerMessageId,
-                Content = Message.Content,
-                Topic = Message.Topic,
-                CreatedTime = Message.CreatedTime,
+                KafkaProducerMessageId = message.KafkaProducerMessageId,
+                Content = message.Content,
+                Topic = message.Topic,
+                CreatedTime = message.CreatedTime,
                 ArchivedTime = DateTime.UtcNow
             };
         }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KafkaNet;
@@ -9,6 +8,9 @@ using KafkaNet.Protocol;
 
 namespace KafkaDemo
 {
+    /// <summary>
+    /// 消费者辅助类
+    /// </summary>
     internal class ConsumerHelper
     {
         private readonly BrokerHelper _brokerHelper;

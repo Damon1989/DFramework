@@ -23,12 +23,7 @@ namespace DFramework.Infrastructure
                                                        TKey key,
                                                        TValue defaultValue)
         {
-            var result = defaultValue;
-            if (!dictionary.TryGetValue(key, out result))
-            {
-                return defaultValue;
-            }
-            return result;
+            return dictionary.TryGetValue(key, out var result) ? result : defaultValue;
         }
     }
 }

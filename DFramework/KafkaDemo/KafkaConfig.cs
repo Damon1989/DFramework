@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 
 namespace KafkaDemo
 {
+    /// <summary>
+    /// kafka配置类
+    /// </summary>
     public class KafkaConfig : ConfigurationSection
     {
         /// <summary>
@@ -35,11 +33,20 @@ namespace KafkaDemo
             set => base["topic"] = value;
         }
 
+        /// <summary>
+        /// 获取默认kafka配置类
+        /// </summary>
+        /// <returns></returns>
         public static KafkaConfig GetConfig()
         {
             return (KafkaConfig)ConfigurationManager.GetSection("kafkaConfig");
         }
 
+        /// <summary>
+        /// 获取指定的kafka配置类
+        /// </summary>
+        /// <param name="sectionName"></param>
+        /// <returns></returns>
         public static KafkaConfig GetConfig(string sectionName)
         {
             var section = (KafkaConfig)ConfigurationManager.GetSection(sectionName);

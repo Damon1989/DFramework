@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using KafkaNet;
 using KafkaNet.Common;
@@ -12,9 +10,10 @@ namespace DFramework.KafkaNet
 {
     internal class Program
     {
+        //https://www.cnblogs.com/Wulex/p/5578339.html
         private static void Main(string[] args)
         {
-            const string topicName = "test";
+            const string topicName = "test0905";//主题
             var options = new KafkaOptions(new Uri("http://localhost:9092"))
             {
                 Log = new ConsoleLog()
@@ -22,7 +21,9 @@ namespace DFramework.KafkaNet
 
             Task.Run(() =>
             {
-                var consumer = new Consumer(new ConsumerOptions(topicName, new BrokerRouter(options)) { Log = new ConsoleLog() });
+                //创建消费者
+                var consumer =
+                    new Consumer(new ConsumerOptions(topicName, new BrokerRouter(options)) { Log = new ConsoleLog() });
                 foreach (var data in consumer.Consume())
                 {
                     Console.WriteLine($"Response:PartitionId={data.Meta.PartitionId} Offset={data.Meta.Offset}: Value={data.Value.ToUtf8String()}");

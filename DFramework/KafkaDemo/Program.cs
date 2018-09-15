@@ -13,45 +13,73 @@ namespace KafkaDemo
 {
     internal class Program
     {
-        private static string Topic;
+        private static string _topic;
 
         private static void Main(string[] args)
         {
-            string invalidArgErrorMessage = "有效的args是：produce或consume";
+            var header = "kafka测试";
+            Console.Title = header;
+            Console.WriteLine(header);
+            ConsoleColor color = Console.ForegroundColor;
 
-            if (args.Length < 1)
-            {
-                throw (new Exception(invalidArgErrorMessage));
-            }
+            var pub = new KafkaHelper("Test", true);
 
-            string intent = args[1];
+            var sub = new KafkaHelper("Test", false);
 
-            Topic = ConfigurationManager.AppSettings["Topic"];
-            if (String.Equals(intent, "consume", StringComparison.OrdinalIgnoreCase))
+            Task.Run(() =>
             {
-                Console.WriteLine("开始消费者服务");
-                Consume();
-            }
-            else if (String.Equals(intent, "produce", StringComparison.OrdinalIgnoreCase))
+                while (true)
+                {
+                    string msg = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff")}这是一条测试消息";
+                    pub.Pub(new List<string>() { msg });
+
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"发送消息{msg}");
+
+                    Thread.Sleep(2000);
+                }
+            });
+
+            Task.Run(() =>
             {
-                Console.WriteLine("开始生产者服务");
-                Produce();
-            }
-            else
-            {
-                throw (new Exception(invalidArgErrorMessage));
-            }
+                sub.Sub(msg =>
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"收到消息{msg}");
+                });
+            });
+
+            Console.ReadLine();
+
+            //string invalidArgErrorMessage = "有效的args是：produce或consume";
+
+            //if (args.Length < 1)
+            //{
+            //    throw (new Exception(invalidArgErrorMessage));
+            //}
+
+            //string intent = args[1];
+
+            //_topic = ConfigurationManager.AppSettings["Topic"];
+            //if (String.Equals(intent, "consume", StringComparison.OrdinalIgnoreCase))
+            //{
+            //    Console.WriteLine("开始消费者服务");
+            //    Consume();
+            //}
+            //else if (String.Equals(intent, "produce", StringComparison.OrdinalIgnoreCase))
+            //{
+            //    Console.WriteLine("开始生产者服务");
+            //    Produce();
+            //}
+            //else
+            //{
+            //    throw (new Exception(invalidArgErrorMessage));
+            //}
         }
 
         private static BrokerRouter InitDefaultConfig()
         {
-            List<Uri> zKUriList = new List<Uri>();
-            foreach (var item in ConfigurationManager.AppSettings["BrokerList"].Split(','))
-            {
-                zKUriList.Add(new Uri(item));
-            }
-
-            var options = new KafkaOptions(zKUriList.ToArray());
+            var options = new KafkaOptions(ConfigurationManager.AppSettings["BrokerList"].Split(',').Select(item => new Uri(item)).ToArray());
             var router = new BrokerRouter(options);
             return router;
         }
@@ -62,12 +90,12 @@ namespace KafkaDemo
             bool fromBeginning = Boolean.Parse(ConfigurationManager.AppSettings["FromBeginning"]);
 
             var router = InitDefaultConfig();
-            var consumer = new Consumer(new ConsumerOptions(Topic, router));
+            var consumer = new Consumer(new ConsumerOptions(_topic, router));
 
             //如果我们不想从头开始，使用最新偏移量
             if (!fromBeginning)
             {
-                var maxOffsetByPartition = kafkaRepo.GetOffsetPositionByTopic(Topic);
+                var maxOffsetByPartition = kafkaRepo.GetOffsetPositionByTopic(_topic);
                 //如果我们得到一个结果使用它，否则默认
                 if (maxOffsetByPartition.Any())
                 {
@@ -85,7 +113,7 @@ namespace KafkaDemo
                 }
             }
 
-            //消耗返回一个阻塞IEnumerable
+            //消耗返回一个阻塞IEnumerable(ie:从没有结束流)
             foreach (var message in consumer.Consume())
             {
                 var messageContent = Encoding.UTF8.GetString(message.Value);
@@ -96,7 +124,7 @@ namespace KafkaDemo
 
                 var consumerMessage = new KafkaConsumerMessage()
                 {
-                    Topic = Topic,
+                    Topic = _topic,
                     Offset = (int)message.Meta.Offset,
                     Partition = message.Meta.PartitionId,
                     Content = messageContent,
@@ -116,13 +144,13 @@ namespace KafkaDemo
 
             var messages = new List<Message>();
 
-            foreach (var message in kafkaRepo.GetKafkaProducerMessageByTopic(Topic))
+            foreach (var message in kafkaRepo.GetKafkaProducerMessageByTopic(_topic))
             {
                 messages.Add(new Message(message.Content));
                 kafkaRepo.ArchiveKafkaProducerMessage(message.KafkaProducerMessageId);
             }
 
-            client.SendMessageAsync(Topic, messages).Wait();
+            client.SendMessageAsync(_topic, messages).Wait();
 
             kafkaRepo.Dispose();
         }

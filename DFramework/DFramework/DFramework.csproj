@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Numerics" />
@@ -51,7 +52,15 @@
     <Compile Include="Command\ICommand.cs" />
     <Compile Include="Command\ICommandBus.cs" />
     <Compile Include="Command\Impl\MockCommandBus.cs" />
+    <Compile Include="Config\BaseConfigurationElementCollection.cs" />
     <Compile Include="Config\Configuration.cs" />
+    <Compile Include="Config\ConfigurationReader.cs" />
+    <Compile Include="Config\ConfigurationSectionNameAttribute.cs" />
+    <Compile Include="Config\EndpointElement.cs" />
+    <Compile Include="Config\HandlerElement.cs" />
+    <Compile Include="Config\HandlerElementCollection.cs" />
+    <Compile Include="Config\HandlerSourceType.cs" />
+    <Compile Include="Config\MessageEndpointElementCollection.cs" />
     <Compile Include="Domain\AggregateRoot.cs" />
     <Compile Include="Domain\AggregateRootWithIdentity.cs" />
     <Compile Include="Domain\Entity.cs" />
@@ -99,6 +108,8 @@
     <Compile Include="Infrastructure\ObjectId.cs" />
     <Compile Include="Infrastructure\QueryExtension.cs" />
     <Compile Include="Infrastructure\RadixEncoding.cs" />
+    <Compile Include="Infrastructure\TaskWorker.cs" />
+    <Compile Include="Infrastructure\TimerTaskFactory.cs" />
     <Compile Include="Infrastructure\Utility.cs" />
     <Compile Include="Infrastructure\XmlHelper.cs" />
     <Compile Include="IoC\AopInjection.cs" />
@@ -130,6 +141,8 @@
     <Compile Include="Message\IMessageStore.cs" />
     <Compile Include="Message\Impl\CommandHandledInfo.cs" />
     <Compile Include="Message\Impl\EmptyMessageContext.cs" />
+    <Compile Include="Message\Impl\FrameworkConfigurationSection.cs" />
+    <Compile Include="Message\Impl\HandlerProvider.cs" />
     <Compile Include="Message\Impl\HandlerTypeInfo.cs" />
     <Compile Include="Message\Impl\MessageExtension.cs" />
     <Compile Include="Message\Impl\MessagePublisher.cs" />

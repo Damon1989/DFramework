@@ -10,5 +10,6 @@ namespace DFramework.Message
     public interface IMessageAsyncHandler<in TMessage>
         where TMessage : class
     {
+        Task Handle(TMessage message);
     }
 }

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KafkaDemo
 {
@@ -17,35 +16,37 @@ namespace KafkaDemo
 
         public List<KafkaConsumerMessage> GetKafkaConsumerMessages()
         {
-            return context.KafkaConsumerMessage.ToList();
+            return context.KafkaConsumerMessage.AsNoTracking().ToList();
         }
 
-        public KafkaConsumerMessage GetKafkaConsumerMessageByID(int MessageID)
+        public KafkaConsumerMessage GetKafkaConsumerMessageById(int MessageId)
         {
-            return context.KafkaConsumerMessage.Find(MessageID);
+            return context.KafkaConsumerMessage.Find(MessageId);
         }
 
-        public List<KafkaConsumerMessage> GetKafkaConsumerMessageByTopic(string TopicName)
+        public List<KafkaConsumerMessage> GetKafkaConsumerMessageByTopic(string topicName)
         {
             return context.KafkaConsumerMessage
-                .Where(a => a.Topic == TopicName)
+                .Where(a => a.Topic == topicName)
+                .AsNoTracking()
                 .ToList();
         }
 
-        public List<VwMaxOffsetByPartitionAndTopic> GetOffsetPositionByTopic(string TopicName)
+        public List<VwMaxOffsetByPartitionAndTopic> GetOffsetPositionByTopic(string topicName)
         {
             return context.VwMaxOffsetByPartitionAndTopic
-                .Where(a => a.Topic == TopicName)
+                .Where(a => a.Topic == topicName)
+                .AsNoTracking()
                 .ToList();
         }
 
-        public void InsertKafkaConsumerMessage(KafkaConsumerMessage Message)
+        public void InsertKafkaConsumerMessage(KafkaConsumerMessage message)
         {
-            Console.WriteLine($"Insert {Message.KafkaConsumerMessageId.ToString()}: {Message.Content}");
-            context.KafkaConsumerMessage.Add(Message);
+            Console.WriteLine($"Insert {message.KafkaConsumerMessageId.ToString()}: {message.Content}");
+            context.KafkaConsumerMessage.Add(message);
             context.SaveChanges();
 
-            Console.WriteLine($"Saved {Message.KafkaConsumerMessageId.ToString()}: {Message.Content}");
+            Console.WriteLine($"Saved {message.KafkaConsumerMessageId.ToString()}: {message.Content}");
         }
 
         public void Save()

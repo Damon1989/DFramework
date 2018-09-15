@@ -89,7 +89,7 @@ namespace DFramework.Message.Impl
             messageStates.ForEach(messageState => { _messageStateQueue.Add(messageState); });
             messageStates.ForEach(ms =>
             {
-                _logger.Debug($"send message enqueue msgIdL{ms.MessageID} topic:{ms.MessageContext.Topic}");
+                _logger.Debug($"send message enqueue msgIdL{ms.MessageId} topic:{ms.MessageContext.Topic}");
             });
             return Task.WhenAll(messageStates.Where(s => s.SendTaskCompletionSource != null)
                 .Select(s => s.SendTaskCompletionSource.Task)
