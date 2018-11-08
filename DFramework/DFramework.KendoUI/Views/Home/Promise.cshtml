@@ -1,0 +1,112 @@
+﻿@using System.Web.Optimization
+
+@{
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Permise</title>
+</head>
+<body>
+    <div>
+    </div>
+</body>
+</html>
+
+@section scripts
+{
+    <script type="text/javascript">
+        //var p = new Promise(function (resolve, reject) {
+        //    console.log("1");
+        //    //resolve();
+        //    setTimeout(function () {
+        //        console.log("第一个Promise执行完成");
+        //        resolve('第一个Promise');
+        //    }, 2000);
+        //    console.log("2");
+        //});
+
+        //p.then(function (val) {
+        //    console.log(val);
+        //    console.log("3");
+        //});
+
+        //console.log("4");
+
+        //var p1 = new Promise(function (resolve) {
+        //    setTimeout(function () {
+        //        resolve("p1");
+        //    },
+        //        2000);
+        //});
+
+        //var p2 = new Promise(function (resolve) {
+        //    setTimeout(function () {
+        //        resolve("p2");
+        //    }, 2000);
+        //});
+
+        //Promise.race([p2, p1]).then(function (result) {
+        //    console.log(result);
+        //});
+
+        //function test1() {
+        //    var p = new Promise(function (resolve, reject) {
+        //        setTimeout(function () {
+        //            console.log("第一个Promise执行完成");
+        //            resolve('第一个Promise传来的值');
+        //        },
+        //            2000);
+        //    });
+        //    return p;
+        //}
+
+        //test1().then(function (val) {
+        //    console.log("进入第一个then");
+        //    console.log(val);
+
+        //    var p1 = new Promise(function (resolve, reject) {
+        //        setTimeout(function () {
+        //            console.log('第一个then执行完成');
+        //            resolve('第二个Promise传来的值');
+        //        },
+        //            2000);
+        //    });
+
+        //    return p1;
+        //}).then(function (val) {
+        //    console.log('进入第二个then');
+        //    console.log(val);
+        //});
+
+        function test1() {
+            var p = new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    console.log('第一个Promise执行完成');
+                    resolve('第一个Promise传来的值');
+                },
+                    2000);
+            });
+            return p;
+        }
+
+        test1().then(function (val) {
+            console.log("进入第一个then");
+            console.log(val);
+
+            setTimeout(function () {
+                console.log('第一个then执行完成');
+            },
+                2000);
+
+            return '第二个Promise传来的值';
+        }).then(function (val) {
+            console.log('进入第二个then');
+            console.log(val);
+        });
+    </script>
+}

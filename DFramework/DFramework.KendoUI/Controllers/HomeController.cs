@@ -112,5 +112,10 @@ namespace DFramework.KendoUI.Controllers
             ViewBag.Result1 = result1;
             return View();
         }
+
+        public ActionResult Promise()
+        {
+            return View();
+        }
     }
 }

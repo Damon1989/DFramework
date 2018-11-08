@@ -9,17 +9,46 @@ using static System.Console;
 
 namespace ConsoleApp
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             //ArrayTest();
+            //Utility.YHSJ(6);
+
+            //var result = MatchEx.Max(1, 2, 3, 4);
+            //WriteLine(result);
+            //result = MatchEx.Min(1, 2, 3, 4);
+            //WriteLine(result);
+            List<int> array = new List<int>() { 1, 2, 3, 4, 5 };
+            var enumerator = array.GetEnumerator();
+
+            while (enumerator.MoveNext())
+            {
+                Console.WriteLine(enumerator.Current);
+            }
+
+            WriteLine("------------------------");
+
+            Stack<int> stack = new Stack<int>();
+            stack.Push(1);
+            stack.Push(2);
+            stack.Push(3);
+            stack.Push(4);
+            stack.Push(5);
+            stack.Push(6);
+            var stackEnumerator = stack.GetEnumerator();
+
+            while (stackEnumerator.MoveNext())
+            {
+                WriteLine(stackEnumerator.Current);
+            }
             ReadLine();
         }
 
         public static void ListTest()
         {
-            var list1=new LinkedList();
+            var list1 = new LinkedList();
             list1.AddLast(2);
             list1.AddLast(4);
             list1.AddLast(6);
@@ -29,17 +58,15 @@ namespace ConsoleApp
         {
             int[] myArray;
 
-            myArray=new int[4];
+            myArray = new int[4];
 
-            int[] myArray1=new int[4];
+            int[] myArray1 = new int[4];
 
-            int[] myArray2 = new int[4] {1, 3, 5, 6};
+            int[] myArray2 = new int[4] { 1, 3, 5, 6 };
 
-            int[] myArray3 = new[] {1, 2, 3, 4};
+            int[] myArray3 = new[] { 1, 2, 3, 4 };
 
-            int[] myArray4 = {1, 2, 3, 4};
-
-            
+            int[] myArray4 = { 1, 2, 3, 4 };
 
             for (int i = 0; i < myArray4.Length; i++)
             {
@@ -51,14 +78,12 @@ namespace ConsoleApp
                 WriteLine(item);
             }
 
-            
-
             WriteLine("-----------------------------");
 
             Array intArray1 = Array.CreateInstance(typeof(int), 5);
             for (int i = 0; i < 5; i++)
             {
-                intArray1.SetValue(33,i);
+                intArray1.SetValue(33, i);
             }
 
             for (int i = 0; i < intArray1.Length; i++)
@@ -66,10 +91,9 @@ namespace ConsoleApp
                 WriteLine(intArray1.GetValue(i));
             }
 
-
             WriteLine("-----------------------------");
 
-            string[] names = {"B", "D", "C", "A"};
+            string[] names = { "B", "D", "C", "A" };
             foreach (var name in names)
             {
                 WriteLine(name);
@@ -96,7 +120,7 @@ namespace ConsoleApp
                 WriteLine(myPerson);
             }
             WriteLine("--------------------");
-            Array.Sort(myPersons,new PersonComparer(PersonCompareType.FirstName));
+            Array.Sort(myPersons, new PersonComparer(PersonCompareType.FirstName));
             foreach (var myPerson in myPersons)
             {
                 WriteLine(myPerson);
@@ -109,10 +133,10 @@ namespace ConsoleApp
                 WriteLine(myPerson);
             }
 
-            int[] ar1 = {1, 4, 5, 11, 13, 18};
-            int[] ar2 = {3, 4, 5, 18, 21, 27, 33};
+            int[] ar1 = { 1, 4, 5, 11, 13, 18 };
+            int[] ar2 = { 3, 4, 5, 18, 21, 27, 33 };
 
-            var segments=new ArraySegment<int>[]
+            var segments = new ArraySegment<int>[]
             {
                 new ArraySegment<int>(ar1,0,3),
                 new ArraySegment<int>(ar2,3,3)
@@ -125,20 +149,20 @@ namespace ConsoleApp
                 WriteLine(person);
             }
             WriteLine("111111111111111111111");
-            var enumerator=myPersons.GetEnumerator();
+            var enumerator = myPersons.GetEnumerator();
             while (enumerator.MoveNext())
             {
                 Person p = (Person)enumerator.Current;
                 WriteLine(p);
             }
 
-            var helloCollection=new HelloCollection();
+            var helloCollection = new HelloCollection();
             foreach (var s in helloCollection)
             {
                 WriteLine(s);
             }
 
-            var titles=new MusicTitles();
+            var titles = new MusicTitles();
             foreach (var title in titles)
             {
                 WriteLine(title);
@@ -147,15 +171,14 @@ namespace ConsoleApp
             WriteLine();
 
             WriteLine("reverse");
-
         }
 
-        static int SumOfSegments(ArraySegment<int>[] segments)
+        private static int SumOfSegments(ArraySegment<int>[] segments)
         {
             int sum = 0;
             foreach (var segment in segments)
             {
-                for (int i = segment.Offset; i < segment.Offset+segments.Length; i++)
+                for (int i = segment.Offset; i < segment.Offset + segments.Length; i++)
                 {
                     if (segment.Array != null) sum += segment.Array[i];
                 }
@@ -165,10 +188,8 @@ namespace ConsoleApp
         }
     }
 
-
-    public class Person:IComparable<Person>,IEquatable<Person>
+    public class Person : IComparable<Person>, IEquatable<Person>
     {
-
         public int Id { get; private set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -181,13 +202,13 @@ namespace ConsoleApp
 
         public int CompareTo(Person other)
         {
-            if (other==null)
+            if (other == null)
             {
                 return 1;
             }
 
             int result = string.CompareOrdinal(this.LastName, other.LastName);
-            if (result==0)
+            if (result == 0)
             {
                 result = string.CompareOrdinal(this.FirstName, other.FirstName);
             }
@@ -206,7 +227,7 @@ namespace ConsoleApp
             //if (ReferenceEquals(this, other)) return true;
             //return string.Equals(FirstName, other.FirstName) && string.Equals(LastName, other.LastName);
 
-            if (other==null)
+            if (other == null)
             {
                 return base.Equals(other);
             }
@@ -223,7 +244,7 @@ namespace ConsoleApp
             //if (obj.GetType() != this.GetType()) return false;
             //return Equals((Person) obj);
 
-            if (obj==null)
+            if (obj == null)
             {
                 return base.Equals(obj);
             }
@@ -254,7 +275,7 @@ namespace ConsoleApp
 
         public int Compare(Person x, Person y)
         {
-            if (x==null&&y==null)
+            if (x == null && y == null)
             {
                 return 0;
             }
@@ -265,22 +286,22 @@ namespace ConsoleApp
             switch (_compareType)
             {
                 case PersonCompareType.FirstName:
-                {
-                    var result= string.CompareOrdinal(x.FirstName, y.FirstName);
-                    if (result==0)
                     {
-                        result = string.CompareOrdinal(x.LastName, y.LastName);
+                        var result = string.CompareOrdinal(x.FirstName, y.FirstName);
+                        if (result == 0)
+                        {
+                            result = string.CompareOrdinal(x.LastName, y.LastName);
+                        }
+                        return result;
                     }
-                    return result;
-                }
                 case PersonCompareType.LastName:
-                {
-                    var result = string.CompareOrdinal(x.LastName, y.LastName);
-                    if (result == 0)
                     {
-                        result = string.CompareOrdinal(x.FirstName, y.FirstName);
-                    }
-                    return result;
+                        var result = string.CompareOrdinal(x.LastName, y.LastName);
+                        if (result == 0)
+                        {
+                            result = string.CompareOrdinal(x.FirstName, y.FirstName);
+                        }
+                        return result;
                     }
                 default:
                     throw new ArgumentException("unexpected compare type");
@@ -301,7 +322,7 @@ namespace ConsoleApp
             return new Enumerator(0);
         }
 
-        public class Enumerator:IEnumerator<string>,IEnumerator,IDisposable
+        public class Enumerator : IEnumerator<string>, IEnumerator, IDisposable
         {
             private int state;
             private string current;
@@ -324,10 +345,12 @@ namespace ConsoleApp
                         current = "Hello";
                         state = 1;
                         return true;
+
                     case 1:
                         current = "World";
                         state = 2;
                         return true;
+
                     case 2:
                         break;
                 }
@@ -348,7 +371,7 @@ namespace ConsoleApp
 
     public class MusicTitles
     {
-        public string[] names = {"A", "B", "C", "D"};
+        public string[] names = { "A", "B", "C", "D" };
 
         public IEnumerator<string> GetEnumerator()
         {
@@ -368,7 +391,7 @@ namespace ConsoleApp
 
         public IEnumerator<string> Subset(int index, int length)
         {
-            for (int i = index; i < index+length; i++)
+            for (int i = index; i < index + length; i++)
             {
                 yield return names[i];
             }
@@ -387,7 +410,6 @@ namespace ConsoleApp
         public LinkedListNode Next { get; set; }
         public LinkedListNode Prev { get; set; }
     }
-
 
     public class LinkedListNode<T>
     {
@@ -409,8 +431,8 @@ namespace ConsoleApp
 
         public LinkedListNode AddLast(object value)
         {
-            var newNode=new LinkedListNode(value);
-            if (First==null)
+            var newNode = new LinkedListNode(value);
+            if (First == null)
             {
                 First = newNode;
                 Last = First;
@@ -429,7 +451,7 @@ namespace ConsoleApp
         public IEnumerator GetEnumerator()
         {
             LinkedListNode current = First;
-            while (current!=null)
+            while (current != null)
             {
                 yield return current.Value;
                 current = current.Next;
@@ -474,6 +496,75 @@ namespace ConsoleApp
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+    }
+
+    public static class Utility
+    {
+        /// <summary>
+        /// 阶乘 n!=1*2*3*...(n-1)*n
+        /// </summary>
+        /// <param name="num"></param>
+        /// <returns></returns>
+        public static long Factorial(int num)
+        {
+            if (num == 1)
+            {
+                return 1;
+            }
+
+            return Factorial(num - 1) * num;
+        }
+
+        public static void YHSJ(int num)
+        {
+            int[][] a = new int[num][];
+            a[0] = new int[1]; //a[0][0]=1;
+            a[1] = new int[2];
+            for (int i = 0; i < num; i++)
+            {
+                a[i] = new int[i + 1];
+                a[i][0] = 1;
+                a[i][i] = 1;
+                if (i > 1)//求出中间的数据
+                {
+                    for (int j = 1; j < i; j++)
+                    {
+                        a[i][j] = a[i - 1][j - 1] + a[i - 1][j];
+                    }
+                }
+            }
+            for (int i = 0; i < a.Length; i++)
+            {
+                for (int k = 0; k < a.Length - 1 - i; k++)
+                {
+                    Console.Write(" ");
+                }
+                for (int j = 0; j < a[i].Length; j++)
+                {
+                    Console.Write(a[i][j] + " ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        public static int CountZero(int num)
+        {
+            var result = 0;
+            var numStr = num.ToString();
+            for (var i = numStr.Length - 1; i >= 0; i--)
+            {
+                if (numStr[i] == '0')
+                {
+                    result++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return result;
         }
     }
 }

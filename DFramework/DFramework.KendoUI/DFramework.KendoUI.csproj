@@ -310,6 +310,7 @@
     <Content Include="Views\Home\SweetAlert2.cshtml" />
     <Content Include="Views\Home\JsRegular.cshtml" />
     <Content Include="Views\Home\JsTreeStyle.cshtml" />
+    <Content Include="Views\Home\Promise.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
