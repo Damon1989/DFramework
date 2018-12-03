@@ -40,6 +40,36 @@ namespace DFramework.KendoUI.Controllers
             return View();
         }
 
+        public ActionResult Kendo()
+        {
+            return View();
+        }
+
+        public ActionResult DataSourceRemote()
+        {
+            return View();
+        }
+
+        public ActionResult Dialog()
+        {
+            return View();
+        }
+
+        public ActionResult PredefinedDialogs()
+        {
+            return View();
+        }
+
+        public ActionResult DialogMVVM()
+        {
+            return View();
+        }
+
+        public ActionResult Extend()
+        {
+            return View();
+        }
+
         public ActionResult Mvvm()
         {
             return View();

@@ -1,0 +1,36 @@
+﻿<div id="example">
+    <button id="alterBtn" class="k-button">Kendo.alert</button>
+    <button id="confirmBtn" class="k-button">Kendo.confirm</button>
+    <button id="promptBtn" class="k-button">Kendo.prompt</button>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#alterBtn").on("click",
+                function () {
+                    kendo.alert("This is a Kendo UI Alert message.");
+                });
+
+            $("#confirmBtn").on("click",
+                function () {
+                    kendo.confirm("Are you sure that you want to proeed?").then(function () {
+                        kendo.alert("You chose the OK action.");
+                    },
+                        function () {
+                            kendo.alert("You chose to Cancel action.");
+                        });
+                });
+
+            $("#promptBtn").on("click",
+                function () {
+                    kendo.prompt("Please,enter a arbitrary value:", "any value").then(function (data) {
+                        kendo.alert(kendo.format("The value that you entered is '{0}'", data));
+                    },
+                        function () {
+                            kendo.alert("Cancel entering value.");
+                        });
+                });
+        })
+    </script>
+}

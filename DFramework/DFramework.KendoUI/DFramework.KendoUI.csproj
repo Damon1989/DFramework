@@ -311,6 +311,12 @@
     <Content Include="Views\Home\JsRegular.cshtml" />
     <Content Include="Views\Home\JsTreeStyle.cshtml" />
     <Content Include="Views\Home\Promise.cshtml" />
+    <Content Include="Views\Home\Kendo.cshtml" />
+    <Content Include="Views\Home\DataSourceRemote.cshtml" />
+    <Content Include="Views\Home\Dialog.cshtml" />
+    <Content Include="Views\Home\PredefinedDialogs.cshtml" />
+    <Content Include="Views\Home\DialogMVVM.cshtml" />
+    <Content Include="Views\Home\Extend.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
