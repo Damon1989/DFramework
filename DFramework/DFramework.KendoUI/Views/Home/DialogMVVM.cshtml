@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "DialogMVVM";
+}
+
+@section css{
+    <style>
+        #container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            border: 1px solid grey;
+        }
+    </style>
+}
+
+<div id="container">
+    <div id="window">
+        <p>
+            Alvar Aalto is one of the greatest names in modern architecture and design.
+            Glassblowers at the iittala factory still meticulously handcraft the legendary vases
+            that are variations on one theme, fluid organic shapes that let the end user decide the use.
+        </p>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#window").kendoWindow({
+                width: 200,
+                height: 200,
+                draggable: {
+                    containment: "#container"
+                }
+            });
+
+        });
+    </script>
+}

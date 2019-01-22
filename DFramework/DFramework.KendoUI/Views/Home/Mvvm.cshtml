@@ -1,6 +1,57 @@
 ﻿@{
 }
 
+@section css
+{
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+            table th,
+            table td {
+                border: 1px solid #999;
+                padding: .3em .6em;
+                text-align: left;
+            }
+    </style>
+}
+
+<div id="grid"></div>
+
+@section scripts{
+    <script>
+        var commonModule = (function () {
+            var myCustomFunction = function (str) {
+                return str.replace(".", " ");
+            }
+
+            return {
+                myCustomFunction: myCustomFunction
+            }
+        })();
+
+        $(function () {
+            var people = [{
+                firstName: "John",
+                lastName: "Smith",
+                email: "john.smith@telerik.com"
+            },
+            {
+                firstName: "Jane",
+                lastName: "Smith",
+                email: "jane.smith@telerik.com"
+            },
+            {
+                firstName: "Josh",
+                lastName: "Davis",
+                email: "josh.davis@telerik.com"
+            },
+            {
+                firstName: "Cindy",
+                lastName: "Jones",
+                email: "cindy.jones@telerik.com"
+            }];
 <div id="grid"></div>
 @section scripts{
     <script type="text/javascript">
@@ -18,11 +69,10 @@
                     lastName: "Jones",
                     email: "cindy.jones@telerik.com" } ];
 
-            $("#grid").kendoGrid({
-                dataSource: people,
-                selectable: "multiple row",
-                //pageable:true
-            });
-        })
+        var viewModel2 = kendo.observable({
+            selectedColor: "green"
+        });
+
+        kendo.bind($("select"), viewModel2);
     </script>
 }

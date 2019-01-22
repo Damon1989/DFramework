@@ -6,6 +6,9 @@ using DFramework.IoC;
 
 namespace DFramework.Infrastructure
 {
+    /// <summary>
+    /// 进程状态
+    /// </summary>
     public enum WorkerStatus
     {
         NotStarted,
@@ -17,6 +20,9 @@ namespace DFramework.Infrastructure
 
     public class TaskWorker
     {
+        /// <summary>
+        /// 委托
+        /// </summary>
         public delegate void WorkDelegate();
 
         protected volatile bool _canceled;

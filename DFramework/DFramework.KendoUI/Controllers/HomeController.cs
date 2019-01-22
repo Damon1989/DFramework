@@ -40,6 +40,46 @@ namespace DFramework.KendoUI.Controllers
             return View();
         }
 
+        public ActionResult UnderScore()
+        {
+            return View();
+        }
+
+        public ActionResult Kendo()
+        {
+            return View();
+        }
+
+        public ActionResult DataSourceRemote()
+        {
+            return View();
+        }
+
+        public ActionResult Dialog()
+        {
+            return View();
+        }
+
+        public ActionResult PredefinedDialogs()
+        {
+            return View();
+        }
+
+        public ActionResult DialogMVVM()
+        {
+            return View();
+        }
+
+        public ActionResult Extend()
+        {
+            //_kendoDbContext.Files.FirstOrDefault();
+            //var node = new Node();
+            //_domainRepository.Add(node);
+            //_kendoDbContext.Nodes.Add(node);
+            //_appUnitOfWork.Commit();
+            return View();
+        }
+
         public ActionResult Mvvm()
         {
             return View();

@@ -28,6 +28,10 @@ namespace DFramework.KendoUI.App_Start
             bundles.Add(new ScriptBundle("~/bundles/kendo").Include(
                 "~/Scripts/kendo.web.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/underscore").Include(
+                "~/scripts/underscore.js"
+                ));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-theme.css",
