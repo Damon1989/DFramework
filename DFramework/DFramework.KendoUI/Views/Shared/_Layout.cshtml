@@ -10,7 +10,9 @@
     @*<link href="~/Content/kendo.common.min.css" rel="stylesheet" />
         <link href="~/Content/kendo.default.min.css" rel="stylesheet" />*@
     @*<script src="~/Scripts/modernizr-2.6.2.js"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.4.0/jszip.js"></script>
     @Styles.Render("~/Content/css")
+
     @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">*@
     @RenderSection("css", false)
 </head>
@@ -26,9 +28,11 @@
 
     @*<script src="~/Scripts/bootstrap.min.js"></script>*@
     @*<script src="~/Scripts/kendo.web.min.js"></script>*@
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/kendo")
+    @Scripts.Render("~/bundles/underscore")
     @Scripts.Render("~/bundles/js")
     @*<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>*@
     @RenderSection("scripts", false)

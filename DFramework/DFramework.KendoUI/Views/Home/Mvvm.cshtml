@@ -1,48 +1,63 @@
 ﻿@{
 }
 
-<span data-bind="html: name"></span>
-<div id="view">
-    <div data-bind="invisible: isInvisible">
-        some content
-    </div>
-    <button data-bind="click: show">Show</button>
-</div>
+@section css
+{
+    <style>
+        table {
+            border-collapse: collapse;
+        }
 
-<select data-bind="style:{color:selectedColor},value:selectedColor" multiple="multiple">
-    <option value="red">Red</option>
-    <option value="green">Green</option>
-    <option value="blue">Blue</option>
-</select>
-@section scripts{
-    <script type="text/javascript">
-        var viewModel = kendo.observable({
-            //name: "John Doe"
-            name: "<strong>John Doe</strong>"
-        });
-
-        kendo.bind($("span"), viewModel);
-
-        var viewModel1 = kendo.observable({
-            isInvisible: true,
-            show: function () {
-                console.log(this.get("isInvisible"));
-                console.log(this.get("isInvisible"));
-                if (this.get("isInvisible")) {
-                    this.set("isInvisible", false);
-                } else {
-                    this.set("isInvisible", true);
-                }
-
+            table th,
+            table td {
+                border: 1px solid #999;
+                padding: .3em .6em;
+                text-align: left;
             }
+    </style>
+}
+
+<div id="grid"></div>
+
+@section scripts{
+    <script>
+        var commonModule = (function () {
+            var myCustomFunction = function (str) {
+                return str.replace(".", " ");
+            }
+
+            return {
+                myCustomFunction: myCustomFunction
+            }
+        })();
+
+        $(function () {
+            var people = [{
+                firstName: "John",
+                lastName: "Smith",
+                email: "john.smith@telerik.com"
+            },
+            {
+                firstName: "Jane",
+                lastName: "Smith",
+                email: "jane.smith@telerik.com"
+            },
+            {
+                firstName: "Josh",
+                lastName: "Davis",
+                email: "josh.davis@telerik.com"
+            },
+            {
+                firstName: "Cindy",
+                lastName: "Jones",
+                email: "cindy.jones@telerik.com"
+            }];
+
+            $("#grid").kendoGrid({
+                dataSource: people,
+                columns: [
+                    { selectable: true }, { field: "lastName" }]
+            });
         });
-
-        kendo.bind($("#view"), viewModel1);
-
-        var viewModel2 = kendo.observable({
-            selectedColor: "green"
-        });
-
-        kendo.bind($("select"), viewModel2);
     </script>
 }

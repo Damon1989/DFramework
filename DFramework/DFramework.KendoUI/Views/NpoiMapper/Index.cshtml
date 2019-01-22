@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<a href="@Url.Action("ExportFile")">111</a>
+
+<button onclick="exportdata()">22222</button>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+    $(function() {
+    })
+
+    function exportdata() {
+        $.get("/npoimapper/exportfile",
+            function(result) {
+                alert(result);
+            });
+    }
+    
+
+</script>
+

@@ -32,11 +32,16 @@ namespace DFramework.KendoUI.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            _kendoDbContext.Files.FirstOrDefault();
-            var node = new Node();
-            _domainRepository.Add(node);
-            _kendoDbContext.Nodes.Add(node);
-            _appUnitOfWork.Commit();
+            //_kendoDbContext.Files.FirstOrDefault();
+            //var node = new Node();
+            //_domainRepository.Add(node);
+            //_kendoDbContext.Nodes.Add(node);
+            //_appUnitOfWork.Commit();
+            return View();
+        }
+
+        public ActionResult UnderScore()
+        {
             return View();
         }
 

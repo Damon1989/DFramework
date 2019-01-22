@@ -2,47 +2,39 @@
     ViewBag.Title = "DialogMVVM";
 }
 
-<ul id="context-menu">
-    <li>Item 1</li>
-    <li>Item 2</li>
-</ul>
-
 @section css{
     <style>
+        #container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            border: 1px solid grey;
+        }
     </style>
 }
+
+<div id="container">
+    <div id="window">
+        <p>
+            Alvar Aalto is one of the greatest names in modern architecture and design.
+            Glassblowers at the iittala factory still meticulously handcraft the legendary vases
+            that are variations on one theme, fluid organic shapes that let the end user decide the use.
+        </p>
+    </div>
+</div>
 
 @section scripts
 {
     <script type="text/javascript">
         $(function () {
-            $("#context-menu").kendoContextMenu({
-                dataSource:
-                    [{
-                        text: "Item 1",
-                        cssClass: "myClass",                         // Add custom CSS class to the item, optional, added 2012 Q3 SP1.
-                        url: "http://www.telerik.com"                // Link URL if navigation is needed, optional.
-                    },
-                    {
-                        text: "<b>Item 2</b>",
-                        encoded: false,                              // Allows use of HTML for item text
-                        content: "text"                              // content within an item
-                    },
-                    {
-                        text: "Item 3",
-                        imageUrl: "http://www.telerik.com/test.jpg", // Item image URL, optional.
-                        items: [{                                    // Sub item collection
-                            text: "Sub Item 1"
-                        },
-                        {
-                            text: "Sub Item 2"
-                        }]
-                    },
-                    {
-                        text: "Item 4",
-                        spriteCssClass: "imageClass3"                // Item image sprite CSS class, optional.
-                    }]
-            })
+            $("#window").kendoWindow({
+                width: 200,
+                height: 200,
+                draggable: {
+                    containment: "#container"
+                }
+            });
+
         });
     </script>
 }
