@@ -31,11 +31,11 @@ namespace DFramework.KendoUI
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            var container = IoCConfig.GetConfigurationContainer();
-            GlobalConfiguration.Configuration.DependencyResolver = new HierarchicalDependencyResolver(container);
+            //var container = IoCConfig.GetConfigurationContainer();
+            //GlobalConfiguration.Configuration.DependencyResolver = new HierarchicalDependencyResolver(container);
 
-            var mvcContainer = IoCConfig.GetMvcConfigurationContainer();
-            DependencyResolver.SetResolver(new AutofacDependencyResolver(mvcContainer.GetAutofacContainer()));
+            //var mvcContainer = IoCConfig.GetMvcConfigurationContainer();
+            //DependencyResolver.SetResolver(new AutofacDependencyResolver(mvcContainer.GetAutofacContainer()));
         }
     }
 }

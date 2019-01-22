@@ -1,48 +1,28 @@
 ﻿@{
 }
 
-<span data-bind="html: name"></span>
-<div id="view">
-    <div data-bind="invisible: isInvisible">
-        some content
-    </div>
-    <button data-bind="click: show">Show</button>
-</div>
-
-<select data-bind="style:{color:selectedColor},value:selectedColor" multiple="multiple">
-    <option value="red">Red</option>
-    <option value="green">Green</option>
-    <option value="blue">Blue</option>
-</select>
+<div id="grid"></div>
 @section scripts{
     <script type="text/javascript">
-        var viewModel = kendo.observable({
-            //name: "John Doe"
-            name: "<strong>John Doe</strong>"
-        });
+        $(function() {
+            var people = [ { firstName: "John",
+                    lastName: "Smith",
+                    email: "john.smith@telerik.com" },
+                { firstName: "Jane",
+                    lastName: "Smith",
+                    email: "jane.smith@telerik.com" },
+                { firstName: "Josh",
+                    lastName: "Davis",
+                    email: "josh.davis@telerik.com" },
+                { firstName: "Cindy",
+                    lastName: "Jones",
+                    email: "cindy.jones@telerik.com" } ];
 
-        kendo.bind($("span"), viewModel);
-
-        var viewModel1 = kendo.observable({
-            isInvisible: true,
-            show: function () {
-                console.log(this.get("isInvisible"));
-                console.log(this.get("isInvisible"));
-                if (this.get("isInvisible")) {
-                    this.set("isInvisible", false);
-                } else {
-                    this.set("isInvisible", true);
-                }
-
-            }
-        });
-
-        kendo.bind($("#view"), viewModel1);
-
-        var viewModel2 = kendo.observable({
-            selectedColor: "green"
-        });
-
-        kendo.bind($("select"), viewModel2);
+            $("#grid").kendoGrid({
+                dataSource: people,
+                selectable: "multiple row",
+                //pageable:true
+            });
+        })
     </script>
 }

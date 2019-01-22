@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Console;
 
 namespace ConsoleApp
 {
@@ -39,6 +40,24 @@ namespace ConsoleApp
             }
 
             return minnum;
+        }
+    }
+
+    public class MethodOverloads
+    {
+        public void Foo<T>(T obj)
+        {
+            WriteLine($"Foo<T>(T obj),obj type :{obj.GetType().Name}");
+        }
+
+        public void Foo(int x)
+        {
+            WriteLine($"Foo(int x)");
+        }
+
+        public void Bar<T>(T obj)
+        {
+            Foo(obj);
         }
     }
 }

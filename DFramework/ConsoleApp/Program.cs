@@ -20,30 +20,38 @@ namespace ConsoleApp
             //WriteLine(result);
             //result = MatchEx.Min(1, 2, 3, 4);
             //WriteLine(result);
-            List<int> array = new List<int>() { 1, 2, 3, 4, 5 };
-            var enumerator = array.GetEnumerator();
+            //List<int> array = new List<int>() { 1, 2, 3, 4, 5 };
+            //var enumerator = array.GetEnumerator();
 
-            while (enumerator.MoveNext())
-            {
-                Console.WriteLine(enumerator.Current);
-            }
+            //while (enumerator.MoveNext())
+            //{
+            //    Console.WriteLine(enumerator.Current);
+            //}
 
-            WriteLine("------------------------");
+            //WriteLine("------------------------");
 
-            Stack<int> stack = new Stack<int>();
-            stack.Push(1);
-            stack.Push(2);
-            stack.Push(3);
-            stack.Push(4);
-            stack.Push(5);
-            stack.Push(6);
-            var stackEnumerator = stack.GetEnumerator();
+            //Stack<int> stack = new Stack<int>();
+            //stack.Push(1);
+            //stack.Push(2);
+            //stack.Push(3);
+            //stack.Push(4);
+            //stack.Push(5);
+            //stack.Push(6);
+            //var stackEnumerator = stack.GetEnumerator();
 
-            while (stackEnumerator.MoveNext())
-            {
-                WriteLine(stackEnumerator.Current);
-            }
+            //while (stackEnumerator.MoveNext())
+            //{
+            //    WriteLine(stackEnumerator.Current);
+            //}
+
+            var test=new MethodOverloads();
+            test.Foo(33);
+            test.Foo("abc");
+            test.Bar(44);
             ReadLine();
+
+            var list = new List<int> {1, 2, 3, 4, 5};
+            var list1=list.Where(r => r > 1);
         }
 
         public static void ListTest()

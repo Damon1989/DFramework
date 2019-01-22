@@ -1,7 +1,7 @@
 ﻿namespace DFramework
 {
     /// <summary>
-    ///  Represents the type of semantics.
+    ///  Represents the type of semantics.语义
     /// </summary>
     public enum Semantics
     {
