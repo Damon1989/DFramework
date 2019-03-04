@@ -1,19 +1,88 @@
 ﻿
 @{
     ViewBag.Title = "UnderScore";
+    Layout = null;
 }
 
 <h2>UnderScore</h2>
+<script type="text/javascript" src="~/Scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="~/Scripts/underscore.js"></script>
+<script type="text/javascript">
+    $(function() {
+        //_.each([1, 2, 3], alert);
+
+        //_.each({ one: 1, two: 2, three: 3 }, alert);
+
+        //var array = _.map([1, 2, 3], function (num) { return num * 3; });
+        //console.log(array);
+
+        //array = _.map({ one: 1, two:2, three: 3 }, function (num, key) { return num * 3 });
+        //console.log(array);
+
+        //array = _.map([[1, 2], [3, 4]], _.first);
+        //console.log(array);
+
+        //var sum = _.reduce([1, 2, 3], function (memo, num) { return memo + num; }, 0);
+        //console.log(sum);
+
+        //var list = [[0, 1], [2, 3], [4, 5]];
+        //var flat = _.reduceRight(list, function (a, b) { return a.concat(b) }, []);
+        //console.log(flat);
+
+        //var even = _.find([1, 2, 3, 4, 5, 6], function (num) { return num % 2 === 0; });
+        //console.log(even);
+
+        //var evens = _.filter([1, 2, 3, 4, 5, 6], function (num) { return num % 2 === 0 });
+        //console.log(evens);
+
+        //console.log(_.every([2, 4], function (num) { return num % 2 === 0; }));
+
+        //console.log(_.some([null, 0, false]));
+
+        //console.log(_.contains([1, 2, 3], 3));
+
+        //var array = _.invoke([[5, 1, 7], [3, 2, 1]], 'sort');
+        //console.log(array);
+
+        //var stooges = [{ name: 'moe', age: 40 }, { name: 'larry', age: 50 }, { name: 'curly', age: 60 }];
+        //array = _.pluck(stooges, "name");
+        //console.log(array);
+
+        //array = _.max(stooges, function (stooge) { return stooge.age; });
+        //console.log(array);
+
+        //var numbers = [10, 5, 100, 2, 1000];
+        //console.log(_.min(numbers));
+
+
+        //console.log(_.shuffle([1, 2, 3, 4, 5, 6]));
+
+        //console.log(_.sample([1, 2, 3, 4, 5, 6],4));
+
+        //console.log((function () { return _.toArray(arguments).splice(2); })(1, 2, 3, 4, 5));
+
+        //console.log(_.compact([0, 1, false, 2, '', 3]));
+
+        console.log(_.first([5, 4, 3, 2, 1], 2));
+
+        console.log(_.initial([5, 4, 3, 2, 1], 2));
+
+        console.log(_.rest([5, 4, 3, 2, 1],2));
+    });
+</script>
 
 @section scripts
 {
-    <script>
-        $(function() {
-            //var array=_.map([1, 2, 3],
-            //    function(num) {
-            //        return num * 3;
-            //    });
-            //console.log(array);
+    
+    @*<script>
+        $(function () {
+            _.each([1, 2, 3], alert);
+
+            var array=_.map([1, 2, 3],
+                function(num) {
+                    return num * 3;
+                });
+            console.log(array);
 
             //array = _.map({ one: 1, two: 2, three: 3 },
             //    function(num, key) {
@@ -144,17 +213,17 @@
 
             //_.delay(alert, 2000);
 
-            var log = _.bind(console.log, console);
-            _.delay(log, 2000, "hello", "world", 11);
+            //var log = _.bind(console.log, console);
+            //_.delay(log, 2000, "hello", "world", 11);
 
-            function Student(name, age) {
-                this.name = name;
-                this.age = age;
-            }
+            //function Student(name, age) {
+            //    this.name = name;
+            //    this.age = age;
+            //}
 
-            var xiaoming = new Student("小明", 20);
-            console.log(_.keys(xiaoming));
-            console.log(_.values(xiaoming));
+            //var xiaoming = new Student("小明", 20);
+            //console.log(_.keys(xiaoming));
+            //console.log(_.values(xiaoming));
         })
-    </script>
+    </script>*@
 }
