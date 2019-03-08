@@ -169,7 +169,7 @@ namespace MyMvcTest.Controllers
         //        validation.ShowErrorBox = true;//显示上面提示=Ture
         //        sheet1.AddValidationData(validation);//添加进去
         //    });
-            
+
         //    sheet1.ForceFormulaRecalculation = true;
 
         //    memory.AllowClose = false;
@@ -182,22 +182,30 @@ namespace MyMvcTest.Controllers
 
         public NpoiMemoryStream GetFileTemplate(string fileName, string[] heads, params CellValidation[] cellValidations)
         {
-            var memory = new NpoiMemoryStream();
             var workbook = new XSSFWorkbook();
 
             var sheet = workbook.CreateSheet(fileName);
-
+            var style = workbook.CreateCellStyle();
+            style.DataFormat = HSSFDataFormat.GetBuiltinFormat("@");
             #region set heads
             var newRow = sheet.CreateRow(0);
             for (var i = 0; i < heads.Length; i++)
             {
-                newRow.CreateCell(i).SetCellValue(heads[i]);
+                var cell = newRow.CreateCell(i);
+                cell.CellStyle = style;
+                cell.SetCellValue(heads[i]);
+                for (int j = 1; j <= 65535; j++)
+                {
+                    var row = sheet.GetRow(j) ?? sheet.CreateRow(j);
+                    cell = row.CreateCell(i);
+                    cell.CellStyle = style;
+                }
             }
             #endregion
 
             #region set datasource
             var dataNum = 0;
-            cellValidations.ForEach(item =>
+            cellValidations?.ToList().ForEach(item =>
             {
                 if (item.FirstList == null) return;
 
@@ -258,15 +266,15 @@ namespace MyMvcTest.Controllers
                             }
                         }
                     }
-                } 
+                }
                 #endregion
-            }); 
+            });
             #endregion
 
 
-            cellValidations.ForEach(item =>
+            cellValidations?.ToList().ForEach(item =>
             {
-                if (item.FirstList!=null&&item.FirstList.Any())
+                if (item.FirstList != null && item.FirstList.Any())
                 {
                     var regions = new CellRangeAddressList(item.FirstRow, item.LastRow, item.FirstCol, item.LastCol);//约束范围：c2到c65535
 
@@ -281,7 +289,7 @@ namespace MyMvcTest.Controllers
                 }
                 else
                 {
-                    if (item.ListOfValues!=null&&item.ListOfValues.Any())
+                    if (item.ListOfValues != null && item.ListOfValues.Any())
                     {
                         var regions = new CellRangeAddressList(item.FirstRow, item.LastRow, item.FirstCol, item.LastCol);//约束范围：c2到c65535
                         var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
@@ -295,9 +303,9 @@ namespace MyMvcTest.Controllers
                 }
             });
 
-            cellValidations.ForEach(item =>
+            cellValidations?.ToList().ForEach(item =>
             {
-                if (item.SecondList!=null&&item.SecondList.Any())
+                if (item.SecondList != null && item.SecondList.Any())
                 {
                     var regions = new CellRangeAddressList(item.FirstRow, item.LastRow, item.FirstCol + 1, item.LastCol + 1);//约束范围：c2到c65535
 
@@ -315,12 +323,16 @@ namespace MyMvcTest.Controllers
 
             sheet.ForceFormulaRecalculation = true;
 
+
+
+            var memory = new NpoiMemoryStream();
             memory.AllowClose = false;
+
             workbook.Write(memory);
             memory.Flush();
             memory.Position = 0;    // 指定内存流起始值
-
             return memory;
+
         }
 
         private static string Index2ColName(int index)
