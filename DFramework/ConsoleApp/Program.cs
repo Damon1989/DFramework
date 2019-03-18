@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Quartz;
+using Quartz.Impl;
 using static System.Console;
 
 namespace ConsoleApp
@@ -44,14 +47,56 @@ namespace ConsoleApp
             //    WriteLine(stackEnumerator.Current);
             //}
 
-            var test=new MethodOverloads();
-            test.Foo(33);
-            test.Foo("abc");
-            test.Bar(44);
-            ReadLine();
+            //var test=new MethodOverloads();
+            //test.Foo(33);
+            //test.Foo("abc");
+            //test.Bar(44);
+            //ReadLine();
 
-            var list = new List<int> {1, 2, 3, 4, 5};
-            var list1=list.Where(r => r > 1);
+            //var list = new List<int> {1, 2, 3, 4, 5};
+            //var list1=list.Where(r => r > 1);
+
+            var properties = new NameValueCollection();
+            properties["quartz.scheduler.instanceName"] = "RemoteServerSchedulerClient";
+
+
+            //设置线程池
+            properties["quartz.threadPool.type"] = "Quartz.Simpl.SimpleThreadPool, Quartz";
+            properties["quartz.threadPool.threadCount"] = "5";
+            properties["quartz.threadPool.threadPriority"] = "Normal";
+
+            //远程输出配置
+            properties["quartz.scheduler.exporter.type"] = "Quartz.Simpl.RemotingSchedulerExporter, Quartz";
+            properties["quartz.scheduler.exporter.port"] = "556";
+            properties["quartz.scheduler.exporter.bindName"] = "QuartzScheduler";
+            properties["quartz.scheduler.exporter.channelType"] = "tcp";
+
+            var schedulerFactory = new StdSchedulerFactory(properties);
+            var scheduler = schedulerFactory.GetScheduler();
+
+            var job = JobBuilder.Create<PrintMessageJob>()
+                .WithIdentity(nameof(PrintMessageJob), "group1")
+                .Build();
+
+            var trigger = TriggerBuilder.Create()
+                .WithIdentity("myJobTrigger", "group1")
+                .StartNow()
+                .WithCronSchedule("/2 * * ? * *")
+                .Build();
+
+            scheduler.ScheduleJob(job, trigger);
+            scheduler.Start();
+        }
+
+        public class  PrintMessageJob:IJob
+        {
+            public  void Execute(IJobExecutionContext context)
+            {
+
+                Console.WriteLine("Hello!");
+                Console.WriteLine(DateTime.Now.ToLongTimeString());
+                //await Task.FromResult(Task.Factory.StartNew(() => { Console.WriteLine("Hello!"); }));
+            }
         }
 
         public static void ListTest()

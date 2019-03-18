@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
@@ -30,6 +32,40 @@ namespace MyMvcTest.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public ActionResult ClassProperty()
+        {
+            
+            var cell = new MyClassA();
+            var result = new StringBuilder();
+            var properties= cell.GetType().GetProperties(BindingFlags.Public|BindingFlags.Instance);
+            properties.ForEach(prop =>
+            {
+                result.Append("<br />");
+                result.Append($"{prop.Name} {prop.PropertyType} {prop.GetType().IsClass}");
+                result.Append("<br />");
+                result.Append($"{prop.PropertyType}");
+                result.Append("<br />");
+                result.Append($"{prop.PropertyType.HasElementType}");
+                result.Append("<br />");
+                result.Append($"{prop.PropertyType.IsClass}");
+            });
+
+
+            return Content($"{result.ToString()}");
+        }
+
+        public class MyClassA
+        {
+
+            public string Id { get; set; }
+            public MyClassB ClassB { get; set; }
+        }
+
+        public class MyClassB
+        {
+            public string Name { get; set; }
         }
 
         public FileResult DownloadMapTemplete()
