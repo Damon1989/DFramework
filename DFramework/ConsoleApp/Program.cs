@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DFramework.Infrastructure;
 using Quartz;
 using Quartz.Impl;
 using static System.Console;
@@ -55,6 +56,14 @@ namespace ConsoleApp
 
             //var list = new List<int> {1, 2, 3, 4, 5};
             //var list1=list.Where(r => r > 1);
+
+            string fullPath = @"~\\WebSite1\\Default.aspx";
+
+            Console.WriteLine(fullPath.GetFileName());
+            Console.WriteLine(fullPath.GetFileExtension());
+            Console.WriteLine(fullPath.GetFileNameWithoutExtension());
+            Console.WriteLine(fullPath.GetDirectoryName());
+            return;
 
             var properties = new NameValueCollection();
             properties["quartz.scheduler.instanceName"] = "RemoteServerSchedulerClient";

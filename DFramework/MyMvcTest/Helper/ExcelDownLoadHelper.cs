@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
@@ -9,7 +10,7 @@ using NPOI.XSSF.UserModel;
 
 namespace MyMvcTest.Helper
 {
-    public static class ExcelHelper
+    public static class ExcelDownLoadHelper
     {
         public static NpoiMemoryStream GetFileTemplate(string fileName, string[] heads, params CellValidation[] cellValidations)
         {
@@ -107,29 +108,37 @@ namespace MyMvcTest.Helper
             {
                 if (item.FirstList != null && item.FirstList.Any())
                 {
-                    var regions = new CellRangeAddressList(item.FirstRow, item.LastRow, item.FirstCol, item.LastCol);//约束范围：c2到c65535
+                    if (item.FirstCellLocation != null)
+                    {
+                        var regions = new CellRangeAddressList(item.FirstCellLocation.FirstRow, item.FirstCellLocation.LastRow, item.FirstCellLocation.FirstCol, item.FirstCellLocation.LastCol);//约束范围：c2到c65535
 
-                    var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
-                    var validation =
-                        helper.CreateValidation(
-                            helper.CreateFormulaListConstraint(item.FirstList[0].Value),
-                            regions);//创建约束
-                    validation.CreateErrorBox("错误", "请按右侧下拉箭头选择!");
-                    validation.ShowErrorBox = true;//显示上面提示
-                    sheet.AddValidationData(validation);//添加进去
+                        var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
+                        var validation =
+                            helper.CreateValidation(
+                                helper.CreateFormulaListConstraint(item.FirstList[0].Value),
+                                regions);//创建约束
+                        validation.CreateErrorBox("错误", "请按右侧下拉箭头选择!");
+                        validation.ShowErrorBox = true;//显示上面提示
+                        sheet.AddValidationData(validation);//添加进去
+                    }
+
                 }
                 else
                 {
                     if (item.ListOfValues != null && item.ListOfValues.Any())
                     {
-                        var regions = new CellRangeAddressList(item.FirstRow, item.LastRow, item.FirstCol, item.LastCol);//约束范围：c2到c65535
-                        var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
-                        var validation =
-                            helper.CreateValidation(helper.CreateExplicitListConstraint(item.ListOfValues),
-                                regions);//创建约束
-                        validation.CreateErrorBox("错误", "请按右侧下拉箭头选择!");
-                        validation.ShowErrorBox = true;//显示上面提示
-                        sheet.AddValidationData(validation);//添加进去
+                        if (item.FirstCellLocation != null)
+                        {
+                            var regions = new CellRangeAddressList(item.FirstCellLocation.FirstRow, item.FirstCellLocation.LastRow, item.FirstCellLocation.FirstCol, item.FirstCellLocation.LastCol);//约束范围：c2到c65535
+                            var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
+                            var validation =
+                                helper.CreateValidation(helper.CreateExplicitListConstraint(item.ListOfValues),
+                                    regions);//创建约束
+                            validation.CreateErrorBox("错误", "请按右侧下拉箭头选择!");
+                            validation.ShowErrorBox = true;//显示上面提示
+                            sheet.AddValidationData(validation);//添加进去
+                        }
+
                     }
                 }
             });
@@ -138,16 +147,36 @@ namespace MyMvcTest.Helper
             {
                 if (item.SecondList != null && item.SecondList.Any())
                 {
-                    var regions = new CellRangeAddressList(item.FirstRow, item.LastRow, item.FirstCol + 1, item.LastCol + 1);//约束范围：c2到c65535
+                    if (item.SecondCellLocation != null)
+                    {
+                        var regions = new CellRangeAddressList(item.SecondCellLocation.FirstRow, item.SecondCellLocation.LastRow, item.SecondCellLocation.FirstCol, item.SecondCellLocation.LastCol);//约束范围：c2到c65535
 
-                    var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
-                    var validation =
-                        helper.CreateValidation(
-                            helper.CreateFormulaListConstraint($"INDIRECT(${Index2ColName(item.FirstCol)}2)"),
-                            regions);//创建约束
-                    validation.CreateErrorBox("错误", "请按右侧下拉箭头选择!");
-                    validation.ShowErrorBox = true;//显示上面提示=Ture
-                    sheet.AddValidationData(validation);//添加进去
+                        var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
+                        var validation =
+                            helper.CreateValidation(
+                                helper.CreateFormulaListConstraint($"INDIRECT(${Index2ColName(item.FirstCellLocation.FirstCol)}2)"),
+                                regions);//创建约束
+                        validation.CreateErrorBox("错误", "请按右侧下拉箭头选择!");
+                        validation.ShowErrorBox = true;//显示上面提示=Ture
+                        sheet.AddValidationData(validation);//添加进去
+                    }
+                    else
+                    {
+                        if (item.FirstCellLocation != null)
+                        {
+                            var regions = new CellRangeAddressList(item.FirstCellLocation.FirstRow, item.FirstCellLocation.LastRow, item.FirstCellLocation.FirstCol + 1, item.FirstCellLocation.LastCol + 1);//约束范围：c2到c65535
+
+                            var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
+                            var validation =
+                                helper.CreateValidation(
+                                    helper.CreateFormulaListConstraint($"INDIRECT(${Index2ColName(item.FirstCellLocation.FirstCol)}2)"),
+                                    regions);//创建约束
+                            validation.CreateErrorBox("错误", "请按右侧下拉箭头选择!");
+                            validation.ShowErrorBox = true;//显示上面提示=Ture
+                            sheet.AddValidationData(validation);//添加进去
+                        }
+                    }
+
                 }
             });
 
@@ -178,15 +207,35 @@ namespace MyMvcTest.Helper
             return GetFileTemplate(fileName, heads, cellContents, null);
         }
 
-        public static NpoiMemoryStream GetFileTemplate(string fileName, List<HeadInfo> heads, List<CellContent> cellContents = null, params CellValidation[] cellValidations)
+        public static NpoiMemoryStream GetFileTemplate(string fileName
+                                                     , List<HeadInfo> heads
+                                                     , List<CellContent> cellContents = null
+                                                     , params CellValidation[] cellValidations)
         {
+
+            for (int i = 0; i < cellValidations.Length; i++)
+            {
+                if (cellValidations[i].FirstList != null && cellValidations[i].FirstList.Any())
+                {
+                    cellValidations[i].FirstList[0].Key = ReplaceSpecialCharacter(cellValidations[i].FirstList[0].Key);
+                    cellValidations[i].FirstList[0].Value = ReplaceSpecialCharacter(cellValidations[i].FirstList[0].Value);
+                    //foreach (var item in cellValidations[i].FirstList)
+                    //{
+                    //    item.Key =ReplaceSpecialCharacter(item.Key);
+                    //    item.Value =ReplaceSpecialCharacter(item.Value);
+                    //}
+                }
+            }
+
             var workbook = new XSSFWorkbook();
 
             var sheet = workbook.CreateSheet(fileName);
+
             #region set heads
             var newRow = sheet.CreateRow(0);
             for (var i = 0; i < heads.Count; i++)
             {
+                sheet.SetColumnWidth(i, heads[i].ColumnWidth);
                 var style = GetCellStyle(workbook, heads[i].CellStyle);
                 var cell = newRow.CreateCell(i);
                 cell.CellStyle = style;
@@ -200,6 +249,7 @@ namespace MyMvcTest.Helper
             }
             #endregion
 
+            #region set cellContents
             cellContents?.ForEach(item =>
             {
                 var writeSheet = workbook.GetSheetAt(item.SheetIndex) ??
@@ -213,6 +263,8 @@ namespace MyMvcTest.Helper
                     i++;
                 });
             });
+            #endregion
+
 
             #region set datasource
             var dataNum = 0;
@@ -220,7 +272,8 @@ namespace MyMvcTest.Helper
             {
                 if (item.FirstList == null) return;
 
-                var dataSourceSheetName = $"dataSource{dataNum}";
+                //var dataSourceSheetName = $"dataSource{dataNum}";
+                var dataSourceSheetName = $"{item.FirstList?[0]?.Value.Replace(" ", "")}";
                 dataNum++;
                 var dataSourceSheet = workbook.CreateSheet(dataSourceSheetName);//创建sheet
 
@@ -228,7 +281,9 @@ namespace MyMvcTest.Helper
                 {
                     var row = dataSourceSheet.GetRow(i) ?? dataSourceSheet.CreateRow(i);//添加行
 
-                    row.CreateCell(0).SetCellValue(item.FirstList[i].Value);//单元格写值
+                    row.CreateCell(0).SetCellValue(i == 0
+                        ? item.FirstList[i].Value.Replace(" ", "")
+                        : item.FirstList[i].Value);//单元格写值
 
                     if (i > 0)
                     {
@@ -253,7 +308,7 @@ namespace MyMvcTest.Helper
                     if (i == 0)
                     {
                         var range = workbook.CreateName();
-                        range.NameName = item.FirstList[i].Value;
+                        range.NameName = item.FirstList[i].Value.Replace(" ", "");
                         range.RefersToFormula = string.Format("{0}!${3}${2}:${3}${1}",
                             dataSourceSheetName,
                             item.FirstList.Count,
@@ -268,7 +323,7 @@ namespace MyMvcTest.Helper
                             if (cellDatas.Any())
                             {
                                 var range = workbook.CreateName();
-                                range.NameName = item.FirstList[i].Value;
+                                range.NameName = item.FirstList[i].Value.Replace(" ", "");
                                 range.RefersToFormula = string.Format("{0}!${3}${2}:${3}${1}",
                                     dataSourceSheetName,
                                     cellDatas.Count + 1,
@@ -287,29 +342,36 @@ namespace MyMvcTest.Helper
             {
                 if (item.FirstList != null && item.FirstList.Any())
                 {
-                    var regions = new CellRangeAddressList(item.FirstRow, item.LastRow, item.FirstCol, item.LastCol);//约束范围：c2到c65535
+                    if (item.FirstCellLocation != null)
+                    {
+                        var regions = new CellRangeAddressList(item.FirstCellLocation.FirstRow, item.FirstCellLocation.LastRow, item.FirstCellLocation.FirstCol, item.FirstCellLocation.LastCol);//约束范围：c2到c65535
 
-                    var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
-                    var validation =
-                        helper.CreateValidation(
-                            helper.CreateFormulaListConstraint(item.FirstList[0].Value),
-                            regions);//创建约束
-                    validation.CreateErrorBox("错误", "请按右侧下拉箭头选择!");
-                    validation.ShowErrorBox = true;//显示上面提示
-                    sheet.AddValidationData(validation);//添加进去
+                        var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
+                        var validation =
+                            helper.CreateValidation(
+                                helper.CreateFormulaListConstraint(item.FirstList[0].Value),
+                                regions);//创建约束
+                        validation.CreateErrorBox("错误", "请按右侧下拉箭头选择!");
+                        validation.ShowErrorBox = true;//显示上面提示
+                        sheet.AddValidationData(validation);//添加进去
+                    }
                 }
                 else
                 {
                     if (item.ListOfValues != null && item.ListOfValues.Any())
                     {
-                        var regions = new CellRangeAddressList(item.FirstRow, item.LastRow, item.FirstCol, item.LastCol);//约束范围：c2到c65535
-                        var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
-                        var validation =
-                            helper.CreateValidation(helper.CreateExplicitListConstraint(item.ListOfValues),
-                                regions);//创建约束
-                        validation.CreateErrorBox("错误", "请按右侧下拉箭头选择!");
-                        validation.ShowErrorBox = true;//显示上面提示
-                        sheet.AddValidationData(validation);//添加进去
+                        if (item.FirstCellLocation != null)
+                        {
+                            var regions = new CellRangeAddressList(item.FirstCellLocation.FirstRow, item.FirstCellLocation.LastRow, item.FirstCellLocation.FirstCol, item.FirstCellLocation.LastCol);//约束范围：c2到c65535
+                            var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
+                            var validation =
+                                helper.CreateValidation(helper.CreateExplicitListConstraint(item.ListOfValues),
+                                    regions);//创建约束
+                            validation.CreateErrorBox("错误", "请按右侧下拉箭头选择!");
+                            validation.ShowErrorBox = true;//显示上面提示
+                            sheet.AddValidationData(validation);//添加进去
+                        }
+
                     }
                 }
             });
@@ -318,16 +380,33 @@ namespace MyMvcTest.Helper
             {
                 if (item.SecondList != null && item.SecondList.Any())
                 {
-                    var regions = new CellRangeAddressList(item.FirstRow, item.LastRow, item.FirstCol + 1, item.LastCol + 1);//约束范围：c2到c65535
+                    if (item.SecondCellLocation != null)
+                    {
+                        var regions = new CellRangeAddressList(item.SecondCellLocation.FirstRow, item.SecondCellLocation.LastRow, item.SecondCellLocation.FirstCol, item.SecondCellLocation.LastCol);//约束范围：c2到c65535
 
-                    var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
-                    var validation =
-                        helper.CreateValidation(
-                            helper.CreateFormulaListConstraint($"INDIRECT(${Index2ColName(item.FirstCol)}2)"),
-                            regions);//创建约束
-                    validation.CreateErrorBox("错误", "请按右侧下拉箭头选择!");
-                    validation.ShowErrorBox = true;//显示上面提示=Ture
-                    sheet.AddValidationData(validation);//添加进去
+                        var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
+                        var validation =
+                            helper.CreateValidation(
+                                helper.CreateFormulaListConstraint($"INDIRECT(${Index2ColName(item.FirstCellLocation.FirstCol)}2)"),
+                                regions);//创建约束
+                        validation.CreateErrorBox("错误", "请按右侧下拉箭头选择!");
+                        validation.ShowErrorBox = true;//显示上面提示=Ture
+                        sheet.AddValidationData(validation);//添加进去
+                    }
+                    else if (item.FirstCellLocation != null)
+                    {
+                        var regions = new CellRangeAddressList(item.FirstCellLocation.FirstRow, item.FirstCellLocation.LastRow, item.FirstCellLocation.FirstCol + 1, item.FirstCellLocation.LastCol + 1);//约束范围：c2到c65535
+
+                        var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
+                        var validation =
+                            helper.CreateValidation(
+                                helper.CreateFormulaListConstraint($"INDIRECT(${Index2ColName(item.FirstCellLocation.FirstCol)}2)"),
+                                regions);//创建约束
+                        validation.CreateErrorBox("错误", "请按右侧下拉箭头选择!");
+                        validation.ShowErrorBox = true;//显示上面提示=Ture
+                        sheet.AddValidationData(validation);//添加进去
+                    }
+
                 }
             });
 
@@ -365,6 +444,15 @@ namespace MyMvcTest.Helper
                 index = (int)((index - remainder) / 26);
             } while (index > 0);
             return colName;
+        }
+
+        private static string ReplaceSpecialCharacter(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return "";
+            //将特殊字符全部替换为下划线
+            string pattern = "[\\[ \\] \\^ \\-_*×――(^)$%~!@#$…&%￥—+=<>《》!！??？:：•`·、。，；,;\"‘’“”-]";
+            return Regex.Replace(text, pattern, "");
+
         }
 
         /// <summary>
@@ -469,6 +557,8 @@ namespace MyMvcTest.Helper
                 case CellStyleEnum.默认:
                     break;
             }
+
+
             return cellStyle;
 
 
@@ -513,10 +603,9 @@ namespace MyMvcTest.Helper
 
     public class CellValidation
     {
-        public int FirstRow { get; set; }
-        public int LastRow { get; set; }
-        public int FirstCol { get; set; }
-        public int LastCol { get; set; }
+        public CellLocation FirstCellLocation { get; set; }
+        public CellLocation SecondCellLocation { get; set; }
+
         public string[] ListOfValues { get; set; }
         public List<CellData> FirstList { get; set; }
         public List<CellData> SecondList { get; set; }
@@ -527,40 +616,97 @@ namespace MyMvcTest.Helper
         }
 
         public CellValidation(int firstCol, int lastCol, string[] listOfValues)
-            : this(1, 65535, firstCol, lastCol, listOfValues, null, null)
+            : this(new CellLocation(firstCol, lastCol), listOfValues, null, null, null)
         {
         }
 
         public CellValidation(int firstRow, int lastRow, int firstCol, int lastCol, string[] listOfValues)
-        : this(firstRow, lastRow, firstCol, lastCol, listOfValues, null, null)
+        : this(new CellLocation(firstRow, lastRow, firstCol, lastCol), listOfValues, null, null, null)
         {
         }
 
         public CellValidation(int firstCol, int lastCol,
             List<CellData> firstList, List<CellData> secondList)
-            : this(1, 65535, firstCol, lastCol, null, firstList, secondList)
+        : this(new CellLocation(firstCol, lastCol), null, firstList, null, secondList)
         {
 
         }
 
         public CellValidation(int firstRow, int lastRow, int firstCol, int lastCol,
             List<CellData> firstList, List<CellData> secondList)
-            : this(firstRow, lastRow, firstCol, lastCol, null, firstList, secondList)
+            : this(new CellLocation(firstRow, lastRow, firstCol, lastCol), null, firstList, null, secondList)
         {
 
         }
-        public CellValidation(int firstRow, int lastRow, int firstCol, int lastCol, string[] listOfValues,
-            List<CellData> firstList, List<CellData> secondList)
+
+        public CellValidation(int firstCol, int lastCol,
+            List<CellData> firstList, int secondFirstCol, int secondLastCol, List<CellData> secondList)
+            : this(new CellLocation(firstCol, lastCol), null, firstList, new CellLocation(secondFirstCol, secondLastCol), secondList)
+        {
+
+        }
+
+
+
+        public CellValidation(int firstRow
+                                        , int lastRow
+                                        , int firstCol
+                                        , int lastCol
+                                        , List<CellData> firstList
+                                        , int secondFirstRow
+                                        , int secondLastRow
+                                        , int secondFirstCol
+                                        , int secondLastCol
+                                        , List<CellData> secondList)
+            : this(new CellLocation(firstRow, lastRow, firstCol, lastCol), null, firstList, new CellLocation(secondFirstRow, secondLastRow, secondFirstCol, secondLastCol), secondList)
+        {
+
+        }
+
+        public CellValidation(CellLocation firstCellLocation,
+            List<CellData> firstList, CellLocation secondCellLocation, List<CellData> secondList)
+            : this(firstCellLocation, null, firstList, secondCellLocation, secondList)
+        {
+
+        }
+        public CellValidation(CellLocation firstCellLocation, string[] listOfValues,
+            List<CellData> firstList, CellLocation secondCellLocation, List<CellData> secondList)
+        {
+            FirstCellLocation = firstCellLocation;
+            ListOfValues = listOfValues;
+            FirstList = firstList;
+            SecondCellLocation = secondCellLocation;
+            SecondList = secondList;
+
+        }
+
+    }
+
+    public class CellLocation
+    {
+        public int FirstRow { get; set; }
+        public int LastRow { get; set; }
+        public int FirstCol { get; set; }
+        public int LastCol { get; set; }
+
+        public CellLocation()
+        {
+
+        }
+
+        public CellLocation(int firstCol, int lastCol)
+        : this(1, 65535, firstCol, lastCol)
+        {
+
+        }
+
+        public CellLocation(int firstRow, int lastRow, int firstCol, int lastCol)
         {
             FirstRow = firstRow;
             LastRow = lastRow;
             FirstCol = firstCol;
             LastCol = lastCol;
-            ListOfValues = listOfValues;
-            FirstList = firstList;
-            SecondList = secondList;
         }
-
     }
 
     public class CellContent
@@ -609,13 +755,15 @@ namespace MyMvcTest.Helper
     {
         public string Name { get; set; }
         public CellStyleEnum CellStyle { get; set; }
+        public int ColumnWidth { get; set; }
 
         public HeadInfo() { }
 
-        public HeadInfo(string name, CellStyleEnum cellStyle)
+        public HeadInfo(string name, CellStyleEnum cellStyle, int columnWidth = 30 * 256)
         {
             Name = name;
             CellStyle = cellStyle;
+            ColumnWidth = columnWidth;
         }
     }
 }

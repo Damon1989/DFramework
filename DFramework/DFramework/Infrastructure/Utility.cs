@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Web;
 using System.Web.Hosting;
 
@@ -15,6 +17,11 @@ namespace DFramework.Infrastructure
     {
         private const string k_base36_digits = "0123456789abcdefghijklmnopqrstuvwxyz";
         private static readonly uint[] _lookup32 = CreateLookup32();
+
+        public static string GetFullNameWithAssembly(this Type type)
+        {
+            return $"{type.FullName},{type.Assembly.GetName().Name}";
+        }
 
         #region ForEach
 
@@ -114,6 +121,28 @@ namespace DFramework.Infrastructure
 
         #endregion FilePath
 
+        #region FileExtension
+        public static string GetFileName(this string filePath)
+        {
+            return Path.GetFileName(filePath);
+        }
+
+        public static string GetFileNameWithoutExtension(this string filePath)
+        {
+            return Path.GetFileNameWithoutExtension(filePath);
+        }
+
+        public static string GetFileExtension(this string filePath)
+        {
+            return Path.GetExtension(filePath);
+        }
+
+        public static string GetDirectoryName(this string filePath)
+        {
+            return Path.GetDirectoryName(filePath);
+        }
+        #endregion
+
         #region Lambda
 
         public static LambdaExpression GetLambdaExpression(Type type, string propertyName)
@@ -173,10 +202,111 @@ namespace DFramework.Infrastructure
             }
         }
 
+        #region IQueryable
         public static IQueryable<T> GetPageElements<T>(this IQueryable<T> query, int pageIndex, int pageSize)
         {
             return query.Skip(pageIndex * pageSize).Take(pageSize);
         }
+        #endregion
+
+        #region  GetQueryString
+        /// <summary>
+        /// 将查询字符串解析转换为名值集合
+        /// </summary>
+        /// <param name="queryString"></param>
+        /// <returns></returns>
+        public static NameValueCollection GetQueryString(string queryString)
+        {
+            return queryString.GetQueryString(null);
+        }
+
+        /// <summary>
+        /// 将查询字符串解析转换为名值集合。
+        /// </summary>
+        /// <param name="queryString"></param>
+        /// <param name="encoding"></param>
+        /// <param name="isEncoded"></param>
+        /// <returns></returns>
+        public static NameValueCollection GetQueryString(this string queryString, Encoding encoding, bool isEncoded = true)
+        {
+            queryString = queryString.Replace("?", "");
+            var result = new NameValueCollection(StringComparer.OrdinalIgnoreCase);
+            if (!string.IsNullOrEmpty(queryString))
+            {
+                var count = queryString.Length;
+                for (var i = 0; i < count; i++)
+                {
+                    var startIndex = i;
+                    var index = -1;
+                    while (i < count)
+                    {
+                        char item = queryString[i];
+                        if (item == '=')
+                        {
+                            if (index < 0)
+                            {
+                                index = i;
+                            }
+                        }
+                        else if (item == '&')
+                        {
+                            break;
+                        }
+
+                        i++;
+                    }
+
+                    string key;
+                    var value = string.Empty;
+                    if (index >= 0)
+                    {
+                        key = queryString.Substring(startIndex, index - startIndex);
+                        value = queryString.Substring(index + 1, (i - index) - 1);
+                    }
+                    else
+                    {
+                        key = queryString.Substring(startIndex, i - startIndex);
+                    }
+
+                    if (isEncoded)
+                    {
+                        result[key.UrlDeCode(encoding)] = value.UrlDeCode(encoding);
+                    }
+                    else
+                    {
+                        result[key] = value;
+                    }
+
+                    if ((i == (count - 1)) && (queryString[i] == '&'))
+                    {
+                        result[key] = string.Empty;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 解码Url
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
+        public static string UrlDeCode(this string str, Encoding encoding = null)
+        {
+            if (encoding != null) return HttpUtility.UrlDecode(str, encoding);
+
+            var utf8 = Encoding.UTF8;
+            //首先用utf-8进行解码
+            var code = HttpUtility.UrlDecode(str.ToUpper(), utf8);
+            //将已经解码的字符再次进行编码
+            var encode = HttpUtility.UrlEncode(code, utf8).ToUpper();
+            encoding = str.ToUpper() == encode ? Encoding.UTF8 : Encoding.GetEncoding("gb2312");
+
+            return HttpUtility.UrlDecode(str, encoding);
+        }
+        #endregion
 
         public static string ToBase36string(this byte[] bytes, EndianFormat bytesEndian = EndianFormat.Little,
             bool includeProceedingZeros = true)
