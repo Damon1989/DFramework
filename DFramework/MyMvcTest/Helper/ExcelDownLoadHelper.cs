@@ -198,22 +198,29 @@ namespace MyMvcTest.Helper
         public static NpoiMemoryStream GetFileTemplate(string fileName, List<HeadInfo> heads,
              params CellValidation[] cellValidations)
         {
-            return GetFileTemplate(fileName, heads, null, cellValidations);
+            return GetFileTemplate(fileName, heads, null, null, cellValidations);
+        }
+
+        public static NpoiMemoryStream GetFileDownloadData(string fileName, List<HeadInfo> heads,
+            List<List<ContentInfo>> contentInfo)
+        {
+            return GetFileTemplate(fileName, heads, contentInfo, null, null);
         }
 
         public static NpoiMemoryStream GetFileTemplate(string fileName, List<HeadInfo> heads,
             List<CellContent> cellContents)
         {
-            return GetFileTemplate(fileName, heads, cellContents, null);
+            return GetFileTemplate(fileName, heads, null, cellContents, null);
         }
 
         public static NpoiMemoryStream GetFileTemplate(string fileName
                                                      , List<HeadInfo> heads
+                                                     , List<List<ContentInfo>> contentInfo = null
                                                      , List<CellContent> cellContents = null
                                                      , params CellValidation[] cellValidations)
         {
 
-            for (int i = 0; i < cellValidations.Length; i++)
+            for (int i = 0; i < cellValidations?.Length; i++)
             {
                 if (cellValidations[i].FirstList != null && cellValidations[i].FirstList.Any())
                 {
@@ -232,6 +239,8 @@ namespace MyMvcTest.Helper
             var sheet = workbook.CreateSheet(fileName);
 
             #region set heads
+
+            var rowCount = contentInfo?.Count ?? 65535;
             var newRow = sheet.CreateRow(0);
             for (var i = 0; i < heads.Count; i++)
             {
@@ -240,7 +249,7 @@ namespace MyMvcTest.Helper
                 var cell = newRow.CreateCell(i);
                 cell.CellStyle = style;
                 cell.SetCellValue(heads[i].Name);
-                for (int j = 1; j <= 65535; j++)
+                for (int j = 1; j <= rowCount; j++)
                 {
                     var row = sheet.GetRow(j) ?? sheet.CreateRow(j);
                     cell = row.CreateCell(i);
@@ -249,19 +258,37 @@ namespace MyMvcTest.Helper
             }
             #endregion
 
+            for (int i = 0; i < contentInfo?.Count; i++)
+            {
+                var contentRow = sheet.CreateRow(i + 1);
+                for (int j = 0; j < contentInfo[i]?.Count; j++)
+                {
+                    var contentCell = contentRow.CreateCell(j);
+                    contentCell.SetCellValue(contentInfo[i][j].Name);
+                }
+            }
+
             #region set cellContents
             cellContents?.ForEach(item =>
             {
                 var writeSheet = workbook.GetSheetAt(item.SheetIndex) ??
                                  workbook.CreateSheet(item.SheetIndex.ToString());
                 var i = 0;
-                item.ListOfValues?.ToList().ForEach(info =>
+                foreach (var info in item.ListOfValues)
                 {
                     var writeRow = writeSheet.GetRow(item.FirstRow + i) ?? writeSheet.CreateRow(item.FirstRow + i);
                     var writeCell = writeRow.GetCell(item.FirstCol) ?? writeRow.CreateCell(item.FirstCol);
                     writeCell.SetCellValue(info);
                     i++;
-                });
+                }
+
+                //item.ListOfValues?.ForEach(info =>
+                //{
+                //    var writeRow = writeSheet.GetRow(item.FirstRow + i) ?? writeSheet.CreateRow(item.FirstRow + i);
+                //    var writeCell = writeRow.GetCell(item.FirstCol) ?? writeRow.CreateCell(item.FirstCol);
+                //    writeCell.SetCellValue(info);
+                //    i++;
+                //});
             });
             #endregion
 
@@ -764,6 +791,16 @@ namespace MyMvcTest.Helper
             Name = name;
             CellStyle = cellStyle;
             ColumnWidth = columnWidth;
+        }
+    }
+
+    public class ContentInfo : HeadInfo
+    {
+        public ContentInfo() { }
+
+        public ContentInfo(string name) : base(name, CellStyleEnum.默认)
+        {
+            this.Name = name;
         }
     }
 }

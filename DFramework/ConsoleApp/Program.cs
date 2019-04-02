@@ -56,6 +56,47 @@ namespace ConsoleApp
 
             //var list = new List<int> {1, 2, 3, 4, 5};
             //var list1=list.Where(r => r > 1);
+            Permission permission = Permission.Create | Permission.Read | Permission.Update | Permission.Delete;
+            WriteLine("1、枚举创建，并赋值");
+            WriteLine(permission.ToString());//Create, Read, Update, Delete
+            WriteLine((int)permission);//15
+
+            permission=(Permission) Enum.Parse(typeof(Permission), "5");
+            WriteLine("2、通过数字字符串转换......");
+            WriteLine(permission.ToString());//Create, Update
+            WriteLine((int)permission);//5
+
+            permission = (Permission) Enum.Parse(typeof(Permission), "update,delete,read", true);
+            WriteLine("3、通过枚举名称字符串转换......");
+            WriteLine(permission.ToString());//Read, Update, Delete
+            WriteLine((int)permission);//14
+
+            permission = (Permission)7;
+            WriteLine("4、直接用数字强制转换......");
+            WriteLine(permission.ToString());//Create, Read, Update
+            WriteLine((int)permission);//7
+
+            permission = permission & ~Permission.Read;
+            WriteLine("5、去掉一个枚举项");
+            WriteLine(permission.ToString());//Create, Update
+            WriteLine((int)permission);//5
+
+            permission = permission | Permission.Delete;
+            WriteLine("6、加上一个枚举项");
+            WriteLine(permission.ToString());//Create, Update, Delete
+            WriteLine((int)permission);//13
+
+            WriteLine(permission.HasFlag(Permission.Delete));//True
+
+            if (permission.HasFlag(Permission.Delete))
+            {
+                WriteLine("!!!!!!!!");
+            }
+
+            WriteLine(permission.GetHashCode());
+            WriteLine(permission.GetTypeCode());
+            
+            return;
 
             string fullPath = @"~\\WebSite1\\Default.aspx";
 
@@ -63,6 +104,12 @@ namespace ConsoleApp
             Console.WriteLine(fullPath.GetFileExtension());
             Console.WriteLine(fullPath.GetFileNameWithoutExtension());
             Console.WriteLine(fullPath.GetDirectoryName());
+
+            var myClass=new MyClass();
+            Console.WriteLine(nameof(MyClass));
+            Console.WriteLine(nameof(myClass));
+            Console.WriteLine(nameof(myClass.Name).Trim().ToLower());
+
             return;
 
             var properties = new NameValueCollection();
@@ -96,6 +143,22 @@ namespace ConsoleApp
             scheduler.ScheduleJob(job, trigger);
             scheduler.Start();
         }
+
+        public class MyClass
+        {
+            public string Name { get; set; }
+
+        }
+
+        [Flags]
+        public enum  Permission
+        {
+            Create=1,
+            Read=2,
+            Update=4,
+            Delete=8
+        }
+
 
         public class  PrintMessageJob:IJob
         {

@@ -6,7 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using DFramework.Infrastructure;
 using Microsoft.Ajax.Utilities;
+using MyMvcTest.Helper;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
@@ -17,6 +19,10 @@ namespace MyMvcTest.Controllers
     {
         public ActionResult Index()
         {
+            //var mail = new Mail("123", "432", "15201864775@163.com","417552029@qq.com");
+            var fileList = new List<string> { Extension.GetServerMapPath("~/favicon.ico") };
+            var mail = new Mail("123哈哈哈哈", "433333333333332", "417552029@qq.com",fileList);
+            SendMailHelper.SendMail(mail);
             return View();
         }
 
@@ -40,7 +46,7 @@ namespace MyMvcTest.Controllers
             var cell = new MyClassA();
             var result = new StringBuilder();
             var properties= cell.GetType().GetProperties(BindingFlags.Public|BindingFlags.Instance);
-            properties.ForEach(prop =>
+            AjaxMinExtensions.ForEach(properties, prop =>
             {
                 result.Append("<br />");
                 result.Append($"{prop.Name} {prop.PropertyType} {prop.GetType().IsClass}");
