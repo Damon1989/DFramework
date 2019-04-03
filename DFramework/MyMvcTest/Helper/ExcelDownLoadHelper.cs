@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using DFramework.Infrastructure;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
@@ -195,28 +196,29 @@ namespace MyMvcTest.Helper
 
         }
 
-        public static NpoiMemoryStream GetFileTemplate(string fileName, List<HeadInfo> heads,
+        public static NpoiMemoryStream GetFileTemplate(string fileName, List<HeadInfo> heads, int templteRowCount,
              params CellValidation[] cellValidations)
         {
-            return GetFileTemplate(fileName, heads, null, null, cellValidations);
+            return GetFileTemplate(fileName, heads, null, null, templteRowCount, cellValidations);
         }
 
         public static NpoiMemoryStream GetFileDownloadData(string fileName, List<HeadInfo> heads,
             List<List<ContentInfo>> contentInfo)
         {
-            return GetFileTemplate(fileName, heads, contentInfo, null, null);
+            return GetFileTemplate(fileName, heads, contentInfo, null, 65535, null);
         }
 
         public static NpoiMemoryStream GetFileTemplate(string fileName, List<HeadInfo> heads,
             List<CellContent> cellContents)
         {
-            return GetFileTemplate(fileName, heads, null, cellContents, null);
+            return GetFileTemplate(fileName, heads, null, cellContents, 65535, null);
         }
 
         public static NpoiMemoryStream GetFileTemplate(string fileName
                                                      , List<HeadInfo> heads
                                                      , List<List<ContentInfo>> contentInfo = null
                                                      , List<CellContent> cellContents = null
+                                                     , int templteRowCount = 65535
                                                      , params CellValidation[] cellValidations)
         {
 
@@ -240,7 +242,7 @@ namespace MyMvcTest.Helper
 
             #region set heads
 
-            var rowCount = contentInfo?.Count ?? 65535;
+            var rowCount = contentInfo?.Count ?? templteRowCount;
             var newRow = sheet.CreateRow(0);
             for (var i = 0; i < heads.Count; i++)
             {
@@ -274,21 +276,13 @@ namespace MyMvcTest.Helper
                 var writeSheet = workbook.GetSheetAt(item.SheetIndex) ??
                                  workbook.CreateSheet(item.SheetIndex.ToString());
                 var i = 0;
-                foreach (var info in item.ListOfValues)
+                item.ListOfValues?.ForEach(info =>
                 {
                     var writeRow = writeSheet.GetRow(item.FirstRow + i) ?? writeSheet.CreateRow(item.FirstRow + i);
                     var writeCell = writeRow.GetCell(item.FirstCol) ?? writeRow.CreateCell(item.FirstCol);
                     writeCell.SetCellValue(info);
                     i++;
-                }
-
-                //item.ListOfValues?.ForEach(info =>
-                //{
-                //    var writeRow = writeSheet.GetRow(item.FirstRow + i) ?? writeSheet.CreateRow(item.FirstRow + i);
-                //    var writeCell = writeRow.GetCell(item.FirstCol) ?? writeRow.CreateCell(item.FirstCol);
-                //    writeCell.SetCellValue(info);
-                //    i++;
-                //});
+                });
             });
             #endregion
 

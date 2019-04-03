@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using DFramework.Infrastructure;
 using Quartz;
@@ -56,6 +57,21 @@ namespace ConsoleApp
 
             //var list = new List<int> {1, 2, 3, 4, 5};
             //var list1=list.Where(r => r > 1);
+
+            var database = RedisManager.Instance.GetDatabase();
+            //database.StringSet("00000000", "123", TimeSpan.FromSeconds(1));
+            //WriteLine(database.KeyExists("00000000"));
+            //Thread.Sleep(2000);
+            //WriteLine(database.KeyExists("00000000"));
+            for (int i = 0; i < 1000000; i++)
+            {
+                database.StringSet(Guid.NewGuid().ToString("N"),"1");
+            }
+
+            var keys=RedisManager.Server.Keys();
+            keys.ForEach(item => { WriteLine(item); });
+
+            return ;
             Permission permission = Permission.Create | Permission.Read | Permission.Update | Permission.Delete;
             WriteLine("1、枚举创建，并赋值");
             WriteLine(permission.ToString());//Create, Read, Update, Delete
