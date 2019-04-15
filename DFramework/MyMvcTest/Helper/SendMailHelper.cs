@@ -100,6 +100,25 @@ namespace MyMvcTest.Helper
 
             return returnValue;
         }
+
+        public static bool SendMail(List<Mail> mailList)
+        {
+            try
+            {
+                foreach (var item in mailList)
+                {
+                    SendMail(item);
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw;
+            }
+            
+        }
     }
 
     public class Mail

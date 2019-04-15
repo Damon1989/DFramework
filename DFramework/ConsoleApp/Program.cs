@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using DFramework.Infrastructure;
 using Quartz;
 using Quartz.Impl;
+using StackExchange.Redis;
 using static System.Console;
 
 namespace ConsoleApp
@@ -63,13 +64,70 @@ namespace ConsoleApp
             //WriteLine(database.KeyExists("00000000"));
             //Thread.Sleep(2000);
             //WriteLine(database.KeyExists("00000000"));
-            for (int i = 0; i < 1000000; i++)
+            //for (int i = 0; i < 10000; i++)
+            //{
+            //    database.StringSet($"key{i}",i);
+            //}
+            var redisAccount=new RedisAccount()
             {
-                database.StringSet(Guid.NewGuid().ToString("N"),"1");
-            }
+                Name = "qbadmin11",
+                LastOnlineIP = "127.0.0.1",
+                Password = "123456",
+                Salt = "123",
+                Ticket = "345",
+                UserDisplayName = "11",
+                UserId = "22"
+            };
 
-            var keys=RedisManager.Server.Keys();
-            keys.ForEach(item => { WriteLine(item); });
+            Task.Factory.StartNew(() =>
+            {
+                database.HashSetAsync($"account_{redisAccount.Name}",
+                    new HashEntry[]
+                    {
+                        new HashEntry(nameof(redisAccount.Name),redisAccount.Name),
+                        new HashEntry(nameof(redisAccount.LastOnlineIP),redisAccount.LastOnlineIP),
+                        new HashEntry(nameof(redisAccount.Password),redisAccount.Password),
+                        new HashEntry(nameof(redisAccount.Salt),redisAccount.Salt),
+                        new HashEntry(nameof(redisAccount.Ticket),redisAccount.Ticket),
+                        new HashEntry(nameof(redisAccount.UserId),redisAccount.UserId),
+                        new HashEntry(nameof(redisAccount.UserDisplayName),redisAccount.UserDisplayName),
+                    }).ConfigureAwait(false);
+            });
+            
+            //database.HashSet($"account_{redisAccount.Name}",
+            //    new HashEntry[]
+            //    {
+            //        new HashEntry(nameof(redisAccount.Name),redisAccount.Name),
+            //        new HashEntry(nameof(redisAccount.LastOnlineIP),redisAccount.LastOnlineIP),
+            //        new HashEntry(nameof(redisAccount.Password),redisAccount.Password),
+            //        new HashEntry(nameof(redisAccount.Salt),redisAccount.Salt),
+            //        new HashEntry(nameof(redisAccount.Ticket),redisAccount.Ticket),
+            //        new HashEntry(nameof(redisAccount.UserId),redisAccount.UserId),
+            //        new HashEntry(nameof(redisAccount.UserDisplayName),redisAccount.UserDisplayName),
+            //    });
+
+            //WriteLine(database.HashGet($"account_{redisAccount.Name}", nameof(redisAccount.Name)));
+
+            var hashlist=database.HashGetAll($"account_{redisAccount.Name}");
+            
+            WriteLine($"{nameof(redisAccount.Name)}:{hashlist.FirstOrDefault(c=>c.Name==nameof(redisAccount.Name)).Value}");
+            WriteLine($"{nameof(redisAccount.LastOnlineIP)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.LastOnlineIP)).Value}");
+            WriteLine($"{nameof(redisAccount.Password)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.Password)).Value}");
+            WriteLine($"{nameof(redisAccount.Salt)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.Salt)).Value}");
+            WriteLine($"{nameof(redisAccount.Ticket)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.Ticket)).Value}");
+            WriteLine($"{nameof(redisAccount.UserId)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.UserId)).Value}");
+            WriteLine($"{nameof(redisAccount.UserDisplayName)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.UserDisplayName)).Value}");
+            
+            
+
+            //hashlist.ForEach(item =>
+            //{
+            //    WriteLine(item.Name);
+            //    WriteLine(item.Value);
+            //});
+
+            //var keys=RedisManager.Server.Keys();
+            //keys.ForEach(item => { WriteLine(item); });
 
             return ;
             Permission permission = Permission.Create | Permission.Read | Permission.Update | Permission.Delete;
@@ -159,7 +217,17 @@ namespace ConsoleApp
             scheduler.ScheduleJob(job, trigger);
             scheduler.Start();
         }
+        public class  RedisAccount
+        {
+            public string Name { get; set; }
+            public string Password { get; set; }
+            public string Salt { get; set; }
+            public string Ticket { get; set; }
+            public string LastOnlineIP { get; set; }
+            public string UserId { get; set; }
+            public string UserDisplayName { get; set; }
 
+        }
         public class MyClass
         {
             public string Name { get; set; }

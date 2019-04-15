@@ -23,6 +23,11 @@ namespace MyMvcTest.Controllers
             var fileList = new List<string> { Extension.GetServerMapPath("~/favicon.ico") };
             var mail = new Mail("123哈哈哈哈", "433333333333332", "417552029@qq.com",fileList);
             SendMailHelper.SendMail(mail);
+            SendMailHelper.SendMail(new List<Mail>
+            {
+                new Mail("1哈哈哈哈", "433333333333332", "417552029@qq.com", fileList),
+                new Mail("2哈哈哈哈", "433333333333332", "417552029@qq.com", fileList)
+            });
             return View();
         }
 
