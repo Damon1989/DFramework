@@ -80,20 +80,36 @@ namespace DFramework.Infrastructure
             }
         }
 
-        //public static IEnumerable<T> OrEmptyIfNull<T>(this IEnumerable<T> source)
-        //{
-        //    return source ?? Enumerable.Empty<T>();
-        //}
+        public static void Add<T>(this List<T> list, bool condition, T item)
+        {
+            if (condition)
+            {
+                list.Add(item);
+            }
+        }
 
-        //public static IEnumerable<T> ForEach<T>(this IEnumerable<T> source,
-        //    Action<T> act)
+        public static int GetInt(this string strnum)
+        {
+            try
+            {
+                int num;
+                int.TryParse(strnum, out num);
+                return num;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
+        //public static IEnumerable<T> Add<T>(this IEnumerable<T> list, bool condition, T item)
         //{
-        //    foreach (T element in source.OrEmptyIfNull())
+        //    if (condition)
         //    {
-        //        act(element);
+        //        list.ToList().Add(item);
         //    }
 
-        //    return source;
+        //    return list;
         //}
     }
 }

@@ -20,14 +20,87 @@ namespace MyMvcTest.Controllers
         public ActionResult Index()
         {
             //var mail = new Mail("123", "432", "15201864775@163.com","417552029@qq.com");
-            var fileList = new List<string> { Extension.GetServerMapPath("~/favicon.ico") };
-            var mail = new Mail("123哈哈哈哈", "433333333333332", "417552029@qq.com",fileList);
-            SendMailHelper.SendMail(mail);
-            SendMailHelper.SendMail(new List<Mail>
-            {
-                new Mail("1哈哈哈哈", "433333333333332", "417552029@qq.com", fileList),
-                new Mail("2哈哈哈哈", "433333333333332", "417552029@qq.com", fileList)
-            });
+            //var fileList = new List<string> { Extension.GetServerMapPath("~/favicon.ico") };
+            //var mail = new Mail("123哈哈哈哈", "433333333333332", "417552029@qq.com",fileList);
+            //SendMailHelper.SendMail(mail);
+            //SendMailHelper.SendMail(new List<Mail>
+            //{
+            //    new Mail("1哈哈哈哈", "433333333333332", "417552029@qq.com", fileList),
+            //    new Mail("2哈哈哈哈", "433333333333332", "417552029@qq.com", fileList)
+            //});
+
+            var exportBase = new ExportBase();
+            var filepath = exportBase.ExportList(
+                new TravelApplyPdfModel
+                {
+                    Applicant="damon",
+                    ApplyDept="damondept",
+                    Receiver="damonreceiver",
+                    PaymentAccount="account",
+                    Remark="事由",
+                    RemarkInfo="remark info info",
+                    AccountingInfo="入账信息",
+                    AccountingDept="入账部门111",
+                    AccountingProject="入账项目",
+                    BusinessType="业务类型111111",
+                    TravelRouteList=new List<TravelRoute>
+                    {
+                        new TravelRoute
+                        {
+                            StartTime="2019-04-22",
+                            StartPlace="2222",
+                            EndTime="2019-04-22",
+                            TravelCity="城市11",
+                            TravelWay="出行方式111",
+                            Accommodation="住宿111"
+                        },
+                        new TravelRoute
+                        {
+                            StartTime="-2019-04-22",
+                            StartPlace="-2222",
+                            EndTime="2019-04-22",
+                            TravelCity="城市11232",
+                            TravelWay="出行方式12211",
+                            Accommodation="住宿12211"
+                        }
+                    },
+                    CostBudgetList=new List<CostBudget>
+                    {
+                        new CostBudget
+                        {
+                            Currency="CNY",
+                            CostProject="费用项目",
+                            ApplyAmount="10000"
+                        },
+                        new CostBudget
+                        {
+                            Currency="CNY",
+                            CostProject="费用项目111",
+                            ApplyAmount="2000"
+                        }
+                    },
+                    ApproveInfoList=new List<ApproveInfo>
+                    {
+                        new ApproveInfo
+                        {
+                            Category="业务审批",
+                            Approver="审批人1",
+                            ArriveTime="2019-04-22 16:35:36.890",
+                            ApproveTime="2019-04-22 16:35:36.890",
+                            ApproveOpinion="审批人1"
+                        },
+                        new ApproveInfo
+                        {
+                            Category="业务审批",
+                            Approver="审批人2",
+                            ArriveTime="2019-04-22 16:35:36.890",
+                            ApproveTime="2019-04-22 16:35:36.890",
+                            ApproveOpinion="意见1112"
+                        }
+                    }
+                }
+                , "class", "11", "22", true);
+            ViewBag.FilePath = filepath;
             return View();
         }
 

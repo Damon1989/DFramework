@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using Quartz;
 using Quartz.Impl;
 using StackExchange.Redis;
 using static System.Console;
+using Configuration = DFramework.Config.Configuration;
 
 namespace ConsoleApp
 {
@@ -58,6 +60,16 @@ namespace ConsoleApp
 
             //var list = new List<int> {1, 2, 3, 4, 5};
             //var list1=list.Where(r => r > 1);
+
+            var list = new List<int>();
+            list.Add(true, 1);
+            list.Add(false, 2);
+            list.Add(true, 3);
+            list.Add(true, 4);
+            list.Add(false, 5);
+            WriteLine(string.Join(",",list));
+
+            return;
 
             var database = RedisManager.Instance.GetDatabase();
             //database.StringSet("00000000", "123", TimeSpan.FromSeconds(1));
