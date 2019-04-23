@@ -33,6 +33,9 @@ namespace MyMvcTest.Controllers
             var filepath = exportBase.ExportList(
                 new TravelApplyPdfModel
                 {
+                    Title="出差申请单",
+                    SubTitle="上海优读信息科技",
+                    Number= "TAJCGJ1904230010",
                     Applicant="damon",
                     ApplyDept="damondept",
                     Receiver="damonreceiver",

@@ -34,7 +34,7 @@ namespace MyMvcTest.Helper
         /// <summary>
         /// 导出Pdf文件
         /// </summary>
-        private static string ExportPdfFile => "否";// ConfigurationManager.AppSettings["ExportPdfFile"];
+        private static string ExportPdfFile => "是";// ConfigurationManager.AppSettings["ExportPdfFile"];
 
         /// <summary>
         /// 导出压缩加密文件
@@ -204,22 +204,36 @@ namespace MyMvcTest.Helper
                 titlefont.FontHeightInPoints = 11;
                 titlecellstyle.SetFont(titlefont);
 
-                var mainititlecellstyle = hssfWorkbook.CreateCellStyle();
-                mainititlecellstyle.BorderBottom = BorderStyle.Thin;
-                mainititlecellstyle.BorderTop = BorderStyle.Thin;
-                mainititlecellstyle.BorderLeft = BorderStyle.Thin;
-                mainititlecellstyle.BorderRight = BorderStyle.Thin;
-                mainititlecellstyle.VerticalAlignment = VerticalAlignment.Center;
-                mainititlecellstyle.Alignment = HorizontalAlignment.Center;
-                mainititlecellstyle.FillBackgroundColor = HSSFColor.Red.Index;
-                mainititlecellstyle.WrapText = true;
+
+                var maintitlecellstyle = hssfWorkbook.CreateCellStyle();
+                maintitlecellstyle.BorderBottom = BorderStyle.None;
+                maintitlecellstyle.BorderTop = BorderStyle.None;
+                maintitlecellstyle.BorderLeft = BorderStyle.None;
+                maintitlecellstyle.BorderRight = BorderStyle.None;
+                maintitlecellstyle.VerticalAlignment = VerticalAlignment.Center;
+                maintitlecellstyle.Alignment = HorizontalAlignment.Center;
+                maintitlecellstyle.FillBackgroundColor = HSSFColor.Red.Index;
+                maintitlecellstyle.WrapText = true;
 
                 var maintitlefont = hssfWorkbook.CreateFont();
                 maintitlefont.Boldweight = (short)FontBoldWeight.Bold;
-                maintitlefont.FontHeightInPoints = 12;
-                mainititlecellstyle.SetFont(maintitlefont);
+                maintitlefont.FontHeightInPoints = 20;
+                maintitlecellstyle.SetFont(maintitlefont);
 
 
+                var subtitlecellstyle = hssfWorkbook.CreateCellStyle();
+                subtitlecellstyle.BorderBottom = BorderStyle.None;
+                subtitlecellstyle.BorderTop = BorderStyle.None;
+                subtitlecellstyle.BorderLeft = BorderStyle.None;
+                subtitlecellstyle.BorderRight = BorderStyle.None;
+                subtitlecellstyle.VerticalAlignment = VerticalAlignment.Center;
+                subtitlecellstyle.FillBackgroundColor = HSSFColor.Red.Index;
+                subtitlecellstyle.WrapText = true;
+
+                var subtitleFont = hssfWorkbook.CreateFont();
+                subtitleFont.Boldweight = (short)FontBoldWeight.Normal;
+                subtitleFont.FontHeightInPoints = 12;
+                subtitlecellstyle.SetFont(subtitleFont);
                 #endregion cellstyle
 
 
@@ -253,8 +267,30 @@ namespace MyMvcTest.Helper
 
                         if (valuearray.Length == 2)
                         {
+                            if (valuearray[1] == "Title")
+                            {
+                                //设置标题
+                                MergedCell(sheet, colrow, colrow, 0, valuearray[0].GetInt() - 1, maintitlecellstyle);
+                                var maincell = row.CreateCell(0);
+                                var mainchildvalue = model.GetType().GetProperty(valuearray[1]).GetValue(model, null);
+                                if (mainchildvalue != null)
+                                {
+                                    maincell.SetCellValue(mainchildvalue.ToString());
+                                }
+                                maincell.CellStyle = maintitlecellstyle;
+                                sheet.GetRow(rownum).Height = (short)(100 * valueHeight);
+                                //sheet.SetColumnWidth(1, 100 * valueWidth);
+                                continue;
+                            }
+
                             
-                            MergedCell(sheet, colrow, colrow, 0, valuearray[0].GetInt() - 1, mainititlecellstyle);
+                        }
+
+                        if (valuearray.Length == 2)
+                        {
+
+                            
+                            MergedCell(sheet, colrow, colrow, 0, valuearray[0].GetInt() - 1, titlecellstyle);
                             var maincell = row.CreateCell(0);
                             var mainchildvalue = model.GetType().GetProperty(valuearray[1]).GetValue(model, null);
                             if (mainchildvalue != null)
@@ -268,7 +304,7 @@ namespace MyMvcTest.Helper
                         }
                         if (valuearray.Length == 3)   //该行只包含一个元素
                         {
-                            MergedCell(sheet, colrow, colrow, 1, valuearray[0].GetInt() - 1, mainititlecellstyle);
+                            MergedCell(sheet, colrow, colrow, 1, valuearray[0].GetInt() - 1, titlecellstyle);
 
                             var cell = row.CreateCell(0);
                             cell.SetCellValue(valuearray[2]);
@@ -286,11 +322,11 @@ namespace MyMvcTest.Helper
                         {
                             #region DisplayName
 
-                            MergedCell(sheet, colrow, colrow, 0, valuearray[0].GetInt() - 1, mainititlecellstyle);
+                            MergedCell(sheet, colrow, colrow, 0, valuearray[0].GetInt() - 1, titlecellstyle);
                             var cell = row.CreateCell(0);
                             cell.SetCellValue(valuearray[2]);
                             cell.CellStyle = cellstyle;
-                            sheet.GetRow(rownum).Height = (short)(100 * valueHeight);
+                            sheet.GetRow(colrow).Height = (short)(100 * valueHeight);
 
                             #endregion DisplayName
 
@@ -402,6 +438,7 @@ namespace MyMvcTest.Helper
                     }
                     else
                     {
+                       
                         for (var colnum = 0; colnum < keyarray.Count(); colnum++)
                         {
                             var key = keyarray[colnum];
@@ -414,6 +451,38 @@ namespace MyMvcTest.Helper
                             var valuePropertyArray = valueproperty.Split(',');
                             var valueHeight = valuePropertyArray[0].GetInt();
                             var valueWidth = valuePropertyArray[1].GetInt();
+
+                            if (valuearray[1] == "SubTitle")
+                            {
+                                //设置副标题
+                                MergedCell(sheet, colrow, colrow, 0, valuearray[0].GetInt() - 1, subtitlecellstyle);
+                                var maincell = row.CreateCell(0);
+                                var mainchildvalue = model.GetType().GetProperty(valuearray[1]).GetValue(model, null);
+                                if (mainchildvalue != null)
+                                {
+                                    maincell.SetCellValue(mainchildvalue.ToString());
+                                }
+                                maincell.CellStyle = subtitlecellstyle;
+                                sheet.GetRow(rownum).Height = (short)(100 * valueHeight);
+                                continue;
+                            }
+
+                            if (valuearray[1] == "Number")
+                            {
+                                var cellNum = int.Parse(keyarray[1].Split(',')[1]);
+                                MergedCell(sheet, colrow, colrow, cellNum, cellNum+valuearray[0].GetInt() - 1, subtitlecellstyle);
+                                var maincell = row.CreateCell(cellNum);
+                                var mainchildvalue = model.GetType().GetProperty(valuearray[1]).GetValue(model, null);
+                                if (mainchildvalue != null)
+                                {
+                                    maincell.SetCellValue(mainchildvalue.ToString());
+                                }
+                                maincell.CellStyle = subtitlecellstyle;
+                                sheet.GetRow(rownum).Height = (short)(100 * valueHeight);
+                                continue;
+                            }
+
+                            
 
                             #region DisplayName
 
@@ -474,11 +543,11 @@ namespace MyMvcTest.Helper
             }
             catch (Exception exception)
             {
-                return string.Empty;
+                return exception.Message;
             }
         }
 
-        #endregion 导出幼儿信息
+        #endregion 导出信息
 
         public string CreateExcelZipFile(string filePath, string fileExtension = "xls", string password = "")
         {
