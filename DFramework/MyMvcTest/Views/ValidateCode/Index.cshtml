@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+phone:<input type="text" value="" id="phone" />
+code:<input type="text" value="" id="code" />
+<input type="button" id="sendSms" value="提交" />
+<img src="" id="validateCode" />
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#validateCode").bind("click", function () {
+            this.src = "../ValidateCode/GetValidateCode?time=" + (new Date()).getTime();
+        });
+        $("#validateCode").attr("src", "../ValidateCode/GetValidateCode?time=" + (new Date()).getTime());
+
+        $("#sendSms").click(function () {
+            $.post("./SendSms",
+                { phone: $("#phone").val(), code: $("#code").val() },
+                function (result) {
+                    alert(result);
+                });
+        });
+    });
+</script>

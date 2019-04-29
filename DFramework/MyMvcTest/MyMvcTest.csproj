@@ -237,6 +237,7 @@
     <Compile Include="App_Start\IoCConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ValidateCodeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -247,6 +248,7 @@
     <Compile Include="Helper\ExportBase.cs" />
     <Compile Include="Helper\ExportChild.cs" />
     <Compile Include="Helper\SendMailHelper.cs" />
+    <Compile Include="Helper\ValidateCodeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -299,6 +301,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\ValidateCode\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
