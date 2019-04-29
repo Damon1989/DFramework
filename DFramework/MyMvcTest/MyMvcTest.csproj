@@ -247,6 +247,7 @@
     <Compile Include="Helper\ExcelDownLoadHelper.cs" />
     <Compile Include="Helper\ExportBase.cs" />
     <Compile Include="Helper\ExportChild.cs" />
+    <Compile Include="Helper\LoggerHelper.cs" />
     <Compile Include="Helper\SendMailHelper.cs" />
     <Compile Include="Helper\ValidateCodeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

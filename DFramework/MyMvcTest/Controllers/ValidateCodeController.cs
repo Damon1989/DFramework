@@ -12,6 +12,11 @@ namespace MyMvcTest.Controllers
         // GET: ValidateCode
         public ActionResult Index()
         {
+            for (int i = 0; i < 100000; i++)
+            {
+                LoggerHelper.WriteLine("my name is damon","D");
+            }
+            
             return View();
         }
 
