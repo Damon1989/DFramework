@@ -29,81 +29,89 @@ namespace MyMvcTest.Controllers
             //    new Mail("2哈哈哈哈", "433333333333332", "417552029@qq.com", fileList)
             //});
 
-            var exportBase = new ExportBase();
-            var filepath = exportBase.ExportList(
-                new TravelApplyPdfModel
-                {
-                    Title="出差申请单",
-                    SubTitle="上海优读信息科技",
-                    Number= "TAJCGJ1904230010",
-                    Applicant="damon",
-                    ApplyDept="damondept",
-                    Receiver="damonreceiver",
-                    PaymentAccount="account",
-                    Remark="事由",
-                    RemarkInfo="remark info info",
-                    AccountingInfo="入账信息",
-                    AccountingDept="入账部门111",
-                    AccountingProject="入账项目",
-                    BusinessType="业务类型111111",
-                    TravelRouteList=new List<TravelRoute>
-                    {
-                        new TravelRoute
-                        {
-                            StartTime="2019-04-22",
-                            StartPlace="2222",
-                            EndTime="2019-04-22",
-                            TravelCity="城市11",
-                            TravelWay="出行方式111",
-                            Accommodation="住宿111"
-                        },
-                        new TravelRoute
-                        {
-                            StartTime="-2019-04-22",
-                            StartPlace="-2222",
-                            EndTime="2019-04-22",
-                            TravelCity="城市11232",
-                            TravelWay="出行方式12211",
-                            Accommodation="住宿12211"
-                        }
-                    },
-                    CostBudgetList=new List<CostBudget>
-                    {
-                        new CostBudget
-                        {
-                            Currency="CNY",
-                            CostProject="费用项目",
-                            ApplyAmount="10000"
-                        },
-                        new CostBudget
-                        {
-                            Currency="CNY",
-                            CostProject="费用项目111",
-                            ApplyAmount="2000"
-                        }
-                    },
-                    ApproveInfoList=new List<ApproveInfo>
-                    {
-                        new ApproveInfo
-                        {
-                            Category="业务审批",
-                            Approver="审批人1",
-                            ArriveTime="2019-04-22 16:35:36.890",
-                            ApproveTime="2019-04-22 16:35:36.890",
-                            ApproveOpinion="审批人1"
-                        },
-                        new ApproveInfo
-                        {
-                            Category="业务审批",
-                            Approver="审批人2",
-                            ArriveTime="2019-04-22 16:35:36.890",
-                            ApproveTime="2019-04-22 16:35:36.890",
-                            ApproveOpinion="意见1112"
-                        }
-                    }
-                }
-                , "class", "11", "22", true);
-            ViewBag.FilePath = filepath;
+            //var filePath = Server.MapPath("~/123.txt");
+            //var compressionFilePath = "D://file.zip";
+            //ZipHelper.FileCompression(filePath, compressionFilePath).GetAwaiter();
+
+            ZipHelper.ZipDirectory("d://test/a/1", "d://test/zip.zip");
+            //ZipHelper.ZipFile(Server.MapPath("~/123.txt"), Server.MapPath("~/123zip.zip"));
+            //ZipHelper.UnZip(Server.MapPath("~/123zip.zip"), "d://test/a/123");
+
+            //var exportBase = new ExportBase();
+            //var filepath = exportBase.ExportList(
+            //    new TravelApplyPdfModel
+            //    {
+            //        Title="出差申请单",
+            //        SubTitle="上海优读信息科技",
+            //        Number= "TAJCGJ1904230010",
+            //        Applicant="damon",
+            //        ApplyDept="damondept",
+            //        Receiver="damonreceiver",
+            //        PaymentAccount="account",
+            //        Remark="事由",
+            //        RemarkInfo="remark info info",
+            //        AccountingInfo="入账信息",
+            //        AccountingDept="入账部门111",
+            //        AccountingProject="入账项目",
+            //        BusinessType="业务类型111111",
+            //        TravelRouteList=new List<TravelRoute>
+            //        {
+            //            new TravelRoute
+            //            {
+            //                StartTime="2019-04-22",
+            //                StartPlace="2222",
+            //                EndTime="2019-04-22",
+            //                TravelCity="城市11",
+            //                TravelWay="出行方式111",
+            //                Accommodation="住宿111"
+            //            },
+            //            new TravelRoute
+            //            {
+            //                StartTime="-2019-04-22",
+            //                StartPlace="-2222",
+            //                EndTime="2019-04-22",
+            //                TravelCity="城市11232",
+            //                TravelWay="出行方式12211",
+            //                Accommodation="住宿12211"
+            //            }
+            //        },
+            //        CostBudgetList=new List<CostBudget>
+            //        {
+            //            new CostBudget
+            //            {
+            //                Currency="CNY",
+            //                CostProject="费用项目",
+            //                ApplyAmount="10000"
+            //            },
+            //            new CostBudget
+            //            {
+            //                Currency="CNY",
+            //                CostProject="费用项目111",
+            //                ApplyAmount="2000"
+            //            }
+            //        },
+            //        ApproveInfoList=new List<ApproveInfo>
+            //        {
+            //            new ApproveInfo
+            //            {
+            //                Category="业务审批",
+            //                Approver="审批人1",
+            //                ArriveTime="2019-04-22 16:35:36.890",
+            //                ApproveTime="2019-04-22 16:35:36.890",
+            //                ApproveOpinion="审批人1"
+            //            },
+            //            new ApproveInfo
+            //            {
+            //                Category="业务审批",
+            //                Approver="审批人2",
+            //                ArriveTime="2019-04-22 16:35:36.890",
+            //                ApproveTime="2019-04-22 16:35:36.890",
+            //                ApproveOpinion="意见1112"
+            //            }
+            //        }
+            //    }
+            //    , "class", "11", "22", true);
+            //ViewBag.FilePath = filepath;
             return View();
         }
 
@@ -123,10 +131,9 @@ namespace MyMvcTest.Controllers
 
         public ActionResult ClassProperty()
         {
-            
             var cell = new MyClassA();
             var result = new StringBuilder();
-            var properties= cell.GetType().GetProperties(BindingFlags.Public|BindingFlags.Instance);
+            var properties = cell.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
             AjaxMinExtensions.ForEach(properties, prop =>
             {
                 result.Append("<br />");
@@ -139,13 +146,11 @@ namespace MyMvcTest.Controllers
                 result.Append($"{prop.PropertyType.IsClass}");
             });
 
-
             return Content($"{result.ToString()}");
         }
 
         public class MyClassA
         {
-
             public string Id { get; set; }
             public MyClassB ClassB { get; set; }
         }
@@ -182,13 +187,13 @@ namespace MyMvcTest.Controllers
             //memory.Flush();
             //memory.Position = 0;    // 指定内存流起始值
 
-            var memory = GetFileTemplate("1111", new[] {"项目名称", "1", "2"}, new CellValidation()
+            var memory = GetFileTemplate("1111", new[] { "项目名称", "1", "2" }, new CellValidation()
             {
                 FirstRow = 1,
                 LastRow = 65535,
                 FirstCol = 0,
                 LastCol = 0,
-                ListOfValues = new[] {"项目", "标段", "桥梁", "隧道"}
+                ListOfValues = new[] { "项目", "标段", "桥梁", "隧道" }
             }
             //    , new CellValidation()
             //{
@@ -201,14 +206,11 @@ namespace MyMvcTest.Controllers
                 );
 
             return File(memory, "application/vnd.ms-excel", "数据模板.xlsx");
-
         }
 
         public FileResult DownloadExcel()
         {
-            
-
-            var memory = GetFileTemplate("发票导入模板", new[] { "项目名称", "1", "2" }, new CellValidation(0,0, new List<CellData>
+            var memory = GetFileTemplate("发票导入模板", new[] { "项目名称", "1", "2" }, new CellValidation(0, 0, new List<CellData>
                 {
                     new CellData("品类0","品类0"),
                     new CellData("品类1","品类1"),
@@ -222,7 +224,7 @@ namespace MyMvcTest.Controllers
                     new CellData("品类2", "品名23"),
                     new CellData("品类2", "品名33"),
                 })
-            , new CellValidation( 2, 2, new List<CellData>
+            , new CellValidation(2, 2, new List<CellData>
                 {
                     new CellData("品类00","品类00"),
                     new CellData("品类11","品类11"),
@@ -236,8 +238,8 @@ namespace MyMvcTest.Controllers
                     new CellData("品类22", "品名23"),
                     new CellData("品类22", "品名43"),
                 })
-            
-                , new CellValidation( 4, 4, new List<CellData>
+
+                , new CellValidation(4, 4, new List<CellData>
                 {
                     new CellData("品类000","品类000"),
                     new CellData("品类111","品类111"),
@@ -248,7 +250,7 @@ namespace MyMvcTest.Controllers
                     new CellData("品类111", "品名12"),
                     new CellData("品类111", "品名13"),
                 })
-                
+
                 //, new CellValidation()
                 //{
                 //    FirstRow = 1,
@@ -265,7 +267,6 @@ namespace MyMvcTest.Controllers
                 );
 
             return File(memory, "application/vnd.ms-excel", "数据模板.xlsx");
-
         }
 
         //public NpoiMemoryStream GetFileTemplate(string fileName,string[] heads,params CellValidation[] cellValidations)
@@ -310,7 +311,9 @@ namespace MyMvcTest.Controllers
             var sheet = workbook.CreateSheet(fileName);
             var style = workbook.CreateCellStyle();
             style.DataFormat = HSSFDataFormat.GetBuiltinFormat("@");
+
             #region set heads
+
             var newRow = sheet.CreateRow(0);
             for (var i = 0; i < heads.Length; i++)
             {
@@ -324,9 +327,11 @@ namespace MyMvcTest.Controllers
                     cell.CellStyle = style;
                 }
             }
-            #endregion
+
+            #endregion set heads
 
             #region set datasource
+
             var dataNum = 0;
             cellValidations?.ToList().ForEach(item =>
             {
@@ -353,13 +358,14 @@ namespace MyMvcTest.Controllers
                             for (var j = 0; j < datas.Count; j++)
                             {
                                 var secondRow = dataSourceSheet.GetRow(j + 1) ?? dataSourceSheet.CreateRow(j + 1);
-                                secondRow.CreateCell(i).SetCellValue(datas[j].Value);//单元格写值        
+                                secondRow.CreateCell(i).SetCellValue(datas[j].Value);//单元格写值
                             }
                         }
                     }
                 }
 
                 #region Range
+
                 for (var i = 0; i < item.FirstList.Count; i++)
                 {
                     if (i == 0)
@@ -390,10 +396,11 @@ namespace MyMvcTest.Controllers
                         }
                     }
                 }
-                #endregion
-            });
-            #endregion
 
+                #endregion Range
+            });
+
+            #endregion set datasource
 
             cellValidations?.ToList().ForEach(item =>
             {
@@ -443,10 +450,7 @@ namespace MyMvcTest.Controllers
                 }
             });
 
-
             sheet.ForceFormulaRecalculation = true;
-
-
 
             var memory = new NpoiMemoryStream();
             memory.AllowClose = false;
@@ -455,7 +459,6 @@ namespace MyMvcTest.Controllers
             memory.Flush();
             memory.Position = 0;    // 指定内存流起始值
             return memory;
-
         }
 
         private static string Index2ColName(int index)
@@ -468,7 +471,7 @@ namespace MyMvcTest.Controllers
             var colName = "";
             do
             {
-                if (colName.Length>0)
+                if (colName.Length > 0)
                 {
                     index--;
                 }
@@ -501,7 +504,7 @@ namespace MyMvcTest.Controllers
     {
         public int FirstRow { get; set; }
         public int LastRow { get; set; }
-        public int FirstCol{ get; set; }
+        public int FirstCol { get; set; }
         public int LastCol { get; set; }
         public string[] ListOfValues { get; set; }
         public List<CellData> FirstList { get; set; }
@@ -509,7 +512,6 @@ namespace MyMvcTest.Controllers
 
         public CellValidation()
         {
-
         }
 
         public CellValidation(int firstCol, int lastCol, string[] listOfValues)
@@ -518,23 +520,22 @@ namespace MyMvcTest.Controllers
         }
 
         public CellValidation(int firstRow, int lastRow, int firstCol, int lastCol, string[] listOfValues)
-        :this(firstRow,lastRow,firstCol,lastCol,listOfValues,null,null)
+        : this(firstRow, lastRow, firstCol, lastCol, listOfValues, null, null)
         {
         }
 
-        public CellValidation( int firstCol, int lastCol,
+        public CellValidation(int firstCol, int lastCol,
             List<CellData> firstList, List<CellData> secondList)
             : this(1, 65535, firstCol, lastCol, null, firstList, secondList)
         {
-
         }
 
         public CellValidation(int firstRow, int lastRow, int firstCol, int lastCol,
             List<CellData> firstList, List<CellData> secondList)
-            : this(firstRow, lastRow, firstCol, lastCol, null, firstList,secondList)
+            : this(firstRow, lastRow, firstCol, lastCol, null, firstList, secondList)
         {
-
         }
+
         public CellValidation(int firstRow, int lastRow, int firstCol, int lastCol, string[] listOfValues,
             List<CellData> firstList, List<CellData> secondList)
         {
@@ -546,7 +547,6 @@ namespace MyMvcTest.Controllers
             FirstList = firstList;
             SecondList = secondList;
         }
-
     }
 
     public class CellData
@@ -556,8 +556,8 @@ namespace MyMvcTest.Controllers
 
         public CellData()
         {
-
         }
+
         public CellData(string key, string value)
         {
             Key = key;
