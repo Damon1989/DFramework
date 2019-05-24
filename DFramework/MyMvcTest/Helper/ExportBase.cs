@@ -240,18 +240,18 @@ namespace MyMvcTest.Helper
                     if (keyarray.Count() == 1) //该行只包含一个元素
                     {
                         var key = keyarray[0];
-                        var colrow = key.Split(',')[0].GetInt() + childRowCount;
+                        var colrow = key.Split(',')[0].TryParseInt() + childRowCount;
                         var valueproperty = dicValueProperty[key];
                         var valuearray = dicValue[key].Split(',');
                         var valuePropertyArray = valueproperty.Split(',');
-                        var valueHeight = valuePropertyArray[0].GetInt();
-                        var valueWidth = valuePropertyArray[1].GetInt();
+                        var valueHeight = valuePropertyArray[0].TryParseInt();
+                        var valueWidth = valuePropertyArray[1].TryParseInt();
 
                         if (valuearray.Length == 2)
                             if (valuearray[1] == "Title")
                             {
                                 //设置标题
-                                MergedCell(sheet, colrow, colrow, 0, valuearray[0].GetInt() - 1, maintitlecellstyle);
+                                MergedCell(sheet, colrow, colrow, 0, valuearray[0].TryParseInt() - 1, maintitlecellstyle);
                                 var maincell = row.CreateCell(0);
                                 var mainchildvalue = model.GetType().GetProperty(valuearray[1]).GetValue(model, null);
                                 if (mainchildvalue != null) maincell.SetCellValue(mainchildvalue.ToString());
@@ -263,7 +263,7 @@ namespace MyMvcTest.Helper
 
                         if (valuearray.Length == 2)
                         {
-                            MergedCell(sheet, colrow, colrow, 0, valuearray[0].GetInt() - 1, titlecellstyle);
+                            MergedCell(sheet, colrow, colrow, 0, valuearray[0].TryParseInt() - 1, titlecellstyle);
                             var maincell = row.CreateCell(0);
                             var mainchildvalue = model.GetType().GetProperty(valuearray[1]).GetValue(model, null);
                             if (mainchildvalue != null) maincell.SetCellValue(mainchildvalue.ToString());
@@ -275,7 +275,7 @@ namespace MyMvcTest.Helper
 
                         if (valuearray.Length == 3) //该行只包含一个元素
                         {
-                            MergedCell(sheet, colrow, colrow, 1, valuearray[0].GetInt() - 1, titlecellstyle);
+                            MergedCell(sheet, colrow, colrow, 1, valuearray[0].TryParseInt() - 1, titlecellstyle);
 
                             var cell = row.CreateCell(0);
                             cell.SetCellValue(valuearray[2]);
@@ -294,7 +294,7 @@ namespace MyMvcTest.Helper
                         {
                             #region DisplayName
 
-                            MergedCell(sheet, colrow, colrow, 0, valuearray[0].GetInt() - 1, titlecellstyle);
+                            MergedCell(sheet, colrow, colrow, 0, valuearray[0].TryParseInt() - 1, titlecellstyle);
                             var cell = row.CreateCell(0);
                             cell.SetCellValue(valuearray[2]);
                             cell.CellStyle = cellstyle;
@@ -412,19 +412,19 @@ namespace MyMvcTest.Helper
                         {
                             var key = keyarray[colnum];
 
-                            var colrow = key.Split(',')[0].GetInt() + childRowCount; //行号
-                            var col = key.Split(',')[1].GetInt(); //列号
+                            var colrow = key.Split(',')[0].TryParseInt() + childRowCount; //行号
+                            var col = key.Split(',')[1].TryParseInt(); //列号
 
                             var valueproperty = dicValueProperty[key]; //valuepproperty
                             var valuearray = dicValue[key].Split(',');
                             var valuePropertyArray = valueproperty.Split(',');
-                            var valueHeight = valuePropertyArray[0].GetInt();
-                            var valueWidth = valuePropertyArray[1].GetInt();
+                            var valueHeight = valuePropertyArray[0].TryParseInt();
+                            var valueWidth = valuePropertyArray[1].TryParseInt();
 
                             if (valuearray[1] == "SubTitle")
                             {
                                 //设置副标题
-                                MergedCell(sheet, colrow, colrow, 0, valuearray[0].GetInt() - 1, subtitlecellstyle);
+                                MergedCell(sheet, colrow, colrow, 0, valuearray[0].TryParseInt() - 1, subtitlecellstyle);
                                 var maincell = row.CreateCell(0);
                                 var mainchildvalue = model.GetType().GetProperty(valuearray[1]).GetValue(model, null);
                                 if (mainchildvalue != null) maincell.SetCellValue(mainchildvalue.ToString());
@@ -436,7 +436,7 @@ namespace MyMvcTest.Helper
                             if (valuearray[1] == "Number")
                             {
                                 var cellNum = int.Parse(keyarray[1].Split(',')[1]);
-                                MergedCell(sheet, colrow, colrow, cellNum, cellNum + valuearray[0].GetInt() - 1,
+                                MergedCell(sheet, colrow, colrow, cellNum, cellNum + valuearray[0].TryParseInt() - 1,
                                     subtitlecellstyle);
                                 var maincell = row.CreateCell(cellNum);
                                 var mainchildvalue = model.GetType().GetProperty(valuearray[1]).GetValue(model, null);
@@ -470,11 +470,11 @@ namespace MyMvcTest.Helper
 
                             #region marge
 
-                            if (valuearray[0].GetInt() > 2)
-                                MergedCell(sheet, colrow, colrow, col + 1, col + valuearray[0].GetInt() - 1,
+                            if (valuearray[0].TryParseInt() > 2)
+                                MergedCell(sheet, colrow, colrow, col + 1, col + valuearray[0].TryParseInt() - 1,
                                     contentstyle);
 
-                            var margedCol = valuearray[0].GetInt() - 1;
+                            var margedCol = valuearray[0].TryParseInt() - 1;
                             for (var i = 0; i < margedCol; i++)
                                 sheet.SetColumnWidth(col + 1 + i, DefaultWidth * valueWidth);
 

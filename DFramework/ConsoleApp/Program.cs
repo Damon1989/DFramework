@@ -21,6 +21,18 @@ namespace ConsoleApp
     {
         private static void Main(string[] args)
         {
+            var url = "name=damon&age=29&gender=m";
+            var a=url.GetQueryString();
+            for (int i = 0; i < a.Keys.Count; i++)
+            {
+                Console.WriteLine(a.Get(i));
+            }
+            foreach (var item in a)
+            {
+                Console.WriteLine(a.Keys);
+            }
+
+            Console.Read();
             //ArrayTest();
             //Utility.YHSJ(6);
 
