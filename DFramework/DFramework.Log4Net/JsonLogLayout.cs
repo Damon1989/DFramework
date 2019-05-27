@@ -53,7 +53,7 @@ namespace IFramework.Log4Net
             log.Module = log.Module ?? additionalProperties?.TryGetValue(nameof(log.Module), Module)?.ToString();
             log.Logger = log.Logger ?? additionalProperties?.TryGetValue(nameof(log.Logger), loggingEvent.LoggerName).ToString();
             log.Host = log.Host ?? Environment.MachineName;
-            log.Ip = Utility.GetLocalIPV4().ToString();
+            log.Ip = Extension.GetLocalIPV4().ToString();
             log.LogLevel = loggingEvent.Level.ToString();
 
             if (loggingEvent.ExceptionObject != null)

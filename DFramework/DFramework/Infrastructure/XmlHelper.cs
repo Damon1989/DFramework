@@ -37,7 +37,7 @@ namespace DFramework.Infrastructure
         {
             T resultObject;
             var xmlDocument = new XmlDocument();
-            xmlDocument.Load(Utility.GetServerMapPath(xmlFilePath));
+            xmlDocument.Load((xmlFilePath.GetServerMapPath()));
 
             var serializer = new XmlSerializer(typeof(T));
             using (var reader = new StringReader(xmlDocument.InnerXml))
@@ -50,7 +50,7 @@ namespace DFramework.Infrastructure
         public static string[] GetXmlElementNameArray(string xmlFilePath)
         {
             var doc = new XmlDocument();
-            doc.Load(Utility.GetServerMapPath(xmlFilePath));
+            doc.Load(xmlFilePath.GetServerMapPath());
             XmlNode rootNode = doc.DocumentElement;
 
             if (rootNode == null)
@@ -68,7 +68,7 @@ namespace DFramework.Infrastructure
         public static XmlElement GetXmlElement(string xmlFilePath)
         {
             var doc = new XmlDocument();
-            doc.Load(Utility.GetServerMapPath(xmlFilePath));
+            doc.Load(xmlFilePath.GetServerMapPath());
             return doc.DocumentElement;
         }
 

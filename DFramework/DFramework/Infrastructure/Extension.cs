@@ -415,7 +415,7 @@ namespace DFramework.Infrastructure
 
         #region FilePath
 
-        public static string GetServerMapPath(string filePath)
+        public static string GetServerMapPath(this string filePath)
         {
             return MapPath(filePath);
         }
