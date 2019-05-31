@@ -26,7 +26,7 @@ namespace MyMvcTest.Helper
                 lock (locker)
                 {
                     if (_instance == null)
-                        _instance = ConnectionMultiplexer.Connect(ConfigurationManager.AppSettings["RedisHost"],
+                        _instance = ConnectionMultiplexer.Connect(ConfigurationManager.AppSettings["RedisHost"] ?? "127.0.0.1:6379",
                             null);
                 }
 
@@ -49,6 +49,7 @@ namespace MyMvcTest.Helper
         Task<string> GetAsync(string key);
         T Get<T>(string key);
         Task<T> GetAsync<T>(string key);
+        Task<T> GetAsync<T>(string key, Func<T> func);
         string HashGet(string key, string property);
         Task<string> HashGetAsync(string key, string property);
         Task<T> HashGetAsync<T>(string key, string property);
@@ -144,6 +145,17 @@ namespace MyMvcTest.Helper
         {
             var result = await _database.StringGetAsync(key);
             if (string.IsNullOrEmpty(result) || string.IsNullOrWhiteSpace(result)) return default(T);
+            return JsonConvert.DeserializeObject<T>(result);
+        }
+
+        public async Task<T> GetAsync<T>(string key,Func<T> func)
+        {
+            var result = await _database.StringGetAsync(key);
+            if (string.IsNullOrEmpty(result) || string.IsNullOrWhiteSpace(result))
+            {
+                Set(new CacheValue<T>(key, func.Invoke()));
+                return await GetAsync(key, func);
+            }
             return JsonConvert.DeserializeObject<T>(result);
         }
 

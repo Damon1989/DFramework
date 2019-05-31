@@ -273,7 +273,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\ChildExportModel.cs" />
-    <Compile Include="Helper\CommonCache.cs" />
     <Compile Include="Helper\ExcelConverter.cs" />
     <Compile Include="Helper\ExcelDownLoadHelper.cs" />
     <Compile Include="Helper\ExportBase.cs" />
