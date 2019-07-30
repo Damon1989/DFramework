@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+
+<table style="border: solid">
+
+    @foreach (var item in (Dictionary<string, string>) ViewBag.AppSettings)
+    {
+        <tr style="border: solid">
+            <td style="border: solid">@item.Key</td>
+            <td style="border: solid">@item.Value</td>
+        </tr>
+    }
+
+</table>

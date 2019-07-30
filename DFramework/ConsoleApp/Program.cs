@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,18 +22,24 @@ namespace ConsoleApp
     {
         private static void Main(string[] args)
         {
-            var url = "name=damon&age=29&gender=m";
-            var a=url.GetQueryString();
-            for (int i = 0; i < a.Keys.Count; i++)
-            {
-                Console.WriteLine(a.Get(i));
-            }
-            foreach (var item in a)
-            {
-                Console.WriteLine(a.Keys);
-            }
-
+            var bytes = System.Text.Encoding.Default.GetBytes("damon");
+            Console.WriteLine(ToHexString(bytes));
+            WriteLine(DateTime.Now.ToString("MMddHHmmss"));
+            WriteLine(EncryptWithMD5("damon","123456"));
             Console.Read();
+
+            //var url = "name=damon&age=29&gender=m";
+            //var a=url.GetQueryString();
+            //for (int i = 0; i < a.Keys.Count; i++)
+            //{
+            //    Console.WriteLine(a.Get(i));
+            //}
+            //foreach (var item in a)
+            //{
+            //    Console.WriteLine(a.Keys);
+            //}
+
+            //Console.Read();
             //ArrayTest();
             //Utility.YHSJ(6);
 
@@ -73,17 +80,17 @@ namespace ConsoleApp
             //var list = new List<int> {1, 2, 3, 4, 5};
             //var list1=list.Where(r => r > 1);
 
-            var list = new List<int>();
-            list.Add(true, 1);
-            list.Add(false, 2);
-            list.Add(true, 3);
-            list.Add(true, 4);
-            list.Add(false, 5);
-            WriteLine(string.Join(",",list));
+            //var list = new List<int>();
+            //list.Add(true, 1);
+            //list.Add(false, 2);
+            //list.Add(true, 3);
+            //list.Add(true, 4);
+            //list.Add(false, 5);
+            //WriteLine(string.Join(",",list));
 
-            return;
+            //return;
 
-            var database = RedisManager.Instance.GetDatabase();
+            //var database = RedisManager.Instance.GetDatabase();
             //database.StringSet("00000000", "123", TimeSpan.FromSeconds(1));
             //WriteLine(database.KeyExists("00000000"));
             //Thread.Sleep(2000);
@@ -92,31 +99,31 @@ namespace ConsoleApp
             //{
             //    database.StringSet($"key{i}",i);
             //}
-            var redisAccount=new RedisAccount()
-            {
-                Name = "qbadmin11",
-                LastOnlineIP = "127.0.0.1",
-                Password = "123456",
-                Salt = "123",
-                Ticket = "345",
-                UserDisplayName = "11",
-                UserId = "22"
-            };
+            //var redisAccount=new RedisAccount()
+            //{
+            //    Name = "qbadmin11",
+            //    LastOnlineIP = "127.0.0.1",
+            //    Password = "123456",
+            //    Salt = "123",
+            //    Ticket = "345",
+            //    UserDisplayName = "11",
+            //    UserId = "22"
+            //};
 
-            Task.Factory.StartNew(() =>
-            {
-                database.HashSetAsync($"account_{redisAccount.Name}",
-                    new HashEntry[]
-                    {
-                        new HashEntry(nameof(redisAccount.Name),redisAccount.Name),
-                        new HashEntry(nameof(redisAccount.LastOnlineIP),redisAccount.LastOnlineIP),
-                        new HashEntry(nameof(redisAccount.Password),redisAccount.Password),
-                        new HashEntry(nameof(redisAccount.Salt),redisAccount.Salt),
-                        new HashEntry(nameof(redisAccount.Ticket),redisAccount.Ticket),
-                        new HashEntry(nameof(redisAccount.UserId),redisAccount.UserId),
-                        new HashEntry(nameof(redisAccount.UserDisplayName),redisAccount.UserDisplayName),
-                    }).ConfigureAwait(false);
-            });
+            //Task.Factory.StartNew(() =>
+            //{
+            //    database.HashSetAsync($"account_{redisAccount.Name}",
+            //        new HashEntry[]
+            //        {
+            //            new HashEntry(nameof(redisAccount.Name),redisAccount.Name),
+            //            new HashEntry(nameof(redisAccount.LastOnlineIP),redisAccount.LastOnlineIP),
+            //            new HashEntry(nameof(redisAccount.Password),redisAccount.Password),
+            //            new HashEntry(nameof(redisAccount.Salt),redisAccount.Salt),
+            //            new HashEntry(nameof(redisAccount.Ticket),redisAccount.Ticket),
+            //            new HashEntry(nameof(redisAccount.UserId),redisAccount.UserId),
+            //            new HashEntry(nameof(redisAccount.UserDisplayName),redisAccount.UserDisplayName),
+            //        }).ConfigureAwait(false);
+            //});
             
             //database.HashSet($"account_{redisAccount.Name}",
             //    new HashEntry[]
@@ -132,15 +139,15 @@ namespace ConsoleApp
 
             //WriteLine(database.HashGet($"account_{redisAccount.Name}", nameof(redisAccount.Name)));
 
-            var hashlist=database.HashGetAll($"account_{redisAccount.Name}");
+            //var hashlist=database.HashGetAll($"account_{redisAccount.Name}");
             
-            WriteLine($"{nameof(redisAccount.Name)}:{hashlist.FirstOrDefault(c=>c.Name==nameof(redisAccount.Name)).Value}");
-            WriteLine($"{nameof(redisAccount.LastOnlineIP)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.LastOnlineIP)).Value}");
-            WriteLine($"{nameof(redisAccount.Password)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.Password)).Value}");
-            WriteLine($"{nameof(redisAccount.Salt)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.Salt)).Value}");
-            WriteLine($"{nameof(redisAccount.Ticket)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.Ticket)).Value}");
-            WriteLine($"{nameof(redisAccount.UserId)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.UserId)).Value}");
-            WriteLine($"{nameof(redisAccount.UserDisplayName)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.UserDisplayName)).Value}");
+            //WriteLine($"{nameof(redisAccount.Name)}:{hashlist.FirstOrDefault(c=>c.Name==nameof(redisAccount.Name)).Value}");
+            //WriteLine($"{nameof(redisAccount.LastOnlineIP)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.LastOnlineIP)).Value}");
+            //WriteLine($"{nameof(redisAccount.Password)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.Password)).Value}");
+            //WriteLine($"{nameof(redisAccount.Salt)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.Salt)).Value}");
+            //WriteLine($"{nameof(redisAccount.Ticket)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.Ticket)).Value}");
+            //WriteLine($"{nameof(redisAccount.UserId)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.UserId)).Value}");
+            //WriteLine($"{nameof(redisAccount.UserDisplayName)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.UserDisplayName)).Value}");
             
             
 
@@ -241,6 +248,33 @@ namespace ConsoleApp
             scheduler.ScheduleJob(job, trigger);
             scheduler.Start();
         }
+
+        public static string EncryptWithMD5(string userName,string password)
+        {
+            MD5CryptoServiceProvider md5Hasher = new MD5CryptoServiceProvider();
+            var bytes = Encoding.Default.GetBytes($"{userName}{password}{DateTime.Now.ToString("MMddHHmmss")}");
+            //var bytes = Encoding.Default.GetBytes($"{userName}{password}{DateTime.Parse("2019-06-24 17:09:27").ToString("MMddHHmmss")}");
+            bytes = md5Hasher.ComputeHash(bytes);
+            return ToHexString(bytes).ToLower();
+        }
+
+        public static string ToHexString(byte[] bytes)
+        {
+            string hexString = string.Empty;
+            if (bytes!=null)
+            {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    sb.Append(bytes[i].ToString("X2"));
+                }
+
+                hexString = sb.ToString();
+            }
+
+            return hexString;
+        }
+
         public class  RedisAccount
         {
             public string Name { get; set; }

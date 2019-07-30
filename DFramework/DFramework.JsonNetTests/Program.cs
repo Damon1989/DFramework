@@ -1,17 +1,11 @@
-﻿using DFramework.Config;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using DFramework.Config;
 using DFramework.Infrastructure;
 using DFramework.IoC;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using static System.Console;
 
@@ -19,40 +13,25 @@ namespace DFramework.JsonNetTests
 {
     internal class Program
     {
-        public class Account
-        {
-            public Account(string email)
-            {
-                Email = email;
-            }
-
-            [JsonProperty]
-            private string Email { get; set; }
-
-            public bool Active { get; set; }
-            public DateTime CreatedDate { get; set; }
-            public IList<string> Roles { get; set; }
-        }
-
         private static void Main(string[] args)
         {
             Configuration.Instance.UseAutofacContainer().RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
                 .UseJsonNet();
 
-            Account account = new Account("james@example.com")
+            var account = new Account("james@example.com")
             {
                 //Email = "james@example.com",
                 Active = true,
                 CreatedDate = new DateTime(2013, 1, 20, 0, 0, 0, DateTimeKind.Utc),
                 Roles = new List<string>
                 {
-                "User",
-                "Admin"
-            }
+                    "User",
+                    "Admin"
+                }
             };
 
             var iJsonConvert = IoCFactory.Instance.CurrentContainer.Resolve<IJsonConvert>();
-            string json = iJsonConvert.SerializeObject(account);
+            var json = iJsonConvert.SerializeObject(account);
             WriteLine(json);
 
             //            json = JsonConvert.SerializeObject(account, Formatting.Indented);
@@ -316,6 +295,20 @@ namespace DFramework.JsonNetTests
             ReadLine();
         }
 
+        public class Account
+        {
+            public Account(string email)
+            {
+                Email = email;
+            }
+
+            [JsonProperty] private string Email { get; set; }
+
+            public bool Active { get; set; }
+            public DateTime CreatedDate { get; set; }
+            public IList<string> Roles { get; set; }
+        }
+
         [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
         public class User
         {
@@ -332,13 +325,13 @@ namespace DFramework.JsonNetTests
         [JsonObject]
         public class Directory : IEnumerable<string>
         {
-            public string Name { get; set; }
-            public IList<string> Files { get; set; }
-
             public Directory()
             {
                 Files = new List<string>();
             }
+
+            public string Name { get; set; }
+            public IList<string> Files { get; set; }
 
             public IEnumerator<string> GetEnumerator()
             {

@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -117,6 +119,146 @@ namespace DFramework.Infrastructure
             return $"{type.FullName},{type.Assembly.GetName().Name}";
         }
 
+        /// <summary>
+        ///     Checks and deletes given file if it does exists.
+        /// </summary>
+        /// <param name="filePath"></param>
+        public static void DeleteFileIfExists(this string filePath)
+        {
+            if (File.Exists(filePath)) File.Delete(filePath);
+        }
+
+        public static void CreateDirectoryIfNotExists(this string directory)
+        {
+            if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
+        }
+
+        public static byte[] GetAllBytes(this Stream stream)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                stream.CopyTo(memoryStream);
+                return memoryStream.ToArray();
+            }
+        }
+
+        /// <summary>
+        ///     Adds a char to end of given string if it does not ends with the char.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public static string EnsureEndsWith(this string str, char c)
+        {
+            return EnsureEndsWith(str, c, StringComparison.Ordinal);
+        }
+
+        /// <summary>
+        ///     Adds a char to end of given string if it does not ends with the char.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="c"></param>
+        /// <param name="comparisionType"></param>
+        /// <returns></returns>
+        public static string EnsureEndsWith(this string str, char c, StringComparison comparisionType)
+        {
+            if (str == null) throw new ArgumentException(nameof(str));
+
+            if (str.EndsWith(c.ToString(), comparisionType)) return str;
+            return str + c;
+        }
+
+        /// <summary>
+        ///     Adds a char to end of given string if it dose not ends with the char.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="c"></param>
+        /// <param name="ignoreCase"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
+        public static string EnsureEndsWith(this string str, char c, bool ignoreCase, CultureInfo culture)
+        {
+            if (str == null) throw new ArgumentException(nameof(str));
+
+            if (str.EndsWith(c.ToString(culture), ignoreCase, culture)) return str;
+            return str + c;
+        }
+
+        /// <summary>
+        ///     Adds a char to beginning of given string if it does not starts with the char.
+        /// </summary>
+        public static string EnsureStartsWith(this string str, char c)
+        {
+            return EnsureStartsWith(str, c, StringComparison.Ordinal);
+        }
+
+        /// <summary>
+        ///     Adds a char to beginning of given string if it does not starts with the char.
+        /// </summary>
+        public static string EnsureStartsWith(this string str, char c, StringComparison comparisonType)
+        {
+            if (str == null) throw new ArgumentNullException(nameof(str));
+
+            if (str.StartsWith(c.ToString(), comparisonType)) return str;
+
+            return c + str;
+        }
+
+        /// <summary>
+        ///     Adds a char to beginning of given string if it does not starts with the char.
+        /// </summary>
+        public static string EnsureStartsWith(this string str, char c, bool ignoreCase, CultureInfo culture)
+        {
+            if (str == null) throw new ArgumentNullException(nameof(str));
+
+            if (str.StartsWith(c.ToString(culture), ignoreCase, culture)) return str;
+
+            return c + str;
+        }
+
+        /// <summary>
+        ///     Converts string to enum value.
+        /// </summary>
+        /// <typeparam name="T">Type of enum</typeparam>
+        /// <param name="value">String value to convert</param>
+        /// <returns>Returns enum object</returns>
+        public static T ToEnum<T>(this string value)
+            where T : struct
+        {
+            if (value == null) throw new ArgumentNullException(nameof(value));
+
+            return (T) Enum.Parse(typeof(T), value);
+        }
+
+        /// <summary>
+        ///     Converts string to enum value.
+        /// </summary>
+        /// <typeparam name="T">Type of enum</typeparam>
+        /// <param name="value">String value to convert</param>
+        /// <param name="ignoreCase">Ignore case</param>
+        /// <returns>Returns enum object</returns>
+        public static T ToEnum<T>(this string value, bool ignoreCase)
+            where T : struct
+        {
+            if (value == null) throw new ArgumentNullException(nameof(value));
+
+            return (T) Enum.Parse(typeof(T), value, ignoreCase);
+        }
+
+        public static string ToMd5(this string str)
+        {
+            using (var md5 = MD5.Create())
+            {
+                var inputBytes = Encoding.UTF8.GetBytes(str);
+                var hashBytes = md5.ComputeHash(inputBytes);
+
+                var sb = new StringBuilder();
+                foreach (var hashByte in hashBytes) sb.Append(hashByte.ToString("X2"));
+
+                return sb.ToString();
+            }
+        }
+
         #region JoinAsString
 
         public static string JoinAsString(this IEnumerable<string> source, string separator)
@@ -153,6 +295,11 @@ namespace DFramework.Infrastructure
 
         #region IsNullOrEmpty
 
+        /// <summary>
+        ///     Indicates whether this string is null or an System.String.Empty string.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static bool IsNullOrEmpty(this string str)
         {
             return string.IsNullOrEmpty(str);
@@ -168,6 +315,11 @@ namespace DFramework.Infrastructure
             return source == null || source.Count <= 0;
         }
 
+        /// <summary>
+        ///     indicates whether this string is null,empty,or consists only of white-space characters.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static bool IsNullOrWhiteSpace(this string str)
         {
             return string.IsNullOrWhiteSpace(str);
@@ -176,47 +328,39 @@ namespace DFramework.Infrastructure
         #endregion
 
         #region Substring
+
         /// <summary>
-        ///  Gets a substring of a string from beginning of the string.
+        ///     Gets a substring of a string from beginning of the string.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="len"></param>
         /// <returns></returns>
         public static string Left(this string str, int len)
         {
-            if (str == null)
-            {
-                throw new ArgumentNullException(nameof(str));
-            }
+            if (str == null) throw new ArgumentNullException(nameof(str));
 
             if (str.Length < len)
-            {
                 throw new ArgumentException("len argument can not be bigger than given string's length!");
-            }
 
             return str.Substring(0, len);
         }
 
         /// <summary>
-        ///  Gets a substring of a string from end of the string.
+        ///     Gets a substring of a string from end of the string.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="len"></param>
         /// <returns></returns>
         public static string Right(this string str, int len)
         {
-            if (str == null)
-            {
-                throw new ArgumentNullException(nameof(str));
-            }
+            if (str == null) throw new ArgumentNullException(nameof(str));
 
             if (str.Length < len)
-            {
                 throw new ArgumentException("len argument can not be bigger than given string's length!");
-            }
 
             return str.Substring(str.Length - len, len);
-        } 
+        }
+
         #endregion
 
         #region WhereIf
@@ -430,34 +574,5 @@ namespace DFramework.Infrastructure
         }
 
         #endregion FilePath
-
-        /// <summary>
-        /// Checks and deletes given file if it does exists.
-        /// </summary>
-        /// <param name="filePath"></param>
-        public static void DeleteFileIfExists(this string filePath)
-        {
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-        }
-
-        public static void CreateDirectoryIfNotExists(this string directory)
-        {
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
-        }
-
-        public static byte[] GetAllBytes(this Stream stream)
-        {
-            using (var memoryStream=new MemoryStream())
-            {
-                stream.CopyTo(memoryStream);
-                return memoryStream.ToArray();
-            }
-        }
     }
 }

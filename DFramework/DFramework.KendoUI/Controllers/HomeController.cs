@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Web.Http.Cors;
 using System.Web.Mvc;
 using DFramework.KendoUI.Domain;
 using DFramework.KendoUI.Models;
@@ -14,6 +15,7 @@ using ZXing.Common;
 
 namespace DFramework.KendoUI.Controllers
 {
+    [EnableCors("*","*","*")]
     public class HomeController : Controller
     {
         //private readonly KendoDbContext _kendoDbContext;
@@ -154,6 +156,11 @@ namespace DFramework.KendoUI.Controllers
         }
 
         public ActionResult Promise()
+        {
+            return View();
+        }
+
+        public ActionResult DataTable()
         {
             return View();
         }

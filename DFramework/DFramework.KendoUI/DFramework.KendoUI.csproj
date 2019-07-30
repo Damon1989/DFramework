@@ -151,8 +151,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Transactions" />
-    <Reference Include="System.Web.Cors, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.6\lib\net45\System.Web.Cors.dll</HintPath>
+    <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -341,6 +341,7 @@
     <Content Include="Views\Vue\Index.cshtml" />
     <Content Include="Views\Home\UnderScore.cshtml" />
     <Content Include="Views\NpoiMapper\Index.cshtml" />
+    <Content Include="Views\Home\DataTable.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

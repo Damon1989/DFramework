@@ -1,24 +1,22 @@
-﻿using DFramework.Infrastructure;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 using DFramework.Exceptions;
+using DFramework.Infrastructure;
 
 namespace DFramework.AspNet.Controllers
 {
     public class ApiControllerBase : ApiController
     {
-        protected IExceptionManager ExceptionManager { get; }
-
         public ApiControllerBase(IExceptionManager exceptionManager)
         {
             ExceptionManager = exceptionManager;
         }
+
+        protected IExceptionManager ExceptionManager { get; }
 
         protected virtual string GetModelErrorMessage(ModelStateDictionary modelState)
         {
@@ -38,11 +36,12 @@ namespace DFramework.AspNet.Controllers
                     getExceptionMessage: getExceptionMessage);
                 return apiResult;
             }
+
             getModelErrorMessage = getModelErrorMessage ?? GetModelErrorMessage;
             return new ApiResult<T>(
                 ErrorCode.InvalidParameters,
                 getModelErrorMessage(ModelState)
-                );
+            );
         }
 
         protected virtual ApiResult Process(Action action,
@@ -55,6 +54,7 @@ namespace DFramework.AspNet.Controllers
                 var apiResult = ExceptionManager.Process(action, needRetry, getExceptionMessage: getExceptionMessage);
                 return apiResult;
             }
+
             getModelErrorMessage = getModelErrorMessage ?? GetModelErrorMessage;
             return
                 new ApiResult
@@ -65,47 +65,43 @@ namespace DFramework.AspNet.Controllers
         }
 
         protected virtual async Task<ApiResult> ProcessAsync(Func<Task> func,
-                                                     bool continueOnCapturedContext = false,
-                                                     bool needRetry = true,
-                                                     Func<Exception, string> getExceptionMessage = null,
-                                                     Func<ModelStateDictionary, string> getModelErrorMessage = null)
+            bool continueOnCapturedContext = false,
+            bool needRetry = true,
+            Func<Exception, string> getExceptionMessage = null,
+            Func<ModelStateDictionary, string> getModelErrorMessage = null)
         {
             if (ModelState.IsValid)
-            {
                 return await ExceptionManager.ProcessAsync(func,
-                                                           continueOnCapturedContext,
-                                                           needRetry,
-                                                           getExceptionMessage: getExceptionMessage)
-                                             .ConfigureAwait(continueOnCapturedContext);
-            }
+                        continueOnCapturedContext,
+                        needRetry,
+                        getExceptionMessage: getExceptionMessage)
+                    .ConfigureAwait(continueOnCapturedContext);
             getModelErrorMessage = getModelErrorMessage ?? GetModelErrorMessage;
             return
                 new ApiResult
-                    (
-                     ErrorCode.InvalidParameters,
-                     getModelErrorMessage(ModelState)
-                    );
+                (
+                    ErrorCode.InvalidParameters,
+                    getModelErrorMessage(ModelState)
+                );
         }
 
         protected virtual async Task<ApiResult<T>> ProcessAsync<T>(Func<Task<T>> func,
-                                                                   bool continueOnCapturedContext = false,
-                                                                   bool needRetry = true,
-                                                                   Func<Exception, string> getExceptionMessage = null,
-                                                                   Func<ModelStateDictionary, string> getModelErrorMessage = null)
+            bool continueOnCapturedContext = false,
+            bool needRetry = true,
+            Func<Exception, string> getExceptionMessage = null,
+            Func<ModelStateDictionary, string> getModelErrorMessage = null)
         {
             if (ModelState.IsValid)
-            {
                 return await ExceptionManager.ProcessAsync(func, continueOnCapturedContext, needRetry,
-                                                           getExceptionMessage: getExceptionMessage)
-                                             .ConfigureAwait(continueOnCapturedContext);
-            }
+                        getExceptionMessage: getExceptionMessage)
+                    .ConfigureAwait(continueOnCapturedContext);
             getModelErrorMessage = getModelErrorMessage ?? GetModelErrorMessage;
             return
                 new ApiResult<T>
-                    (
-                     ErrorCode.InvalidParameters,
-                     getModelErrorMessage(ModelState)
-                    );
+                (
+                    ErrorCode.InvalidParameters,
+                    getModelErrorMessage(ModelState)
+                );
         }
 
         public virtual string GetClientIP(HttpRequestMessage request = null)

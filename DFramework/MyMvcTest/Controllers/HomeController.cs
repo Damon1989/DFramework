@@ -33,7 +33,7 @@ namespace MyMvcTest.Controllers
             //var compressionFilePath = "D://file.zip";
             //ZipHelper.FileCompression(filePath, compressionFilePath).GetAwaiter();
 
-            ZipHelper.ZipDirectory("d://test/a/1", "d://test/zip.zip");
+            //ZipHelper.ZipDirectory("d://test/a/1", "d://test/zip.zip");
             //ZipHelper.ZipFile(Server.MapPath("~/123.txt"), Server.MapPath("~/123zip.zip"));
             //ZipHelper.UnZip(Server.MapPath("~/123zip.zip"), "d://test/a/123");
 
@@ -127,6 +127,17 @@ namespace MyMvcTest.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Post()
+        {
+            return View();
+        }
+
+        public ActionResult GetInfo()
+        {
+            return Json("123", JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult ClassProperty()
