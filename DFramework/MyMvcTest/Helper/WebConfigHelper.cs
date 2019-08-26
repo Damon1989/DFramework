@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 
@@ -9,12 +10,9 @@ namespace MyMvcTest.Helper
     {
         public static Dictionary<string, string> GetWebConfigSettings()
         {
-            var result = new Dictionary<string, string>();
             var appSetting = (AppSettingsSection) GetConfigurationSection("appSettings");
 
-            foreach (var key in appSetting.Settings.AllKeys) result.Add(key, appSetting.Settings[key].Value);
-
-            return result;
+            return appSetting.Settings.AllKeys.ToDictionary(key => key, key => appSetting.Settings[key].Value);
         }
 
         private static Configuration GetConfiguration()
