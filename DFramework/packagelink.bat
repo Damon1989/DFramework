@@ -1,1 +1,1 @@
-junction packages "D:\mycode\packages"
+junction packages "c:\packages"

@@ -384,6 +384,7 @@
     <Compile Include="Helper\HttpUtility.cs" />
     <Compile Include="Helper\JsonHelper.cs" />
     <Compile Include="Helper\RedisManager.cs" />
+    <Compile Include="Helper\SqlBulkCopyHelper.cs" />
     <Compile Include="Helper\WebConfigHelper.cs" />
     <Compile Include="Helper\WebSiteHelper.cs" />
     <Compile Include="Helper\ZipHelper.cs" />
