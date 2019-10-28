@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 using StackExchange.Redis;
 
 namespace ConsoleApp
@@ -27,15 +22,15 @@ namespace ConsoleApp
             {
                 if (_instance == null)
                 {
-                    object locker = Locker;
+                    var locker = Locker;
                     lock (locker)
                     {
                         if (_instance == null)
-                        {
-                            _instance = ConnectionMultiplexer.Connect(ConfigurationManager.AppSettings["RedisHost"], null);
-                        }
+                            _instance = ConnectionMultiplexer.Connect(ConfigurationManager.AppSettings["RedisHost"],
+                                null);
                     }
                 }
+
                 return _instance;
             }
         }

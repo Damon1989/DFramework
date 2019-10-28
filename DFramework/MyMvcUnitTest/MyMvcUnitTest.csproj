@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConcurrentTest.cs" />
     <Compile Include="JsonTest.cs" />
     <Compile Include="RedisTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
