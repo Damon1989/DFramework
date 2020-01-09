@@ -77,14 +77,14 @@ namespace MyMvcTest.Test
         }
 
 
-        public string ConcurrentQueueTest()
-        {
-            var taskQueue = new ConcurrentQueue<CustomTask>();
+        //public string ConcurrentQueueTest()
+        //{
+        //    var taskQueue = new ConcurrentQueue<CustomTask>();
 
-            var cts = new CancellationTokenSource();
+        //    var cts = new CancellationTokenSource();
 
             
-        }
+        //}
 
         private async Task TaskProducer(ConcurrentQueue<CustomTask> queue)
         {

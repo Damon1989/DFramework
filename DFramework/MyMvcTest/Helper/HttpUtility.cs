@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using Newtonsoft.Json;
 
 namespace MyMvcTest.Helper
@@ -51,6 +52,46 @@ namespace MyMvcTest.Helper
             response.EnsureSuccessStatusCode();
 
             var resultTask = response.Content.ReadAsStringAsync().Result;
+        }
+
+        public TTo PostJsonData<TFrom, TTo>(string url, TFrom data, HttpContent content = null)
+        {
+            var sendData = JsonConvert.SerializeObject(data);
+            if (content == null)
+            {
+                content = new StringContent(sendData);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            }
+
+            var response = HttpClient.PostAsync(url, content).Result;
+            response.EnsureSuccessStatusCode();
+
+            var resultTask = response.Content.ReadAsStringAsync().Result;
+            var result = JsonConvert.DeserializeObject<TTo>(resultTask);
+            return result;
+        }
+
+        public TTo PostFormUrlEncodedContent<TFrom, TTo>(string url, TFrom data, HttpContent content = null)
+        {
+            var dictionary = new Dictionary<string, string>();
+            var properties = data.GetType().GetProperties();
+            properties.ToList().ForEach(propertyinfo =>
+            {
+                var value = propertyinfo.GetValue(data);
+                dictionary.Add(propertyinfo.Name.ToLower(), value.ToString());
+            });
+
+            if (content == null) content = new FormUrlEncodedContent(dictionary);
+
+            //LoggerHelper.WriteLine(JsonConvert.SerializeObject(dictionary));
+
+            var response = HttpClient.PostAsync(url, content).Result;
+            response.EnsureSuccessStatusCode();
+
+            var resultTask = response.Content.ReadAsStringAsync().Result;
+            //LoggerHelper.WriteLine(resultTask);
+            var result = JsonConvert.DeserializeObject<TTo>(resultTask);
+            return result;
         }
     }
 }
