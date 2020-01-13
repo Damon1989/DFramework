@@ -8,13 +8,48 @@
         return d;
     };
 
+    var strToDate = function (dateStr, separator) {
+        if (!separator) {
+            separator = "-";
+        }
+        var dateArr = dateStr.split(separator);
+        var year = parseInt(dateArr[0]);
+        var month = parseInt(dateArr[1]);
+        if (dateArr[1].indexOf("0") === 0) {
+            month = parseInt(dateArr[1].substring(1));
+        }
+        var day = parseInt(dateArr[2]);
+        return new Date(year, month - 1, day);
+    };
 
+    var strToTime = function(dateTimeStr, separator) {
+        if (!separator) {
+            separator = "-";
+        }
 
+        var dateTimeArr = dateTimeStr.split(" ");
+
+        var dateArr = dateTimeArr[0].split(separator);
+        var year = parseInt(dateArr[0]);
+        var month = parseInt(dateArr[1]);
+        if (dateArr[1].indexOf("0") === 0) {
+            month = parseInt(dateArr[1].substring(1));
+        }
+        var day = parseInt(dateArr[2]);
+
+        if (dateTimeArr.length > 1) {
+            var timeArr = dateTimeStr.split(" ")[1].split(":");
+            console.log(timeArr);
+            return new Date(year, month - 1, day, (timeArr.length >= 1 && timeArr[0] !== null ? timeArr[0] : 0), (timeArr.length >= 2 && timeArr[1] !== null ? timeArr[1] : 0), (timeArr.length >=3 &&timeArr[2] !== null ? timeArr[2] : 0));
+        } else {
+            return new Date(year, month - 1, day,0,0,0);
+        }
+    };
 /*
 * 2020-01-01
 */
-    var getFormatDate = function (dateData, separate) {
-        var date = new Date(dateData);
+    var getFormatDateStr = function (dateData, separate) {
+        var date = dateData instanceof Date ? dateData : strToDate(dateData);
         separate = separate ? separate : "-";
         var year = date.getFullYear();
         var month = formatAddZero(date.getMonth() + 1);
@@ -26,8 +61,8 @@
     /*
  * 2020-01-01 12:23:34
  */
-    var getFormatTime = function (dateData, separate) {
-        var date = new Date(dateData);
+    var getFormatTimeStr = function (dateData, separate) {
+        var date = dateData instanceof Date ? dateData : strToTime(dateData);
         separate = separate ? separate : "-";
         var year = date.getFullYear();
         var month = formatAddZero(date.getMonth() + 1);
@@ -54,8 +89,10 @@
     };
 
     return {
-        getFormatDate: getFormatDate,
-        getFormatTime: getFormatTime,
+        strToDate: strToDate,
+        strToTime: strToTime,
+        getFormatDateStr: getFormatDateStr,
+        getFormatTimeStr: getFormatTimeStr,
         dateDiffDay: dateDiffDay,
         dateDiffGreater: dateDiffGreater
     };
@@ -227,3 +264,31 @@ var CalculationModule = (function () {
         divideSubDecimal: divideSubDecimal
     };
 })();
+
+
+/*
+ * 对Date的扩展，将Date转化为指定格式的String
+ * 月（M）、日（d）、小时（h）、分（m）、秒(s)、季度（q）可以用1-2个占位符
+ * 年（y）可以用1-4个占位符，毫秒（S）只能用1个占位符（是1-3位的数字）
+ * 例子：
+ * （new Date()）.Format("yyyy-MM-dd hh:mm:ss.S")  ==》2020-01-09 22:27:07.116
+ * (new Date()).Format(yyyy-M-d h:m:s.S) ==>2020-1-9 22:27:40.636
+ */
+Date.prototype.Format = function(fmt) {
+    var o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o) {
+        if (new RegExp("(" + k + ")").test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        }
+    }
+    return fmt;
+}

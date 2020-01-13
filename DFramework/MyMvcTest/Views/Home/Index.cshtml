@@ -41,8 +41,15 @@
     //console.log(CommonModule.getFormatDate("2020/01/05", "/"));
     //console.log(CommonModule.getFormatTime(new Date().toString()));
     //console.log(CommonModule.dateDiffDay("2020/01/05", new Date()).toString());
-    console.log((3.1).toFixed(2));
+    //console.log((3.1).toFixed(2));
     console.log(CalculationModule.addToFixed(3.1444, 2.3454, 2));
-    console.log(CalculationModule.addSubDecimal(3.1444, 2.3454, 2));
-    
+    //console.log(CalculationModule.addSubDecimal(3.1444, 2.3454, 2));
+
+    console.log(new Date().Format("yyyy-MM-dd hh:mm:ss.S")); 
+    console.log(new Date().Format("yyyy/MM/dd hh:mm:ss.S"));
+    console.log(new Date().Format("yyyy-M-d h:m:s.S"));
+    console.log(DateTimeModule.strToTime("2020/01/13 22:12", "/"));
+    var now = new Date();
+    console.log(now instanceof Date);
+    console.log(DateTimeModule.getFormatTimeStr(new Date()));
 </script>
