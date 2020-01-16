@@ -292,6 +292,24 @@ Date.prototype.Format = function(fmt) {
     return fmt;
 };
 
+String.prototype.startsWith = function(s) {
+    //"use strict";
+    //if (s === null || s === "" || this.length === 0 || s.length > this.length) {
+    //    return false;
+    //}
+    //return this.substr(0, s.length) === s;
+    var reg = new RegExp("^" + s);
+    return reg.test(this);
+};
+
+String.prototype.endsWith = function(s) {
+    //if (s === null || s === "" || this.length === 0 || s.length > this.length) {
+    //    return false;
+    //}
+    //return this.substring(this.length - s.length) === s;
+    var reg = new RegExp(s + "$");
+    return reg.test(this);
+};
 
 /*
  * 装饰者模式
@@ -316,6 +334,9 @@ var decorator = function(input, fn) {
     }
 };
 
+/*
+ * 观察者模式
+ */
 (function ($) {
     var o = $({});
     $.subscribe = function () {
@@ -356,7 +377,6 @@ var initDataEvents = function() {
             }
         });
 };
-
 
 $(function () {
     initDataEvents();

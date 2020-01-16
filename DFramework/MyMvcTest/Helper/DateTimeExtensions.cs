@@ -2,7 +2,7 @@
 
 namespace MyMvcTest.Helper
 {
-    public static class DateTimeHelper
+    public static class DateTimeExtensions
     {
         /// <summary>
         /// 19

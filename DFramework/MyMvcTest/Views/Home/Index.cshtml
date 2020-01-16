@@ -35,6 +35,8 @@
         <input type="button" data-event="alertinfo1" data-id="1" value="1" />
         <input type="button" data-event="alertinfo2" data-id="2" value="2" />
     </h3>
+    <div id="demo"></div>
+    <div id="test"></div>
 </div>
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/index.js"></script>
@@ -51,6 +53,10 @@
             console.log(data);
             alert(data);
         });
+
+    //console.log("sss1".startsWith("s"));
+    //console.log("sss1".startsWith("s1"));
+    //console.log("sss1".endsWith("s1"));
     //console.log(CommonModule.getFormatDate("2020/01/05", "/"));
     //console.log(CommonModule.getFormatTime(new Date().toString()));
     //console.log(CommonModule.dateDiffDay("2020/01/05", new Date()).toString());
@@ -61,8 +67,87 @@
     //console.log(new Date().Format("yyyy-MM-dd hh:mm:ss.S"));
     //console.log(new Date().Format("yyyy/MM/dd hh:mm:ss.S"));
     //console.log(new Date().Format("yyyy-M-d h:m:s.S"));
-    console.log(DateTimeModule.strToTime("2020-01-13 22:12"));
+    //console.log(DateTimeModule.strToTime("2020-01-13 22:12"));
     //var now = new Date();
     //console.log(now instanceof Date);
     //console.log(DateTimeModule.getFormatTimeStr(new Date()));
+
+    //selector 选择符，context上下文
+    var A = function (selector,context) {
+        return  A.fn.init(selector);
+    };
+    A.fn = A.prototype = {
+        //强化构造器
+        constructor:A,
+        init: function (selector, context) {
+            //获取元素长度
+            this.length = 0;
+            //默认获取元素的上下文为document
+            context = context || document;
+            //如果是id选择符 按位将-1转化为0，转化为布尔值false
+            if (~selector.indexOf("#")) {
+                //截取id并选择
+                this[0] = document.getElementById(selector.slice(1));
+                this.length = 1;
+            } else {
+                //如果是元素名称
+                //在上下文中选择元素
+                var doms = context.getElementsByTagName(selector);
+                var len = doms.length;
+                for (var i = 0; i < len; i++) {
+                    this[i] = doms[i];
+                }
+                this.length = len;
+            }
+
+            this.context = context;
+            this.selector = selector;
+            return this;
+            //this[0] = document.getElementById(selector);
+            //this.length = 1;
+            //return this;
+        },
+        length: 2,
+        size: function () {
+            return this.length;
+        },
+        push: [].push,
+        sort: [].sort,
+        splice: [].splice
+    }
+
+    A.fn.init.prototype = A.fn;
+
+    A.extend = A.fn.extend = function () {
+        debugger;
+        //拓展对象从第二个参数算起
+        var i = 1,
+            //获取参数长度
+            len = arguments.length,
+            //第一个参数为源对象
+            target = arguments[0],
+            //拓展对象中的属性
+            j;
+        //如果只传一个参数
+        if (i == len) {
+            //源对象为当前对象
+            target = this;
+            //i从0计算
+            i--;
+        }
+        //遍历参数中拓展对象
+        for (; i < len; i++) {
+            for (j in arguments[i]) {
+                var arg = arguments[i][j];
+                target[j] = arg;
+            }
+        }
+        return target;
+    }
+
+    //console.log(A("demo").size());
+    var demo = A.extend({ first: 1 }, { second: 2 }, { third: 3 });
+    console.log(demo);
+    //console.log(A("test"));
+    //console.log(A("demo").size());
 </script>
