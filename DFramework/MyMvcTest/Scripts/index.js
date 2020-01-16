@@ -1,4 +1,4 @@
-﻿var DateTimeModule = (function() {
+﻿var DateTimeModule = (function () {
 
     var formatAddZero = function(data) {
         var d = parseInt(data);
@@ -9,9 +9,9 @@
     };
 
     var strToDate = function (dateStr, separator) {
-        if (!separator) {
-            separator = "-";
-        }
+
+        separator = separator || "-";
+
         var dateArr = dateStr.split(separator);
         var year = parseInt(dateArr[0]);
         var month = parseInt(dateArr[1]);
@@ -22,10 +22,9 @@
         return new Date(year, month - 1, day);
     };
 
-    var strToTime = function(dateTimeStr, separator) {
-        if (!separator) {
-            separator = "-";
-        }
+    var strToTime = function (dateTimeStr, separator) {
+
+        separator = separator || "-";
 
         var dateTimeArr = dateTimeStr.split(" ");
 
@@ -287,8 +286,78 @@ Date.prototype.Format = function(fmt) {
     if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
     for (var k in o) {
         if (new RegExp("(" + k + ")").test(fmt)) {
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         }
     }
     return fmt;
-}
+};
+
+
+/*
+ * 装饰者模式
+ */
+var decorator = function(input, fn) {
+    //获取事件源
+    var inputInfo = document.getElementById(input);
+    //若事件源已经绑定事件
+    if (typeof inputInfo.onclick === 'function') {
+        //缓存事件源原有回调函数
+        var oldClickFn = inputInfo.onclick;
+        //为事件源定义新的事件
+        inputInfo.onclick = function() {
+            //事件源原有回调函数
+            oldClickFn();
+            //执行事件源新增回调函数
+            fn();
+        };
+    } else {
+        //事件源未绑定事件，直接为事件源添加新增回调函数
+        inputInfo.onclick = fn;
+    }
+};
+
+(function ($) {
+    var o = $({});
+    $.subscribe = function () {
+        var eventName = arguments[0];
+        var arrEvent = eventName.split(',');
+        for (var i = 0; i < arrEvent.length; i++) {
+            arguments[0] = arrEvent[i];
+            o.on.apply(o, arguments);
+            console.log(arguments[0] + " subscribed");
+        }
+    };
+    $.unsubscribe = function() {
+        var eventName = arguments[0];
+        var arrEvent = eventName.split(',');
+        for (var i = 0; i < arrEvent.length; i++) {
+            arguments[0] = arrEvent[i];
+            o.off.apply(o, arguments);
+            console.log(arguments[0] + " unsubscribed");
+        }
+    };
+    $.publish = function() {
+        o.trigger.apply(o, arguments);
+        console.log(arguments[0] + " published");
+    };
+})(window.jQuery);
+
+var initDataEvents = function() {
+    $("body").on("click",
+        "[data-event]",
+        function() {
+            var action = $(this).data("event");
+            var target = $(this)[0];
+            if (!action)
+                console.error("data-event is null");
+            var actionArr = action.split(',');
+            for (var i = 0; i < actionArr.length; i++) {
+                $.publish($.trim(actionArr[i]), [$.extend($(this).data(), { target: target })]);
+            }
+        });
+};
+
+
+$(function () {
+    initDataEvents();
+});
