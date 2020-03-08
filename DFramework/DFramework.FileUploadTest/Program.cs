@@ -11,6 +11,8 @@ namespace DFramework.FileUploadTest
         private static void Main(string[] args)
         {
             var files = new Dictionary<string, string> { { "1", "c:\\test\\1.book" }, { "2", "c:\\test\\1.jpg" } };
+            //var files = new Dictionary<string, string> { { "1", "c:\\test\\1.book"  } };
+            //var files = new Dictionary<string, string> { { "1", "c:\\test\\1.jpg" } };
 
             Console.WriteLine(HttpPost(m_address, null, files));
 
@@ -22,7 +24,8 @@ namespace DFramework.FileUploadTest
 
         //private static string m_address = "http://localhost:30863/LessonWork/UploadYcFileToLessonWork/4a6788f7-63d7-44ad-9909-cf87022fca65/b6b1ef91-36bd-4f73-8d77-292ec0555a9e?name=123";
         //private static string m_address = "http://kct.age06.com/Age06.ImplementSupport/LessonWork/UploadYcFileToLessonWork/4a6788f7-63d7-44ad-9909-cf87022fca65/cdd77fb3-5595-4f36-9882-88cb47fc3d83";
-        private static string m_address = "http://test.age06.com/ImplementSupportUAT/LessonWork/UploadYcFileToLessonWork/4a6788f7-63d7-44ad-9909-cf87022fca65/b6b1ef91-36bd-4f73-8d77-292ec0555a9e?name=1234";
+        //private static string m_address = "http://test.age06.com/ImplementSupportUAT/LessonWork/UploadYcFileToLessonWork/4a6788f7-63d7-44ad-9909-cf87022fca65/b6b1ef91-36bd-4f73-8d77-292ec0555a9e?name=1234";
+        private static string m_address = "http://kct.age06.com/Age06.ImplementSupport/LessonWork/UploadYcFileToLessonWork/b7bdd069-f4bf-46f6-b325-7062952fcd1f/afa5ad68-5d85-4650-8691-73ba62dc0697?name=集体学习模板0828";
 
         public static string HttpPost(string url, Dictionary<string, string> postData, Dictionary<string, string> files)
         {
