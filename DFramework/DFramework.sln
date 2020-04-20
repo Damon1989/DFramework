@@ -103,7 +103,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMvcUnitTest", "MyMvcUnitT
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Abpsrc", "Abpsrc", "{96CD18D0-C39A-4A20-A4FF-752DE8385536}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abp", "Abp\Abp.csproj", "{1BA6AB22-02C7-4D9D-A14F-5085E71FFB1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abp", "Abp\Abp.csproj", "{1BA6AB22-02C7-4D9D-A14F-5085E71FFB1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
