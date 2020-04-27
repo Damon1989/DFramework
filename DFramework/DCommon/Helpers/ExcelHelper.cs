@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Web;
-using Microsoft.Office.Interop.Excel;
-using Excel = Microsoft.Office.Interop.Excel;
-
-namespace MyMvcTest.Helper
+﻿namespace DCommon
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.InteropServices;
+    using System.Web;
+    using Microsoft.Office.Interop.Excel;
+    using Excel = Microsoft.Office.Interop.Excel;
     public class ExcelConverter
     {
         public ExcelConverter()

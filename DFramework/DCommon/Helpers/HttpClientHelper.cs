@@ -1,18 +1,18 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using Newtonsoft.Json;
 
-namespace MyMvcTest.Helper
+namespace DCommon
 {
-    public class HttpUtility
+    public class HttpClientHelper
     {
-        public HttpUtility(string host, Dictionary<string, string> headers = null, int timeout = 3600)
+        public HttpClientHelper(string host, Dictionary<string, string> headers = null, int timeout = 3600)
         {
-            var handler = new HttpClientHandler {AutomaticDecompression = DecompressionMethods.GZip};
+            var handler = new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip };
             HttpClient = new HttpClient(handler)
             {
                 Timeout = new TimeSpan(0, 0, timeout),
