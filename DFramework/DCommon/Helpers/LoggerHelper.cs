@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.IO;
 
-namespace MyMvcTest.Helper
+namespace DCommon
 {
     public static class LoggerHelper
     {
@@ -11,17 +11,17 @@ namespace MyMvcTest.Helper
             WriteLine(msg, true);
         }
 
-        public static void WriteLine(string msg,bool recordIp)
+        public static void WriteLine(string msg, bool recordIp)
         {
-            WriteLine(msg, recordIp,"C");
+            WriteLine(msg, recordIp, "C");
         }
 
-        public static void WriteLine(string msg,string disk)
+        public static void WriteLine(string msg, string disk)
         {
-            WriteLine(msg, true,disk);
+            WriteLine(msg, true, disk);
         }
 
-        public static void WriteLine(string msg,bool recordIp,string disk ="C")
+        public static void WriteLine(string msg, bool recordIp, string disk = "C")
         {
             try
             {
@@ -33,16 +33,16 @@ namespace MyMvcTest.Helper
             }
             catch (Exception e)
             {
-                
+
             }
             var now = DateTime.Now;
-            var directory = $"{disk}://log//{now.Year}//{now.Month}//{now.Day}";
+            var directory = $"{disk}://temp//log//{now.Year}//{now.Month}//{now.Day}";
             if (!Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
             }
             var fileCount = Directory.GetFiles(directory).Length;
-            var filePath =fileCount==0? $"{directory}//{fileCount}.txt": $"{directory}//{fileCount-1}.txt";
+            var filePath = fileCount == 0 ? $"{directory}//{fileCount}.txt" : $"{directory}//{fileCount - 1}.txt";
 
             if (!File.Exists(filePath))
             {
@@ -51,17 +51,17 @@ namespace MyMvcTest.Helper
             else
             {
                 var fileInfo = new FileInfo(filePath);
-                if (fileInfo.Length/1024/1024>5)
+                if (fileInfo.Length / 1024 / 1024 > 5)
                 {
-                    File.Create(filePath.Replace($"{Path.GetFileName(filePath)}",$"{fileCount}.txt")).Close();
-                    WriteLine(msg, recordIp,disk);
+                    File.Create(filePath.Replace($"{Path.GetFileName(filePath)}", $"{fileCount}.txt")).Close();
+                    WriteLine(msg, recordIp, disk);
                 }
             }
 
             var ip = recordIp ? GetHostAddress() : "";
-            using (var fileStream=new FileStream(filePath,FileMode.Append))
+            using (var fileStream = new FileStream(filePath, FileMode.Append))
             {
-                using (var writer=new StreamWriter(fileStream))
+                using (var writer = new StreamWriter(fileStream))
                 {
                     writer.WriteLine($"{now}--{ip}--{msg}");
                     writer.WriteLine();
@@ -73,10 +73,10 @@ namespace MyMvcTest.Helper
         {
             try
             {
-                var userHostAddress = System.Web.HttpContext.Current.Request.UserHostAddress;
+                var userHostAddress = System.Web.HttpContext.Current?.Request?.UserHostAddress;
                 if (string.IsNullOrEmpty(userHostAddress))
                 {
-                    userHostAddress = System.Web.HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+                    userHostAddress = System.Web.HttpContext.Current?.Request?.ServerVariables["REMOTE_ADDR"];
                 }
                 //最后判断获取是否成功，并检查IP地址的格式（检查其格式非常重要）
                 if (!string.IsNullOrEmpty(userHostAddress) && IsIp(userHostAddress))

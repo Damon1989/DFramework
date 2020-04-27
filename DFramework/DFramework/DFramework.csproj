@@ -83,18 +83,9 @@
     <Compile Include="Infrastructure\Caching\Impl\CacheManagerBase.cs" />
     <Compile Include="Infrastructure\Caching\Impl\MemoryCacheManager.cs" />
     <Compile Include="Infrastructure\Caching\Impl\PerHttpRequestCacheManager.cs" />
-    <Compile Include="Infrastructure\CookieHelper.cs" />
-    <Compile Include="Infrastructure\DictionaryExtensions.cs" />
     <Compile Include="Infrastructure\ExceptionManager.cs" />
     <Compile Include="Infrastructure\Extension.cs" />
-    <Compile Include="Infrastructure\Extensions\Extensions.Convert.cs" />
     <Compile Include="Infrastructure\FastInvoke.cs" />
-    <Compile Include="Infrastructure\Helpers\Common.cs" />
-    <Compile Include="Infrastructure\Helpers\Convert.cs" />
-    <Compile Include="Infrastructure\Helpers\Enum.cs" />
-    <Compile Include="Infrastructure\Helpers\String.Builder.cs" />
-    <Compile Include="Infrastructure\Helpers\String.Tool.cs" />
-    <Compile Include="Infrastructure\Helpers\Web.cs" />
     <Compile Include="Infrastructure\IExceptionManager.cs" />
     <Compile Include="Infrastructure\IJsonConvert.cs" />
     <Compile Include="Infrastructure\IO\DirectoryHelper.cs" />
@@ -118,7 +109,6 @@
     <Compile Include="Infrastructure\TaskWorker.cs" />
     <Compile Include="Infrastructure\TimerTaskFactory.cs" />
     <Compile Include="Infrastructure\Utility.cs" />
-    <Compile Include="Infrastructure\XmlHelper.cs" />
     <Compile Include="IoC\AopInjection.cs" />
     <Compile Include="IoC\IContainer.cs" />
     <Compile Include="IoC\ILogInterceptionBehavior.cs" />
@@ -190,6 +180,9 @@
     <Compile Include="UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="UnitOfWork\MockUnitOfWork.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Infrastructure\Extensions\" />
+    <Folder Include="Infrastructure\Helpers\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

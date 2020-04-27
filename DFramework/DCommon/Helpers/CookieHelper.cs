@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 
-namespace DFramework.Infrastructure
+namespace DCommon
 {
     public class CookieHelper
     {

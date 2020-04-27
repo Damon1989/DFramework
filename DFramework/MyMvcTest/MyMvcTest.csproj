@@ -401,7 +401,6 @@
     </Compile>
     <Compile Include="Helper\ChildExportModel.cs" />
     <Compile Include="Helper\JsonConfigHelper.cs" />
-    <Compile Include="Helper\DateTimeExtensions.cs" />
     <Compile Include="Helper\ExcelConverter.cs" />
     <Compile Include="Helper\ExcelDownLoadHelper.cs" />
     <Compile Include="Helper\ExportBase.cs" />
@@ -413,7 +412,6 @@
     <Compile Include="Helper\WebConfigHelper.cs" />
     <Compile Include="Helper\WebSiteHelper.cs" />
     <Compile Include="Helper\ZipHelper.cs" />
-    <Compile Include="Helper\LoggerHelper.cs" />
     <Compile Include="Helper\SendMailHelper.cs" />
     <Compile Include="Helper\ValidateCodeHelper.cs" />
     <Compile Include="Models\Company.cs" />
