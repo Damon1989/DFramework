@@ -1,16 +1,16 @@
-﻿using System.Threading.Tasks;
-
-namespace DFramework.Repositories
+﻿namespace DFramework.Repositories
 {
+    using System.Threading.Tasks;
+
     public interface IDbContext
     {
-        void RemoveEntity<TEntity>(TEntity entity) 
+        void Reload<TEntity>(TEntity entity)
             where TEntity : class;
 
-        void Reload<TEntity>(TEntity entity) 
+        Task ReloadAsync<TEntity>(TEntity entity)
             where TEntity : class;
 
-        Task ReloadAsync<TEntity>(TEntity entity) 
+        void RemoveEntity<TEntity>(TEntity entity)
             where TEntity : class;
     }
 }
