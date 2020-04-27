@@ -9,6 +9,7 @@ using DFramework.Infrastructure;
 using DFramework.Infrastructure.Logging;
 using DFramework.IoC;
 using DFramework.MessageQueue;
+using DCommon;
 
 namespace DFramework.Message.Impl
 {

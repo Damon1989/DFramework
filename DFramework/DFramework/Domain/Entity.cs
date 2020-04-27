@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DFramework.Infrastructure;
 using DFramework.Repositories;
+using DCommon;
 
 namespace DFramework.Domain
 {

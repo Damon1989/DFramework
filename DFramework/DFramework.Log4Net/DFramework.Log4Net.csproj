@@ -53,6 +53,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DCommon\DCommon.csproj">
+      <Project>{ed9b0ef0-4b72-40e0-93a5-de2db38912c0}</Project>
+      <Name>DCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DFramework\DFramework.csproj">
       <Project>{BDFD8A53-1C12-44AF-9B80-489C84F453D1}</Project>
       <Name>DFramework</Name>

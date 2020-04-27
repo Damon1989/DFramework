@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using DFramework.Config;
 using DFramework.Infrastructure;
 using DFramework.IoC;
+using DCommon;
 
 namespace DFramework.Message.Impl
 {

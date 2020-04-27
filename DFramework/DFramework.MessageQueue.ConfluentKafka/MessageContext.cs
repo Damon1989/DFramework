@@ -8,6 +8,7 @@ using DFramework.Message;
 using DFramework.Message.Impl;
 using DFramework.MessageQueue.ConfluentKafka.MessageFormat;
 using Newtonsoft.Json.Linq;
+using DCommon;
 
 namespace DFramework.MessageQueue.ConfluentKafka
 {

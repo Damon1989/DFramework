@@ -60,6 +60,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DCommon\DCommon.csproj">
+      <Project>{ed9b0ef0-4b72-40e0-93a5-de2db38912c0}</Project>
+      <Name>DCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DFramework\DFramework.csproj">
       <Project>{bdfd8a53-1c12-44af-9b80-489c84f453d1}</Project>
       <Name>DFramework</Name>

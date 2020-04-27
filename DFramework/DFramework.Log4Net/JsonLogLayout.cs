@@ -7,6 +7,7 @@ using DFramework.Infrastructure;
 using DFramework.Infrastructure.Logging;
 using log4net.Core;
 using log4net.Layout;
+using DCommon;
 
 namespace IFramework.Log4Net
 {

@@ -6,7 +6,7 @@ using System.Configuration;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
-
+using DCommon;
 namespace MyMvcTest.Helper
 {
     public class SendMailHelper

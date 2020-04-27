@@ -10,6 +10,7 @@ using DFramework.Domain;
 using DFramework.Infrastructure;
 using DFramework.Repositories;
 using OptimisticConcurrencyException = System.Data.OptimisticConcurrencyException;
+using DCommon;
 
 namespace DFramework.EntityFramework
 {

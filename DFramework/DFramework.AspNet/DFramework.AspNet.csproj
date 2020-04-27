@@ -85,6 +85,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DCommon\DCommon.csproj">
+      <Project>{ed9b0ef0-4b72-40e0-93a5-de2db38912c0}</Project>
+      <Name>DCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DFramework.JsonNet\DFramework.JsonNet.csproj">
       <Project>{f555161c-3c75-49e6-8b19-3a53ce7569bd}</Project>
       <Name>DFramework.JsonNet</Name>

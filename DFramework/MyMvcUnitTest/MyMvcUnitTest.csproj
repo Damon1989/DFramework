@@ -53,6 +53,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DCommon\DCommon.csproj">
+      <Project>{ED9B0EF0-4B72-40E0-93A5-DE2DB38912C0}</Project>
+      <Name>DCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MyMvcTest\MyMvcTest.csproj">
       <Project>{4800c433-4eb2-4f8b-944e-02c66b371a1e}</Project>
       <Name>MyMvcTest</Name>

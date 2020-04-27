@@ -184,5 +184,11 @@
     <Folder Include="Infrastructure\Extensions\" />
     <Folder Include="Infrastructure\Helpers\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DCommon\DCommon.csproj">
+      <Project>{ed9b0ef0-4b72-40e0-93a5-de2db38912c0}</Project>
+      <Name>DCommon</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,6 +8,7 @@ using DFramework.Message;
 using DFramework.Message.Impl;
 using Microsoft.ServiceBus.Messaging;
 using Newtonsoft.Json.Linq;
+using DCommon;
 
 namespace DFramework.MessageQueue.ServiceBus.MessageFormat
 {

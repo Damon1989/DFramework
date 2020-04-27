@@ -6,6 +6,7 @@ using DFramework.Infrastructure;
 using DFramework.IoC;
 using IContainer = DFramework.IoC.IContainer;
 using RegistrationExtensions = Autofac.Extras.DynamicProxy.RegistrationExtensions;
+using DCommon;
 
 namespace DFramework.Autofac
 {

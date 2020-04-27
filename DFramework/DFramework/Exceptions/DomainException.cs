@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using DFramework.Event;
 using DFramework.Infrastructure;
+using DCommon;
 
 namespace DFramework.Exceptions
 {

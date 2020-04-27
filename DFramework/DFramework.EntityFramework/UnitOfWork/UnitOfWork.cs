@@ -8,6 +8,7 @@ using DFramework.Event;
 using DFramework.Infrastructure;
 using DFramework.Infrastructure.Logging;
 using DFramework.UnitOfWork;
+using DCommon;
 
 namespace DFramework.EntityFramework
 {

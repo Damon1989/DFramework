@@ -13,6 +13,7 @@ using DFramework.Infrastructure;
 using DFramework.Infrastructure.Logging;
 using DFramework.IoC;
 using DFramework.Message;
+using DCommon;
 
 namespace DFramework.MessageQueue.ConfluentKafka
 {

@@ -11,6 +11,7 @@ using Microsoft.Web.Administration;
 using Quartz;
 using Quartz.Impl;
 using static System.Console;
+using DCommon;
 
 namespace ConsoleApp
 {
