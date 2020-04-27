@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using DFramework.Infrastructure;
@@ -26,19 +27,22 @@ namespace ConsoleApp
 
         private static void Main(string[] args)
         {
-            ServerManager serverManager = new ServerManager();
-            foreach (var pool in serverManager.ApplicationPools)
-            {
-                if (pool.State==ObjectState.Stopped)
-                {
-                    pool.Start();
-                }
-                LoggerHelper.WriteLine($"{pool.Name}");
-            }
+            var list = new List<string>() { "1", "2", "3" };
+            //Console.WriteLine(string.Join(list,"'",""));
+
+            //ServerManager serverManager = new ServerManager();
+            //foreach (var pool in serverManager.ApplicationPools)
+            //{
+            //    if (pool.State==ObjectState.Stopped)
+            //    {
+            //        pool.Start();
+            //    }
+            //    LoggerHelper.WriteLine($"{pool.Name}");
+            //}
 
 
 
-            ReadLine();
+            //ReadLine();
             //var bytes = Encoding.Default.GetBytes("damon");
             //WriteLine(ToHexString(bytes));
             //WriteLine(DateTime.Now.ToString("MMddHHmmss"));

@@ -87,7 +87,14 @@
     <Compile Include="Infrastructure\DictionaryExtensions.cs" />
     <Compile Include="Infrastructure\ExceptionManager.cs" />
     <Compile Include="Infrastructure\Extension.cs" />
+    <Compile Include="Infrastructure\Extensions\Extensions.Convert.cs" />
     <Compile Include="Infrastructure\FastInvoke.cs" />
+    <Compile Include="Infrastructure\Helpers\Common.cs" />
+    <Compile Include="Infrastructure\Helpers\Convert.cs" />
+    <Compile Include="Infrastructure\Helpers\Enum.cs" />
+    <Compile Include="Infrastructure\Helpers\String.Builder.cs" />
+    <Compile Include="Infrastructure\Helpers\String.Tool.cs" />
+    <Compile Include="Infrastructure\Helpers\Web.cs" />
     <Compile Include="Infrastructure\IExceptionManager.cs" />
     <Compile Include="Infrastructure\IJsonConvert.cs" />
     <Compile Include="Infrastructure\IO\DirectoryHelper.cs" />
