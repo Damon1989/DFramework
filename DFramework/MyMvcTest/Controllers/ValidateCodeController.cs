@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using DCommon;
 using MyMvcTest.Helper;
 
 namespace MyMvcTest.Controllers

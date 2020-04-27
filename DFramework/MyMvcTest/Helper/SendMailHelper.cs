@@ -247,6 +247,33 @@ namespace MyMvcTest.Helper
             return false;
         }
 
+
+
+        //<smtpconfiggroup>
+        //<smtpconfig>
+        //<!--<add key = "username" value="1015080921@qq.com" />
+        //<add key = "password" value="ckwzioxxrpezbbfg" />
+        //<add key = "frommail" value="1015080921@qq.com" />
+        //<add key = "fromname" value="damon" />
+        //<add key = "server" value="smtp.exmail.qq.com" />
+        //<add key = "enablessl" value="true"/>-->
+        //<!--<add key = "username" value="amerservice3@yodoo.net.cn" />
+        //<add key = "password" value="Youdu2019" />
+        //<add key = "frommail" value="amerservice3@yodoo.net.cn" />
+        //<add key = "fromname" value="亚玛芬费控" />
+        //<add key = "server" value="smtp.exmail.qq.com" />
+        //<add key = "enablessl" value="true"/>
+        //<add key = "usedefaultcredentials" value="false"/>-->
+        //<add key = "username" value="15201864775@163.com" />
+        //<add key = "password" value="P@ssw0rd112389" />
+        //<add key = "frommail" value="15201864775@163.com" />
+        //<add key = "fromname" value="damon" />
+        //<add key = "server" value="smtp.163.com" />
+        //<add key = "enablessl" value="true" />
+        //<add key = "usedefaultcredentials" value="true" />
+        //</smtpconfig>
+        //</smtpconfiggroup>
+
         public string GetValue(string key)
         {
             return ContainKey(key)

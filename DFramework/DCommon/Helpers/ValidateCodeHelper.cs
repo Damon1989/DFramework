@@ -4,8 +4,14 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 
-namespace MyMvcTest.Helper
+namespace DCommon
 {
+    /// <summary>
+    /// /  var code = ValidateCodeHelper.GenerateValidateCode(5);
+    /// Session["ValidateCode"] = code;
+    /// var bytes = ValidateCodeHelper.GenerateValidateGraphic(code);
+    /// return File(bytes, @"image/jpeg");
+    /// </summary>
     public static class ValidateCodeHelper
     {
         public static string GenerateValidateCode(int length = 4)

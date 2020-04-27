@@ -413,7 +413,6 @@
     <Compile Include="Helper\WebSiteHelper.cs" />
     <Compile Include="Helper\ZipHelper.cs" />
     <Compile Include="Helper\SendMailHelper.cs" />
-    <Compile Include="Helper\ValidateCodeHelper.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\ConcurrentTestHelper.cs" />
@@ -497,6 +496,10 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DCommon\DCommon.csproj">
+      <Project>{ED9B0EF0-4B72-40E0-93A5-DE2DB38912C0}</Project>
+      <Name>DCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DFramework\DFramework.csproj">
       <Project>{BDFD8A53-1C12-44AF-9B80-489C84F453D1}</Project>
       <Name>DFramework</Name>
