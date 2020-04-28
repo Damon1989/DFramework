@@ -28,7 +28,7 @@ namespace MyMvcTest.Helper
                 };
                 if (!string.IsNullOrEmpty(mail.Tomail))
                 {
-                    var list=mail.Tomail.SplitStringByFenHao<string>();
+                    var list=mail.Tomail.SplitString<string>();
                     list.ForEach(to =>
                     {
                         if (!to.IsNullOrEmpty())
@@ -40,7 +40,7 @@ namespace MyMvcTest.Helper
 
                 if (!string.IsNullOrEmpty(mail.CCmail))
                 {
-                    var list = mail.CCmail.SplitStringByFenHao<string>();
+                    var list = mail.CCmail.SplitString<string>();
                     list.ForEach(cc =>
                     {
                         if (!cc.IsNullOrEmpty())

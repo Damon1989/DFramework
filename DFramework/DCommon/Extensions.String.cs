@@ -1,9 +1,11 @@
 ﻿namespace DCommon
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using System.Web;
     using System.Web.Hosting;
@@ -156,7 +158,21 @@
         {
             return string.IsNullOrWhiteSpace(str);
         }
+        public static List<T> SplitString<T>(this string splitStr, char separator = ';')
+        {
+            if (splitStr.IsNullOrEmpty()) return Array.Empty<T>().ToList();
+            var result = new List<T>();
 
+            var sList = splitStr.Split(separator).ToList();
+            sList.ForEach(item =>
+                {
+                    if (typeof(T) == typeof(int))
+                        result.Add((T)(object)int.Parse(item));
+                    else
+                        result.Add((T)Convert.ChangeType(item, typeof(T)));
+                });
+            return result;
+        }
         public static string Left(this string str, int len)
         {
             if (str == null) throw new ArgumentNullException(nameof(str));

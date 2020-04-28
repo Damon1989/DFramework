@@ -27,26 +27,9 @@ namespace DFramework.Infrastructure
             return arrDesc.Length > 0 ? arrDesc[0].Description : null;
         }
 
-        public static List<string> SplitStringByFenHao(this string splitStr)
-        {
-            return splitStr.IsNullOrEmpty() ? new List<string>() : splitStr.Split(';').ToList();
-        }
 
-        public static List<T> SplitStringByFenHao<T>(this string splitStr)
-        {
-            if (splitStr.IsNullOrEmpty()) return Array.Empty<T>().ToList();
-            var result = new List<T>();
 
-            var sList = splitStr.Split(';').ToList();
-            sList.ForEach(item =>
-            {
-                if (typeof(T) == typeof(int))
-                    result.Add((T) (object) int.Parse(item));
-                else
-                    result.Add((T) Convert.ChangeType(item, typeof(T)));
-            });
-            return result;
-        }
+
 
         public static bool IsNullOrCountZero<T>(this IEnumerable<T> source)
         {
