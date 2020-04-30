@@ -26,9 +26,22 @@ namespace ConsoleApp
             Delete = 8
         }
 
+        public static class MyInfoClass
+        {
+            public static string GetInfo(out string msg)
+            {
+                msg = "2";
+                return "123";
+            }
+        }
+
         private static void Main(string[] args)
         {
-            var list = new List<string>() { "1", "2", "3" };
+            var info = MyInfoClass.GetInfo(out var msg);
+            Console.WriteLine(info);
+            Console.WriteLine(msg);
+            Console.ReadLine();
+            //var list = new List<string>() { "1", "2", "3" };
             //Console.WriteLine(string.Join(list,"'",""));
 
             //ServerManager serverManager = new ServerManager();
