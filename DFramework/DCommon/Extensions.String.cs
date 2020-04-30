@@ -158,21 +158,7 @@
         {
             return string.IsNullOrWhiteSpace(str);
         }
-        public static List<T> SplitString<T>(this string splitStr, char separator = ';')
-        {
-            if (splitStr.IsNullOrEmpty()) return Array.Empty<T>().ToList();
-            var result = new List<T>();
 
-            var sList = splitStr.Split(separator).ToList();
-            sList.ForEach(item =>
-                {
-                    if (typeof(T) == typeof(int))
-                        result.Add((T)(object)int.Parse(item));
-                    else
-                        result.Add((T)Convert.ChangeType(item, typeof(T)));
-                });
-            return result;
-        }
         public static string Left(this string str, int len)
         {
             if (str == null) throw new ArgumentNullException(nameof(str));
@@ -202,6 +188,95 @@
             return str.Substring(str.Length - len, len);
         }
 
+        public static List<T> SplitString<T>(this string splitStr, char separator = ';')
+        {
+            if (splitStr.IsNullOrEmpty()) return Array.Empty<T>().ToList();
+            var result = new List<T>();
+
+            var sList = splitStr.Split(separator).ToList();
+            sList.ForEach(
+                item =>
+                    {
+                        if (typeof(T) == typeof(int))
+                            result.Add((T)(object)int.Parse(item));
+                        else
+                            result.Add((T)Convert.ChangeType(item, typeof(T)));
+                    });
+            return result;
+        }
+
+        /// <summary>
+        ///     转换为bool
+        /// </summary>
+        /// <param name="obj">数据</param>
+        public static bool ToBool(this string obj)
+        {
+            return RawHelper.Convert.ToBool(obj);
+        }
+
+        /// <summary>
+        ///     转换为可空bool
+        /// </summary>
+        /// <param name="obj">数据</param>
+        public static bool? ToBoolOrNull(this string obj)
+        {
+            return RawHelper.Convert.ToBoolOrNull(obj);
+        }
+
+        /// <summary>
+        ///     转换为日期
+        /// </summary>
+        /// <param name="obj">数据</param>
+        public static DateTime ToDate(this string obj)
+        {
+            return RawHelper.Convert.ToDate(obj);
+        }
+
+        /// <summary>
+        ///     转换为可空日期
+        /// </summary>
+        /// <param name="obj">数据</param>
+        public static DateTime? ToDateOrNull(this string obj)
+        {
+            return RawHelper.Convert.ToDateOrNull(obj);
+        }
+
+        /// <summary>
+        ///     转换为decimal
+        /// </summary>
+        /// <param name="obj">数据</param>
+        public static decimal ToDecimal(this string obj)
+        {
+            return RawHelper.Convert.ToDecimal(obj);
+        }
+
+        /// <summary>
+        ///     转换为可空decimal
+        /// </summary>
+        /// <param name="obj">数据</param>
+        public static decimal? ToDecimalOrNull(this string obj)
+        {
+            return RawHelper.Convert.ToDecimalOrNull(obj);
+        }
+
+        /// <summary>
+        ///     转换为double
+        /// </summary>
+        /// <param name="obj">数据</param>
+        public static double ToDouble(this string obj)
+        {
+            return RawHelper.Convert.ToDouble(obj);
+        }
+
+        /// <summary>
+        ///     转换为可空double
+        /// </summary>
+        /// <param name="obj">数据</param>
+        public static double? ToDoubleOrNull(this string obj)
+        {
+            return RawHelper.Convert.ToDoubleOrNull(obj);
+        }
+
         public static T ToEnum<T>(this string value)
             where T : struct
         {
@@ -218,127 +293,8 @@
             return (T)Enum.Parse(typeof(T), value, ignoreCase);
         }
 
-        public static string UrlDecode(this string str, Encoding encoding = null)
-        {
-            if (encoding != null) return HttpUtility.UrlDecode(str, encoding);
-
-            var code = HttpUtility.UrlDecode(str.ToUpper(), Encoding.UTF8);
-            var encode = HttpUtility.UrlEncode(code, Encoding.UTF8).ToUpper();
-            encoding = str.ToUpper() == encode ? Encoding.UTF8 : Encoding.GetEncoding("gb2312");
-            return HttpUtility.UrlDecode(str, encoding);
-        }
-
-
         /// <summary>
-        /// 转换为bool
-        /// </summary>
-        /// <param name="obj">数据</param>
-        public static bool ToBool(this string obj)
-        {
-            return RawHelper.Convert.ToBool(obj);
-        }
-
-        /// <summary>
-        /// 转换为可空bool
-        /// </summary>
-        /// <param name="obj">数据</param>
-        public static bool? ToBoolOrNull(this string obj)
-        {
-            return RawHelper.Convert.ToBoolOrNull(obj);
-        }
-
-        /// <summary>
-        /// 转换为int
-        /// </summary>
-        /// <param name="obj">数据</param>
-        public static int ToInt(this string obj)
-        {
-            return RawHelper.Convert.ToInt(obj);
-        }
-
-        /// <summary>
-        /// 转换为可空int
-        /// </summary>
-        /// <param name="obj">数据</param>
-        public static int? ToIntOrNull(this string obj)
-        {
-            return RawHelper.Convert.ToIntOrNull(obj);
-        }
-
-        /// <summary>
-        /// 转换为long
-        /// </summary>
-        /// <param name="obj">数据</param>
-        public static long ToLong(this string obj)
-        {
-            return RawHelper.Convert.ToLong(obj);
-        }
-
-        /// <summary>
-        /// 转换为可空long
-        /// </summary>
-        /// <param name="obj">数据</param>
-        public static long? ToLongOrNull(this string obj)
-        {
-            return RawHelper.Convert.ToLongOrNull(obj);
-        }
-
-        /// <summary>
-        /// 转换为double
-        /// </summary>
-        /// <param name="obj">数据</param>
-        public static double ToDouble(this string obj)
-        {
-            return RawHelper.Convert.ToDouble(obj);
-        }
-
-        /// <summary>
-        /// 转换为可空double
-        /// </summary>
-        /// <param name="obj">数据</param>
-        public static double? ToDoubleOrNull(this string obj)
-        {
-            return RawHelper.Convert.ToDoubleOrNull(obj);
-        }
-
-        /// <summary>
-        /// 转换为decimal
-        /// </summary>
-        /// <param name="obj">数据</param>
-        public static decimal ToDecimal(this string obj)
-        {
-            return RawHelper.Convert.ToDecimal(obj);
-        }
-
-        /// <summary>
-        /// 转换为可空decimal
-        /// </summary>
-        /// <param name="obj">数据</param>
-        public static decimal? ToDecimalOrNull(this string obj)
-        {
-            return RawHelper.Convert.ToDecimalOrNull(obj);
-        }
-
-        /// <summary>
-        /// 转换为日期
-        /// </summary>
-        /// <param name="obj">数据</param>
-        public static DateTime ToDate(this string obj)
-        {
-            return RawHelper.Convert.ToDate(obj);
-        }
-
-        /// <summary>
-        /// 转换为可空日期
-        /// </summary>
-        /// <param name="obj">数据</param>
-        public static DateTime? ToDateOrNull(this string obj)
-        {
-            return RawHelper.Convert.ToDateOrNull(obj);
-        }
-
-        /// <summary>
-        /// 转换为Guid
+        ///     转换为Guid
         /// </summary>
         /// <param name="obj">数据</param>
         public static Guid ToGuid(this string obj)
@@ -347,16 +303,7 @@
         }
 
         /// <summary>
-        /// 转换为可空Guid
-        /// </summary>
-        /// <param name="obj">数据</param>
-        public static Guid? ToGuidOrNull(this string obj)
-        {
-            return RawHelper.Convert.ToGuidOrNull(obj);
-        }
-
-        /// <summary>
-        /// 转换为Guid集合
+        ///     转换为Guid集合
         /// </summary>
         /// <param name="obj">数据,范例: "83B0233C-A24F-49FD-8083-1337209EBC9A,EAB523C6-2FE7-47BE-89D5-C6D440C3033A"</param>
         public static List<Guid> ToGuidList(this string obj)
@@ -365,7 +312,7 @@
         }
 
         /// <summary>
-        /// 转换为Guid集合
+        ///     转换为Guid集合
         /// </summary>
         /// <param name="obj">字符串集合</param>
         public static List<Guid> ToGuidList(this IList<string> obj)
@@ -375,5 +322,59 @@
             return obj.Select(t => t.ToGuid()).ToList();
         }
 
+        /// <summary>
+        ///     转换为可空Guid
+        /// </summary>
+        /// <param name="obj">数据</param>
+        public static Guid? ToGuidOrNull(this string obj)
+        {
+            return RawHelper.Convert.ToGuidOrNull(obj);
+        }
+
+        /// <summary>
+        ///     转换为int
+        /// </summary>
+        /// <param name="obj">数据</param>
+        public static int ToInt(this string obj)
+        {
+            return RawHelper.Convert.ToInt(obj);
+        }
+
+        /// <summary>
+        ///     转换为可空int
+        /// </summary>
+        /// <param name="obj">数据</param>
+        public static int? ToIntOrNull(this string obj)
+        {
+            return RawHelper.Convert.ToIntOrNull(obj);
+        }
+
+        /// <summary>
+        ///     转换为long
+        /// </summary>
+        /// <param name="obj">数据</param>
+        public static long ToLong(this string obj)
+        {
+            return RawHelper.Convert.ToLong(obj);
+        }
+
+        /// <summary>
+        ///     转换为可空long
+        /// </summary>
+        /// <param name="obj">数据</param>
+        public static long? ToLongOrNull(this string obj)
+        {
+            return RawHelper.Convert.ToLongOrNull(obj);
+        }
+
+        public static string UrlDecode(this string str, Encoding encoding = null)
+        {
+            if (encoding != null) return HttpUtility.UrlDecode(str, encoding);
+
+            var code = HttpUtility.UrlDecode(str.ToUpper(), Encoding.UTF8);
+            var encode = HttpUtility.UrlEncode(code, Encoding.UTF8).ToUpper();
+            encoding = str.ToUpper() == encode ? Encoding.UTF8 : Encoding.GetEncoding("gb2312");
+            return HttpUtility.UrlDecode(str, encoding);
+        }
     }
 }

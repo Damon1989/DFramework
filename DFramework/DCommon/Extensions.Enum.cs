@@ -2,6 +2,8 @@
 {
     using System;
 
+    using Convert = RawHelper.Convert;
+
     public static partial class Extensions
     {
         /// <summary>
@@ -33,7 +35,7 @@
         /// <returns></returns>
         public static TResult Value<TResult>(this Enum instance)
         {
-            return instance == null ? default :RawHelper.Convert.To<TResult>(Value(instance)) ;
+            return instance == null ? default : Convert.To<TResult>(Value(instance));
         }
     }
 }

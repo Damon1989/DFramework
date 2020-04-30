@@ -3,6 +3,10 @@
     using System;
     using System.ComponentModel;
 
+    using DCommon.RawHelper;
+
+    using Enum = System.Enum;
+
     public static partial class Extensions
     {
         public static string GetDescription(this object obj)
@@ -27,7 +31,7 @@
                 throw new ArgumentNullException(nameof(member));
             }
 
-            return (TEnum)Enum.Parse(RawHelper.Common.GetType<TEnum>(), value, true);
+            return (TEnum)Enum.Parse(Common.GetType<TEnum>(), value, true);
         }
 
         public static string SafeString(this object input)
@@ -40,7 +44,5 @@
         {
             return value ?? default;
         }
-
-        
     }
 }

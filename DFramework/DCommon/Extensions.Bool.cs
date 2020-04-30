@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DCommon
+﻿namespace DCommon
 {
     public static partial class Extensions
     {
@@ -15,7 +9,7 @@ namespace DCommon
 
         public static string Description(this bool? value)
         {
-            return value == null ? "" : Description(value.Value);
+            return value == null ? string.Empty : Description(value.Value);
         }
     }
 }
