@@ -15,7 +15,7 @@
 
         public static void WriteLine(string msg, bool recordIp)
         {
-            WriteLine(msg, recordIp, "C");
+            WriteLine(msg, recordIp,"");
         }
 
         public static void WriteLine(string msg, string disk)
@@ -23,7 +23,19 @@
             WriteLine(msg, true, disk);
         }
 
-        public static void WriteLine(string msg, bool recordIp, string disk = "C")
+        private static string GetDisk()
+        {
+            try
+            {
+              return ConfigurationManager.AppSettings["logDisk"];
+            }
+            catch 
+            {
+                return "D";
+            }
+        }
+
+        public static void WriteLine(string msg, bool recordIp, string disk = "")
         {
             try
             {
@@ -33,6 +45,11 @@
             }
             catch (Exception e)
             {
+            }
+
+            if (disk=="")
+            {
+                disk = GetDisk();
             }
 
             var now = DateTime.Now;
