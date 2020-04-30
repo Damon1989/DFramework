@@ -71,6 +71,7 @@
     <Compile Include="Helpers\HttpClientHelper.cs" />
     <Compile Include="Helpers\LoggerHelper.cs" />
     <Compile Include="Helpers\SqlBulkCopyHelper.cs" />
+    <Compile Include="Helpers\TConverterHelper.cs" />
     <Compile Include="Helpers\ValidateCodeHelper.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

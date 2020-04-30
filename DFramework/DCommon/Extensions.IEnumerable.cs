@@ -7,6 +7,22 @@
 
     public static partial class Extensions
     {
+        /// <summary>
+        ///     按照字段去除重复
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> Distinct<T, TResult>(this IEnumerable<T> source, Func<T, TResult> where)
+        {
+            var hashSetData = new HashSet<TResult>();
+            foreach (var item in source)
+                if (hashSetData.Add(where(item)))
+                    yield return item;
+        }
+
         public static IEnumerable<T> ForEach<T>(this IEnumerable<T> source, Action<T> act)
         {
             var forEach = source as T[] ?? source.ToArray();

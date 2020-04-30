@@ -1,9 +1,11 @@
-﻿using System;
-using System.Configuration;
-using System.IO;
-
-namespace DCommon
+﻿namespace DCommon
 {
+    using System;
+    using System.Configuration;
+    using System.IO;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
     public static class LoggerHelper
     {
         public static void WriteLine(string msg)
@@ -25,22 +27,17 @@ namespace DCommon
         {
             try
             {
-                if (ConfigurationManager.AppSettings["WriteLog"]
-                    .Equals("False", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return;
-                }
+                if (ConfigurationManager.AppSettings["WriteLog"].Equals(
+                    "False",
+                    StringComparison.InvariantCultureIgnoreCase)) return;
             }
             catch (Exception e)
             {
-
             }
+
             var now = DateTime.Now;
             var directory = $"{disk}://temp//log//{now.Year}//{now.Month}//{now.Day}";
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
+            if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
             var fileCount = Directory.GetFiles(directory).Length;
             var filePath = fileCount == 0 ? $"{directory}//{fileCount}.txt" : $"{directory}//{fileCount - 1}.txt";
 
@@ -58,7 +55,7 @@ namespace DCommon
                 }
             }
 
-            var ip = recordIp ? GetHostAddress() : "";
+            var ip = recordIp ? GetHostAddress() : string.Empty;
             using (var fileStream = new FileStream(filePath, FileMode.Append))
             {
                 using (var writer = new StreamWriter(fileStream))
@@ -73,16 +70,12 @@ namespace DCommon
         {
             try
             {
-                var userHostAddress = System.Web.HttpContext.Current?.Request?.UserHostAddress;
+                var userHostAddress = HttpContext.Current?.Request?.UserHostAddress;
                 if (string.IsNullOrEmpty(userHostAddress))
-                {
-                    userHostAddress = System.Web.HttpContext.Current?.Request?.ServerVariables["REMOTE_ADDR"];
-                }
-                //最后判断获取是否成功，并检查IP地址的格式（检查其格式非常重要）
-                if (!string.IsNullOrEmpty(userHostAddress) && IsIp(userHostAddress))
-                {
-                    return userHostAddress;
-                }
+                    userHostAddress = HttpContext.Current?.Request?.ServerVariables["REMOTE_ADDR"];
+
+                // 最后判断获取是否成功，并检查IP地址的格式（检查其格式非常重要）
+                if (!string.IsNullOrEmpty(userHostAddress) && IsIp(userHostAddress)) return userHostAddress;
                 return "127.0.0.1";
             }
             catch
@@ -93,7 +86,7 @@ namespace DCommon
 
         private static bool IsIp(string ip)
         {
-            return System.Text.RegularExpressions.Regex.IsMatch(ip, @"^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$");
+            return Regex.IsMatch(ip, @"^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$");
         }
     }
 }
