@@ -12,16 +12,32 @@
 
     public static partial class Extensions
     {
+        /// <summary>
+        ///     Create Directory If Not Exists
+        /// </summary>
+        /// <param name="directory"></param>
         public static void CreateDirectoryIfNotExists(this string directory)
         {
             if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
         }
 
+        /// <summary>
+        ///     Delete File If Exists
+        /// </summary>
+        /// <param name="filePath"></param>
         public static void DeleteFileIfExists(this string filePath)
         {
             if (File.Exists(filePath)) File.Delete(filePath);
         }
 
+        /// <summary>
+        ///     Adds a char to end of given string if it does not ends with the char.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="c"></param>
+        /// <param name="ignoreCase"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         public static string EnsureEndsWith(this string str, char c, bool ignoreCase, CultureInfo culture)
         {
             if (str == null) throw new ArgumentException(nameof(str));
@@ -30,6 +46,13 @@
             return str + c;
         }
 
+        /// <summary>
+        ///     Adds a char to end of given string if it does not ends with the char.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="c"></param>
+        /// <param name="comparisionType"></param>
+        /// <returns></returns>
         public static string EnsureEndsWith(this string str, char c, StringComparison comparisionType)
         {
             if (str == null) throw new ArgumentException(nameof(str));
@@ -38,11 +61,25 @@
             return str + c;
         }
 
+        /// <summary>
+        ///     Adds a char to beginning of given string if it does not starts with the char.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
         public static string EnsureEndsWith(this string str, char c)
         {
             return EnsureEndsWith(str, c, StringComparison.Ordinal);
         }
 
+        /// <summary>
+        ///     Adds a char to beginning of given string if it does not starts with the char.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="c"></param>
+        /// <param name="ignoreCase"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         public static string EnsureStartsWith(this string str, char c, bool ignoreCase, CultureInfo culture)
         {
             if (str == null) throw new ArgumentNullException(nameof(str));
@@ -52,6 +89,13 @@
             return c + str;
         }
 
+        /// <summary>
+        ///     Adds a char to beginning of given string if it does not starts with the char.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="c"></param>
+        /// <param name="comparisonType"></param>
+        /// <returns></returns>
         public static string EnsureStartsWith(this string str, char c, StringComparison comparisonType)
         {
             if (str == null) throw new ArgumentNullException(nameof(str));
@@ -61,6 +105,12 @@
             return c + str;
         }
 
+        /// <summary>
+        ///     Adds a char to beginning of given string if it does not starts with the char.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
         public static string EnsureStartsWith(this string str, char c)
         {
             return EnsureStartsWith(str, c, StringComparison.Ordinal);

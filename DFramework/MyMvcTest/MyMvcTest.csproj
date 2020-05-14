@@ -395,6 +395,7 @@
     <Compile Include="App_Start\ParameterHelper.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\DataTablesController.cs" />
     <Compile Include="Controllers\FileApiController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -480,6 +481,7 @@
     <Content Include="Views\WebSite\Index.cshtml" />
     <Content Include="Views\WebApiClient\Index.cshtml" />
     <Content Include="Views\WebApiClient\Abount.cshtml" />
+    <Content Include="Views\DataTables\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -27,9 +27,10 @@
         {
             try
             {
-              return ConfigurationManager.AppSettings["logDisk"];
+                var disk = ConfigurationManager.AppSettings["logDisk"];
+                return string.IsNullOrEmpty(disk) ? "D" : disk;
             }
-            catch 
+            catch
             {
                 return "D";
             }
