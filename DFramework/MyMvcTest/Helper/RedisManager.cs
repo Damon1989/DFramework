@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using StackExchange.Redis;
-
-namespace MyMvcTest.Helper
+﻿namespace MyMvcTest.Helper
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using Newtonsoft.Json;
+
+    using StackExchange.Redis;
+
     public class RedisManager
     {
-        private static ConnectionMultiplexer _instance;
         private static readonly object Locker = new object();
+
+        private static ConnectionMultiplexer _instance;
 
         private RedisManager()
         {
@@ -26,8 +29,8 @@ namespace MyMvcTest.Helper
                 lock (locker)
                 {
                     if (_instance == null)
-                        _instance = ConnectionMultiplexer.Connect(ConfigurationManager.AppSettings["RedisHost"] ?? "127.0.0.1:6379",
-                            null);
+                        _instance = ConnectionMultiplexer.Connect(
+                            ConfigurationManager.AppSettings["RedisHost"] ?? "127.0.0.1:6379");
                 }
 
                 return _instance;
@@ -37,25 +40,43 @@ namespace MyMvcTest.Helper
 
     public interface IRedisService
     {
-        void Set(CacheValue cacheValue);
-        Task SetAsync(CacheValue cacheValue);
-        void Set<T>(CacheValue<T> cacheValue);
-        Task SetAsync<T>(CacheValue<T> cacheValue);
-        void Set<T>(string key, Func<T> func);
-        void Set<T>(string key, Func<T> func, int timeout);
-        void HashSet<T>(CacheValue<T> cacheValue);
-        Task HashSetAsync<T>(CacheValue<T> cacheValue);
         string Get(string key);
-        Task<string> GetAsync(string key);
+
         T Get<T>(string key);
+
+        Task<string> GetAsync(string key);
+
         Task<T> GetAsync<T>(string key);
+
         Task<T> GetAsync<T>(string key, Func<T> func);
+
         string HashGet(string key, string property);
+
         Task<string> HashGetAsync(string key, string property);
+
         Task<T> HashGetAsync<T>(string key, string property);
+
         Task<T> HashGetAsync<T>(string key);
+
+        void HashSet<T>(CacheValue<T> cacheValue);
+
+        Task HashSetAsync<T>(CacheValue<T> cacheValue);
+
         void Remove(string key);
+
         Task RemoveAsync(string key);
+
+        void Set(CacheValue cacheValue);
+
+        void Set<T>(CacheValue<T> cacheValue);
+
+        void Set<T>(string key, Func<T> func);
+
+        void Set<T>(string key, Func<T> func, int timeout);
+
+        Task SetAsync(CacheValue cacheValue);
+
+        Task SetAsync<T>(CacheValue<T> cacheValue);
     }
 
     public class RedisService : IRedisService
@@ -74,127 +95,132 @@ namespace MyMvcTest.Helper
             }
             finally
             {
-                _database = RedisManager.Instance.GetDatabase(db);
+                this._database = RedisManager.Instance.GetDatabase(db);
             }
         }
 
-        public void Set(CacheValue cacheValue)
+        public string Get(string key)
         {
-            SetAsync(cacheValue).Wait();
+            return this.GetAsync(key).Result;
         }
 
-        public async Task SetAsync(CacheValue cacheValue)
+        public T Get<T>(string key)
         {
-            await _database.StringSetAsync(cacheValue.Key, cacheValue.Value, new TimeSpan(0, 0, cacheValue.TimeOut));
+            return this.GetAsync<T>(key).Result;
         }
 
-        public void Set<T>(CacheValue<T> cacheValue)
+        public async Task<string> GetAsync(string key)
         {
-            SetAsync(cacheValue).Wait();
+            return await this._database.StringGetAsync(key);
         }
 
-        public async Task SetAsync<T>(CacheValue<T> cacheValue)
+        public async Task<T> GetAsync<T>(string key)
         {
-            await _database.StringSetAsync(cacheValue.Key, JsonConvert.SerializeObject(cacheValue.Value),
-                new TimeSpan(0, 0, cacheValue.TimeOut));
+            var result = await this._database.StringGetAsync(key);
+            if (string.IsNullOrEmpty(result) || string.IsNullOrWhiteSpace(result)) return default;
+            return JsonConvert.DeserializeObject<T>(result);
         }
 
-        public void Set<T>(string key, Func<T> func)
+        public async Task<T> GetAsync<T>(string key, Func<T> func)
         {
-            Set(new CacheValue<T>(key, func.Invoke()));
+            var result = await this._database.StringGetAsync(key);
+            if (string.IsNullOrEmpty(result) || string.IsNullOrWhiteSpace(result))
+            {
+                this.Set(new CacheValue<T>(key, func.Invoke()));
+                return await this.GetAsync(key, func);
+            }
+
+            return JsonConvert.DeserializeObject<T>(result);
         }
 
-        public void Set<T>(string key, Func<T> func, int timeout)
+        public string HashGet(string key, string property)
         {
-            Set(new CacheValue<T>(key, func.Invoke(), timeout));
+            return this.HashGetAsync(key, property).Result;
+        }
+
+        public async Task<string> HashGetAsync(string key, string property)
+        {
+            return await this.HashGetAsync<string>(key, property);
+        }
+
+        public async Task<T> HashGetAsync<T>(string key, string property)
+        {
+            var redisValue = await this._database.HashGetAsync(key, property);
+            return JsonConvert.DeserializeObject<T>(redisValue);
+        }
+
+        public async Task<T> HashGetAsync<T>(string key)
+        {
+            var hashEntries = await this._database.HashGetAllAsync(key);
+            var list = new List<string>();
+            hashEntries.ToList().ForEach(
+                item => { list.Add($"\"{item.Name.ToString()}\":\"{item.Value.ToString()}\""); });
+            var str = "{" + string.Join(",", list) + "}";
+            return JsonConvert.DeserializeObject<T>(str);
         }
 
         public void HashSet<T>(CacheValue<T> cacheValue)
         {
-            HashSetAsync(cacheValue).Wait();
+            this.HashSetAsync(cacheValue).Wait();
         }
 
         public async Task HashSetAsync<T>(CacheValue<T> cacheValue)
         {
             var hashEntryList = new List<HashEntry>();
             var properties = cacheValue.Value.GetType().GetProperties();
-            properties.ToList().ForEach(propertyInfo =>
-            {
-                var value = propertyInfo.GetValue(cacheValue.Value);
-                hashEntryList.Add(new HashEntry(propertyInfo.Name, JsonConvert.SerializeObject(value)));
-            });
-            await _database.HashSetAsync(cacheValue.Key, hashEntryList.ToArray());
-        }
-
-        public string Get(string key)
-        {
-            return GetAsync(key).Result;
-        }
-
-        public T Get<T>(string key)
-        {
-            return GetAsync<T>(key).Result;
-        }
-
-        public async Task<string> GetAsync(string key)
-        {
-            return await _database.StringGetAsync(key);
-        }
-
-        public async Task<T> GetAsync<T>(string key)
-        {
-            var result = await _database.StringGetAsync(key);
-            if (string.IsNullOrEmpty(result) || string.IsNullOrWhiteSpace(result)) return default(T);
-            return JsonConvert.DeserializeObject<T>(result);
-        }
-
-        public async Task<T> GetAsync<T>(string key,Func<T> func)
-        {
-            var result = await _database.StringGetAsync(key);
-            if (string.IsNullOrEmpty(result) || string.IsNullOrWhiteSpace(result))
-            {
-                Set(new CacheValue<T>(key, func.Invoke()));
-                return await GetAsync(key, func);
-            }
-            return JsonConvert.DeserializeObject<T>(result);
-        }
-
-        public string HashGet(string key, string property)
-        {
-            return HashGetAsync(key, property).Result;
-        }
-
-        public async Task<string> HashGetAsync(string key, string property)
-        {
-            return await HashGetAsync<string>(key, property);
-        }
-
-        public async Task<T> HashGetAsync<T>(string key, string property)
-        {
-            var redisValue = await _database.HashGetAsync(key, property);
-            return JsonConvert.DeserializeObject<T>(redisValue);
-        }
-
-        public async Task<T> HashGetAsync<T>(string key)
-        {
-            var hashEntries = await _database.HashGetAllAsync(key);
-            var list = new List<string>();
-            hashEntries.ToList().ForEach(item =>
-            {
-                list.Add($"\"{item.Name.ToString()}\":\"{item.Value.ToString()}\"");
-            });
-            var str = "{" + string.Join(",", list) + "}";
-            return JsonConvert.DeserializeObject<T>(str);
+            properties.ToList().ForEach(
+                propertyInfo =>
+                    {
+                        var value = propertyInfo.GetValue(cacheValue.Value);
+                        hashEntryList.Add(new HashEntry(propertyInfo.Name, JsonConvert.SerializeObject(value)));
+                    });
+            await this._database.HashSetAsync(cacheValue.Key, hashEntryList.ToArray());
         }
 
         public void Remove(string key)
         {
-            RemoveAsync(key).Wait();
+            this.RemoveAsync(key).Wait();
         }
 
         public async Task RemoveAsync(string key)
         {
-            await _database.KeyDeleteAsync(key);
+            await this._database.KeyDeleteAsync(key);
+        }
+
+        public void Set(CacheValue cacheValue)
+        {
+            this.SetAsync(cacheValue).Wait();
+        }
+
+        public void Set<T>(CacheValue<T> cacheValue)
+        {
+            this.SetAsync(cacheValue).Wait();
+        }
+
+        public void Set<T>(string key, Func<T> func)
+        {
+            this.Set(new CacheValue<T>(key, func.Invoke()));
+        }
+
+        public void Set<T>(string key, Func<T> func, int timeout)
+        {
+            this.Set(new CacheValue<T>(key, func.Invoke(), timeout));
+        }
+
+        public async Task SetAsync(CacheValue cacheValue)
+        {
+            await this._database.StringSetAsync(
+                cacheValue.Key,
+                cacheValue.Value,
+                new TimeSpan(0, 0, cacheValue.TimeOut));
+        }
+
+        public async Task SetAsync<T>(CacheValue<T> cacheValue)
+        {
+            await this._database.StringSetAsync(
+                cacheValue.Key,
+                JsonConvert.SerializeObject(cacheValue.Value),
+                new TimeSpan(0, 0, cacheValue.TimeOut));
         }
     }
 
@@ -204,11 +230,13 @@ namespace MyMvcTest.Helper
         {
         }
 
-        public CacheValue(string key, string value) : base(key, value)
+        public CacheValue(string key, string value)
+            : base(key, value)
         {
         }
 
-        public CacheValue(string key, string value, int timeout) : base(key, value, timeout)
+        public CacheValue(string key, string value, int timeout)
+            : base(key, value, timeout)
         {
         }
     }
@@ -221,23 +249,22 @@ namespace MyMvcTest.Helper
 
         public CacheValue(string key, T value)
         {
-            Key = key;
-            Value = value;
-            TimeOut = 3600;
+            this.Key = key;
+            this.Value = value;
+            this.TimeOut = 3600;
         }
 
         public CacheValue(string key, T value, int timeout)
         {
-            Key = key;
-            Value = value;
-            TimeOut = timeout;
+            this.Key = key;
+            this.Value = value;
+            this.TimeOut = timeout;
         }
 
         public string Key { get; set; }
 
+        public int TimeOut { get; set; }
 
         public T Value { get; set; }
-
-        public int TimeOut { get; set; }
     }
 }
