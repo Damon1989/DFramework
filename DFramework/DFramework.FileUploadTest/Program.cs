@@ -10,11 +10,12 @@ namespace DFramework.FileUploadTest
     {
         private static void Main(string[] args)
         {
-            var files = new Dictionary<string, string> { { "1", "c:\\test\\1.book" }, { "2", "c:\\test\\1.jpg" } };
+            var files = new Dictionary<string, string> { { "1", "c:\\test\\垃圾分类00002.book" }, { "2", "c:\\test\\1.book.jpg" } };
             //var files = new Dictionary<string, string> { { "1", "c:\\test\\1.book"  } };
             //var files = new Dictionary<string, string> { { "1", "c:\\test\\1.jpg" } };
 
             Console.WriteLine(HttpPost(m_address, null, files));
+            Console.Read();
 
             //UploadFile("c:\\test\\1.book", "c:\\test\\" + Guid.NewGuid().ToString().Replace("-", ""));
             //UploadFile("c:\\test\\demo1.rar", "c:\\test\\" + Guid.NewGuid().ToString().Replace("-", ""));

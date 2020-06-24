@@ -15,6 +15,10 @@ using DCommon;
 
 namespace ConsoleApp
 {
+    using Autofac;
+    using Autofac.Extras.DynamicProxy;
+    using Castle.DynamicProxy;
+
     internal class Program
     {
         [Flags]
@@ -37,248 +41,282 @@ namespace ConsoleApp
 
         private static void Main(string[] args)
         {
-            var info = MyInfoClass.GetInfo(out var msg);
-            Console.WriteLine(info);
-            Console.WriteLine(msg);
-            Console.ReadLine();
-            //var list = new List<string>() { "1", "2", "3" };
-            //Console.WriteLine(string.Join(list,"'",""));
-
-            //ServerManager serverManager = new ServerManager();
-            //foreach (var pool in serverManager.ApplicationPools)
-            //{
-            //    if (pool.State==ObjectState.Stopped)
-            //    {
-            //        pool.Start();
-            //    }
-            //    LoggerHelper.WriteLine($"{pool.Name}");
-            //}
-
-
-
-            //ReadLine();
-            //var bytes = Encoding.Default.GetBytes("damon");
-            //WriteLine(ToHexString(bytes));
-            //WriteLine(DateTime.Now.ToString("MMddHHmmss"));
-            //WriteLine(EncryptWithMD5("damon", "123456"));
-            //Read();
-
-            //var url = "name=damon&age=29&gender=m";
-            //var a=url.GetQueryString();
-            //for (int i = 0; i < a.Keys.Count; i++)
-            //{
-            //    Console.WriteLine(a.Get(i));
-            //}
-            //foreach (var item in a)
-            //{
-            //    Console.WriteLine(a.Keys);
-            //}
-
+            //ICat icat = new Cat();
+            //var catProxy = new CatProxy(icat);
+            //catProxy.Eat();
             //Console.Read();
-            //ArrayTest();
-            //Utility.YHSJ(6);
 
-            //var result = MatchEx.Max(1, 2, 3, 4);
-            //WriteLine(result);
-            //result = MatchEx.Min(1, 2, 3, 4);
-            //WriteLine(result);
-            //List<int> array = new List<int>() { 1, 2, 3, 4, 5 };
-            //var enumerator = array.GetEnumerator();
+            //var builder = new ContainerBuilder();
+            //builder.RegisterType<CatInterceptor>();//注册拦截器
+            //builder.RegisterType<Cat>().As<ICat>().InterceptedBy(typeof(CatInterceptor)).EnableInterfaceInterceptors();//注册Cat并为其添加拦截器
 
-            //while (enumerator.MoveNext())
-            //{
-            //    Console.WriteLine(enumerator.Current);
-            //}
+            //var container = builder.Build();
+            //var cat= container.Resolve<ICat>();
+            //cat.Eat();
+            //cat.Sleep();
+            //Console.Read();
 
-            //WriteLine("------------------------");
+            var builder = new ContainerBuilder();
+            builder.RegisterType<CatInterceptor>();//注册拦截器
+            builder.RegisterType<Cat>().As<ICat>();//注册Cat
+            builder.RegisterType<CatOwner>().InterceptedBy(typeof(CatInterceptor)).EnableClassInterceptors(
+                ProxyGenerationOptions.Default,
+                additionalInterfaces: typeof(ICat));//注册CatOwner并为其添加拦截器和接口
 
-            //Stack<int> stack = new Stack<int>();
-            //stack.Push(1);
-            //stack.Push(2);
-            //stack.Push(3);
-            //stack.Push(4);
-            //stack.Push(5);
-            //stack.Push(6);
-            //var stackEnumerator = stack.GetEnumerator();
+            var container = builder.Build();
 
-            //while (stackEnumerator.MoveNext())
-            //{
-            //    WriteLine(stackEnumerator.Current);
-            //}
+            var cat = container.Resolve<CatOwner>();//获取CatOwner的代理类
+            cat.GetType().GetMethod("Eat").Invoke(cat, null);
+            cat.GetType().GetMethod("Sleep").Invoke(cat, null);
 
-            //var test=new MethodOverloads();
-            //test.Foo(33);
-            //test.Foo("abc");
-            //test.Bar(44);
-            //ReadLine();
+            Console.Read();
 
-            //var list = new List<int> {1, 2, 3, 4, 5};
-            //var list1=list.Where(r => r > 1);
-
-            //var list = new List<int>();
-            //list.Add(true, 1);
-            //list.Add(false, 2);
-            //list.Add(true, 3);
-            //list.Add(true, 4);
-            //list.Add(false, 5);
-            //WriteLine(string.Join(",",list));
-
-            //return;
-
-            //var database = RedisManager.Instance.GetDatabase();
-            //database.StringSet("00000000", "123", TimeSpan.FromSeconds(1));
-            //WriteLine(database.KeyExists("00000000"));
-            //Thread.Sleep(2000);
-            //WriteLine(database.KeyExists("00000000"));
-            //for (int i = 0; i < 10000; i++)
-            //{
-            //    database.StringSet($"key{i}",i);
-            //}
-            //var redisAccount=new RedisAccount()
-            //{
-            //    Name = "qbadmin11",
-            //    LastOnlineIP = "127.0.0.1",
-            //    Password = "123456",
-            //    Salt = "123",
-            //    Ticket = "345",
-            //    UserDisplayName = "11",
-            //    UserId = "22"
-            //};
-
-            //Task.Factory.StartNew(() =>
-            //{
-            //    database.HashSetAsync($"account_{redisAccount.Name}",
-            //        new HashEntry[]
-            //        {
-            //            new HashEntry(nameof(redisAccount.Name),redisAccount.Name),
-            //            new HashEntry(nameof(redisAccount.LastOnlineIP),redisAccount.LastOnlineIP),
-            //            new HashEntry(nameof(redisAccount.Password),redisAccount.Password),
-            //            new HashEntry(nameof(redisAccount.Salt),redisAccount.Salt),
-            //            new HashEntry(nameof(redisAccount.Ticket),redisAccount.Ticket),
-            //            new HashEntry(nameof(redisAccount.UserId),redisAccount.UserId),
-            //            new HashEntry(nameof(redisAccount.UserDisplayName),redisAccount.UserDisplayName),
-            //        }).ConfigureAwait(false);
-            //});
-
-            //database.HashSet($"account_{redisAccount.Name}",
-            //    new HashEntry[]
-            //    {
-            //        new HashEntry(nameof(redisAccount.Name),redisAccount.Name),
-            //        new HashEntry(nameof(redisAccount.LastOnlineIP),redisAccount.LastOnlineIP),
-            //        new HashEntry(nameof(redisAccount.Password),redisAccount.Password),
-            //        new HashEntry(nameof(redisAccount.Salt),redisAccount.Salt),
-            //        new HashEntry(nameof(redisAccount.Ticket),redisAccount.Ticket),
-            //        new HashEntry(nameof(redisAccount.UserId),redisAccount.UserId),
-            //        new HashEntry(nameof(redisAccount.UserDisplayName),redisAccount.UserDisplayName),
-            //    });
-
-            //WriteLine(database.HashGet($"account_{redisAccount.Name}", nameof(redisAccount.Name)));
-
-            //var hashlist=database.HashGetAll($"account_{redisAccount.Name}");
-
-            //WriteLine($"{nameof(redisAccount.Name)}:{hashlist.FirstOrDefault(c=>c.Name==nameof(redisAccount.Name)).Value}");
-            //WriteLine($"{nameof(redisAccount.LastOnlineIP)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.LastOnlineIP)).Value}");
-            //WriteLine($"{nameof(redisAccount.Password)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.Password)).Value}");
-            //WriteLine($"{nameof(redisAccount.Salt)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.Salt)).Value}");
-            //WriteLine($"{nameof(redisAccount.Ticket)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.Ticket)).Value}");
-            //WriteLine($"{nameof(redisAccount.UserId)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.UserId)).Value}");
-            //WriteLine($"{nameof(redisAccount.UserDisplayName)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.UserDisplayName)).Value}");
-
-
-            //hashlist.ForEach(item =>
-            //{
-            //    WriteLine(item.Name);
-            //    WriteLine(item.Value);
-            //});
-
-            //var keys=RedisManager.Server.Keys();
-            //keys.ForEach(item => { WriteLine(item); });
-
-            return;
-            var permission = Permission.Create | Permission.Read | Permission.Update | Permission.Delete;
-            WriteLine("1、枚举创建，并赋值");
-            WriteLine(permission.ToString()); //Create, Read, Update, Delete
-            WriteLine((int) permission); //15
-
-            permission = (Permission) Enum.Parse(typeof(Permission), "5");
-            WriteLine("2、通过数字字符串转换......");
-            WriteLine(permission.ToString()); //Create, Update
-            WriteLine((int) permission); //5
-
-            permission = (Permission) Enum.Parse(typeof(Permission), "update,delete,read", true);
-            WriteLine("3、通过枚举名称字符串转换......");
-            WriteLine(permission.ToString()); //Read, Update, Delete
-            WriteLine((int) permission); //14
-
-            permission = (Permission) 7;
-            WriteLine("4、直接用数字强制转换......");
-            WriteLine(permission.ToString()); //Create, Read, Update
-            WriteLine((int) permission); //7
-
-            permission = permission & ~Permission.Read;
-            WriteLine("5、去掉一个枚举项");
-            WriteLine(permission.ToString()); //Create, Update
-            WriteLine((int) permission); //5
-
-            permission = permission | Permission.Delete;
-            WriteLine("6、加上一个枚举项");
-            WriteLine(permission.ToString()); //Create, Update, Delete
-            WriteLine((int) permission); //13
-
-            WriteLine(permission.HasFlag(Permission.Delete)); //True
-
-            if (permission.HasFlag(Permission.Delete)) WriteLine("!!!!!!!!");
-
-            WriteLine(permission.GetHashCode());
-            WriteLine(permission.GetTypeCode());
-
-            return;
-
-            var fullPath = @"~\\WebSite1\\Default.aspx";
-
-            WriteLine(fullPath.GetFileName());
-            WriteLine(fullPath.GetFileExtension());
-            WriteLine(fullPath.GetFileNameWithoutExtension());
-            WriteLine(fullPath.GetDirectoryName());
-
-            var myClass = new MyClass();
-            WriteLine(nameof(MyClass));
-            WriteLine(nameof(myClass));
-            WriteLine(nameof(myClass.Name).Trim().ToLower());
-
-            return;
-
-            var properties = new NameValueCollection();
-            properties["quartz.scheduler.instanceName"] = "RemoteServerSchedulerClient";
-
-
-            //设置线程池
-            properties["quartz.threadPool.type"] = "Quartz.Simpl.SimpleThreadPool, Quartz";
-            properties["quartz.threadPool.threadCount"] = "5";
-            properties["quartz.threadPool.threadPriority"] = "Normal";
-
-            //远程输出配置
-            properties["quartz.scheduler.exporter.type"] = "Quartz.Simpl.RemotingSchedulerExporter, Quartz";
-            properties["quartz.scheduler.exporter.port"] = "556";
-            properties["quartz.scheduler.exporter.bindName"] = "QuartzScheduler";
-            properties["quartz.scheduler.exporter.channelType"] = "tcp";
-
-            var schedulerFactory = new StdSchedulerFactory(properties);
-            var scheduler = schedulerFactory.GetScheduler();
-
-            var job = JobBuilder.Create<PrintMessageJob>()
-                .WithIdentity(nameof(PrintMessageJob), "group1")
-                .Build();
-
-            var trigger = TriggerBuilder.Create()
-                .WithIdentity("myJobTrigger", "group1")
-                .StartNow()
-                .WithCronSchedule("/2 * * ? * *")
-                .Build();
-
-            scheduler.ScheduleJob(job, trigger);
-            scheduler.Start();
         }
+
+        //private static void Main(string[] args)
+        //{
+        //    var info = MyInfoClass.GetInfo(out var msg);
+        //    Console.WriteLine(info);
+        //    Console.WriteLine(msg);
+        //    Console.ReadLine();
+        //    //var list = new List<string>() { "1", "2", "3" };
+        //    //Console.WriteLine(string.Join(list,"'",""));
+
+        //    //ServerManager serverManager = new ServerManager();
+        //    //foreach (var pool in serverManager.ApplicationPools)
+        //    //{
+        //    //    if (pool.State==ObjectState.Stopped)
+        //    //    {
+        //    //        pool.Start();
+        //    //    }
+        //    //    LoggerHelper.WriteLine($"{pool.Name}");
+        //    //}
+
+
+
+        //    //ReadLine();
+        //    //var bytes = Encoding.Default.GetBytes("damon");
+        //    //WriteLine(ToHexString(bytes));
+        //    //WriteLine(DateTime.Now.ToString("MMddHHmmss"));
+        //    //WriteLine(EncryptWithMD5("damon", "123456"));
+        //    //Read();
+
+        //    //var url = "name=damon&age=29&gender=m";
+        //    //var a=url.GetQueryString();
+        //    //for (int i = 0; i < a.Keys.Count; i++)
+        //    //{
+        //    //    Console.WriteLine(a.Get(i));
+        //    //}
+        //    //foreach (var item in a)
+        //    //{
+        //    //    Console.WriteLine(a.Keys);
+        //    //}
+
+        //    //Console.Read();
+        //    //ArrayTest();
+        //    //Utility.YHSJ(6);
+
+        //    //var result = MatchEx.Max(1, 2, 3, 4);
+        //    //WriteLine(result);
+        //    //result = MatchEx.Min(1, 2, 3, 4);
+        //    //WriteLine(result);
+        //    //List<int> array = new List<int>() { 1, 2, 3, 4, 5 };
+        //    //var enumerator = array.GetEnumerator();
+
+        //    //while (enumerator.MoveNext())
+        //    //{
+        //    //    Console.WriteLine(enumerator.Current);
+        //    //}
+
+        //    //WriteLine("------------------------");
+
+        //    //Stack<int> stack = new Stack<int>();
+        //    //stack.Push(1);
+        //    //stack.Push(2);
+        //    //stack.Push(3);
+        //    //stack.Push(4);
+        //    //stack.Push(5);
+        //    //stack.Push(6);
+        //    //var stackEnumerator = stack.GetEnumerator();
+
+        //    //while (stackEnumerator.MoveNext())
+        //    //{
+        //    //    WriteLine(stackEnumerator.Current);
+        //    //}
+
+        //    //var test=new MethodOverloads();
+        //    //test.Foo(33);
+        //    //test.Foo("abc");
+        //    //test.Bar(44);
+        //    //ReadLine();
+
+        //    //var list = new List<int> {1, 2, 3, 4, 5};
+        //    //var list1=list.Where(r => r > 1);
+
+        //    //var list = new List<int>();
+        //    //list.Add(true, 1);
+        //    //list.Add(false, 2);
+        //    //list.Add(true, 3);
+        //    //list.Add(true, 4);
+        //    //list.Add(false, 5);
+        //    //WriteLine(string.Join(",",list));
+
+        //    //return;
+
+        //    //var database = RedisManager.Instance.GetDatabase();
+        //    //database.StringSet("00000000", "123", TimeSpan.FromSeconds(1));
+        //    //WriteLine(database.KeyExists("00000000"));
+        //    //Thread.Sleep(2000);
+        //    //WriteLine(database.KeyExists("00000000"));
+        //    //for (int i = 0; i < 10000; i++)
+        //    //{
+        //    //    database.StringSet($"key{i}",i);
+        //    //}
+        //    //var redisAccount=new RedisAccount()
+        //    //{
+        //    //    Name = "qbadmin11",
+        //    //    LastOnlineIP = "127.0.0.1",
+        //    //    Password = "123456",
+        //    //    Salt = "123",
+        //    //    Ticket = "345",
+        //    //    UserDisplayName = "11",
+        //    //    UserId = "22"
+        //    //};
+
+        //    //Task.Factory.StartNew(() =>
+        //    //{
+        //    //    database.HashSetAsync($"account_{redisAccount.Name}",
+        //    //        new HashEntry[]
+        //    //        {
+        //    //            new HashEntry(nameof(redisAccount.Name),redisAccount.Name),
+        //    //            new HashEntry(nameof(redisAccount.LastOnlineIP),redisAccount.LastOnlineIP),
+        //    //            new HashEntry(nameof(redisAccount.Password),redisAccount.Password),
+        //    //            new HashEntry(nameof(redisAccount.Salt),redisAccount.Salt),
+        //    //            new HashEntry(nameof(redisAccount.Ticket),redisAccount.Ticket),
+        //    //            new HashEntry(nameof(redisAccount.UserId),redisAccount.UserId),
+        //    //            new HashEntry(nameof(redisAccount.UserDisplayName),redisAccount.UserDisplayName),
+        //    //        }).ConfigureAwait(false);
+        //    //});
+
+        //    //database.HashSet($"account_{redisAccount.Name}",
+        //    //    new HashEntry[]
+        //    //    {
+        //    //        new HashEntry(nameof(redisAccount.Name),redisAccount.Name),
+        //    //        new HashEntry(nameof(redisAccount.LastOnlineIP),redisAccount.LastOnlineIP),
+        //    //        new HashEntry(nameof(redisAccount.Password),redisAccount.Password),
+        //    //        new HashEntry(nameof(redisAccount.Salt),redisAccount.Salt),
+        //    //        new HashEntry(nameof(redisAccount.Ticket),redisAccount.Ticket),
+        //    //        new HashEntry(nameof(redisAccount.UserId),redisAccount.UserId),
+        //    //        new HashEntry(nameof(redisAccount.UserDisplayName),redisAccount.UserDisplayName),
+        //    //    });
+
+        //    //WriteLine(database.HashGet($"account_{redisAccount.Name}", nameof(redisAccount.Name)));
+
+        //    //var hashlist=database.HashGetAll($"account_{redisAccount.Name}");
+
+        //    //WriteLine($"{nameof(redisAccount.Name)}:{hashlist.FirstOrDefault(c=>c.Name==nameof(redisAccount.Name)).Value}");
+        //    //WriteLine($"{nameof(redisAccount.LastOnlineIP)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.LastOnlineIP)).Value}");
+        //    //WriteLine($"{nameof(redisAccount.Password)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.Password)).Value}");
+        //    //WriteLine($"{nameof(redisAccount.Salt)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.Salt)).Value}");
+        //    //WriteLine($"{nameof(redisAccount.Ticket)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.Ticket)).Value}");
+        //    //WriteLine($"{nameof(redisAccount.UserId)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.UserId)).Value}");
+        //    //WriteLine($"{nameof(redisAccount.UserDisplayName)}:{hashlist.FirstOrDefault(c => c.Name == nameof(redisAccount.UserDisplayName)).Value}");
+
+
+        //    //hashlist.ForEach(item =>
+        //    //{
+        //    //    WriteLine(item.Name);
+        //    //    WriteLine(item.Value);
+        //    //});
+
+        //    //var keys=RedisManager.Server.Keys();
+        //    //keys.ForEach(item => { WriteLine(item); });
+
+        //    return;
+        //    var permission = Permission.Create | Permission.Read | Permission.Update | Permission.Delete;
+        //    WriteLine("1、枚举创建，并赋值");
+        //    WriteLine(permission.ToString()); //Create, Read, Update, Delete
+        //    WriteLine((int) permission); //15
+
+        //    permission = (Permission) Enum.Parse(typeof(Permission), "5");
+        //    WriteLine("2、通过数字字符串转换......");
+        //    WriteLine(permission.ToString()); //Create, Update
+        //    WriteLine((int) permission); //5
+
+        //    permission = (Permission) Enum.Parse(typeof(Permission), "update,delete,read", true);
+        //    WriteLine("3、通过枚举名称字符串转换......");
+        //    WriteLine(permission.ToString()); //Read, Update, Delete
+        //    WriteLine((int) permission); //14
+
+        //    permission = (Permission) 7;
+        //    WriteLine("4、直接用数字强制转换......");
+        //    WriteLine(permission.ToString()); //Create, Read, Update
+        //    WriteLine((int) permission); //7
+
+        //    permission = permission & ~Permission.Read;
+        //    WriteLine("5、去掉一个枚举项");
+        //    WriteLine(permission.ToString()); //Create, Update
+        //    WriteLine((int) permission); //5
+
+        //    permission = permission | Permission.Delete;
+        //    WriteLine("6、加上一个枚举项");
+        //    WriteLine(permission.ToString()); //Create, Update, Delete
+        //    WriteLine((int) permission); //13
+
+        //    WriteLine(permission.HasFlag(Permission.Delete)); //True
+
+        //    if (permission.HasFlag(Permission.Delete)) WriteLine("!!!!!!!!");
+
+        //    WriteLine(permission.GetHashCode());
+        //    WriteLine(permission.GetTypeCode());
+
+        //    return;
+
+        //    var fullPath = @"~\\WebSite1\\Default.aspx";
+
+        //    WriteLine(fullPath.GetFileName());
+        //    WriteLine(fullPath.GetFileExtension());
+        //    WriteLine(fullPath.GetFileNameWithoutExtension());
+        //    WriteLine(fullPath.GetDirectoryName());
+
+        //    var myClass = new MyClass();
+        //    WriteLine(nameof(MyClass));
+        //    WriteLine(nameof(myClass));
+        //    WriteLine(nameof(myClass.Name).Trim().ToLower());
+
+        //    return;
+
+        //    var properties = new NameValueCollection();
+        //    properties["quartz.scheduler.instanceName"] = "RemoteServerSchedulerClient";
+
+
+        //    //设置线程池
+        //    properties["quartz.threadPool.type"] = "Quartz.Simpl.SimpleThreadPool, Quartz";
+        //    properties["quartz.threadPool.threadCount"] = "5";
+        //    properties["quartz.threadPool.threadPriority"] = "Normal";
+
+        //    //远程输出配置
+        //    properties["quartz.scheduler.exporter.type"] = "Quartz.Simpl.RemotingSchedulerExporter, Quartz";
+        //    properties["quartz.scheduler.exporter.port"] = "556";
+        //    properties["quartz.scheduler.exporter.bindName"] = "QuartzScheduler";
+        //    properties["quartz.scheduler.exporter.channelType"] = "tcp";
+
+        //    var schedulerFactory = new StdSchedulerFactory(properties);
+        //    var scheduler = schedulerFactory.GetScheduler();
+
+        //    var job = JobBuilder.Create<PrintMessageJob>()
+        //        .WithIdentity(nameof(PrintMessageJob), "group1")
+        //        .Build();
+
+        //    var trigger = TriggerBuilder.Create()
+        //        .WithIdentity("myJobTrigger", "group1")
+        //        .StartNow()
+        //        .WithCronSchedule("/2 * * ? * *")
+        //        .Build();
+
+        //    scheduler.ScheduleJob(job, trigger);
+        //    scheduler.Start();
+        //}
 
         public static string EncryptWithMD5(string userName, string password)
         {
@@ -852,6 +890,86 @@ namespace ConsoleApp
                     break;
 
             return result;
+        }
+    }
+
+    public interface ICat
+    {
+        string Eat();
+
+        string Sleep();
+    }
+
+    public class Cat:ICat
+    {
+        public string Eat()
+        {
+            Console.WriteLine("猫在吃东西");
+            return "Eat";
+        }
+
+        public string Sleep()
+        {
+            Console.WriteLine("猫在吃睡觉");
+            return "Sleep";
+        }
+    }
+
+    //public class CatProxy : ICat
+    //{
+    //    private readonly ICat _cat;
+
+    //    public CatProxy(ICat cat)
+    //    {
+    //        this._cat = cat;
+    //    }
+    //    public string Eat()
+    //    {
+    //        Console.WriteLine("猫吃东西之前");
+    //        _cat.Eat();
+    //        Console.WriteLine("猫吃东西之后");
+    //        return "Eat";
+    //    }
+
+    //    public string Sleep()
+    //    {
+    //        Console.WriteLine("猫睡觉之前");
+    //        _cat.Eat();
+    //        Console.WriteLine("猫睡觉之后");
+    //        return "Sleep";
+    //    }
+    //}
+
+    //public class CatInterceptor:IInterceptor
+    //{
+    //    public void Intercept(IInvocation invocation)
+    //    {
+    //        Console.WriteLine("猫吃东西之前");
+    //        invocation.Proceed();
+    //        Console.WriteLine("猫吃东西之后");
+    //    }
+    //}
+
+    public class CatOwner
+    {
+
+    }
+
+    public class CatInterceptor : IInterceptor
+    {
+        private readonly ICat _cat;
+
+        public CatInterceptor(ICat cat)
+        {
+            this._cat = cat;
+        }
+
+        public void Intercept(IInvocation invocation)
+        {
+            Console.WriteLine("喂猫吃东西");
+
+            invocation.Method.Invoke(_cat, invocation.Arguments);
+
         }
     }
 }
