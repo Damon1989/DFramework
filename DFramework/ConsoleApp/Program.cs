@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using DFramework.Infrastructure;
 using Microsoft.Web.Administration;
 using Quartz;
@@ -18,7 +19,22 @@ namespace ConsoleApp
     using Autofac;
     using Autofac.Extras.DynamicProxy;
     using Castle.DynamicProxy;
-
+    public class CustomComparer : System.Collections.IComparer
+    {
+        public int Compare(object x, object y)
+        {
+            string s1 = (string)x;
+            string s2 = (string)y;
+            if (s1.Length > s2.Length) return 1;
+            if (s1.Length < s2.Length) return -1;
+            for (int i = 0; i < s1.Length; i++)
+            {
+                if (s1[i] > s2[i]) return 1;
+                if (s1[i] < s2[i]) return -1;
+            }
+            return 0;
+        }
+    }
     internal class Program
     {
         [Flags]
@@ -39,8 +55,113 @@ namespace ConsoleApp
             }
         }
 
+        public static string SortCsvColumns(string csv_data)
+        {
+            if (string.IsNullOrEmpty(csv_data))
+            {
+                return string.Empty;
+            }
+            var array = csv_data.Split('\n');
+            if (array.Length == 0)
+            {
+                return string.Empty;
+            }
+            var dictionary=new Dictionary<string,int>();
+            var titleArray = array[0].Split(',');
+            for (int i = 0; i < titleArray.Length; i++)
+            {
+                dictionary.Add(titleArray[i],i);
+            }
+            
+            var resultArray = new ArrayList();
+            for (int j = 0; j < titleArray.Length; j++)
+            {
+                titleArray[j] = new System.Text.RegularExpressions.Regex("[\\s]+").Replace(titleArray[j].Trim(), " ");
+            }
+
+            titleArray = titleArray.OrderBy(p => p).ToArray();
+            
+
+
+            var title = string.Join(",", titleArray);
+            resultArray.Add(title);
+
+            for (int i = 1; i < array.Length; i++)
+            {
+                var contentArray=new ArrayList();
+                var content = array[i].Split(',');
+                foreach (var t in titleArray)
+                {
+                    var key = dictionary[t];
+                    contentArray.Add(content[key]);
+                }
+
+                resultArray.Add(string.Join(",", contentArray.ToArray()));
+            }
+
+            return string.Join("\n", resultArray.ToArray());
+        }
+
+        public static int Find(int[] items)
+        {
+            var itemLength = items.Length;
+            var first = true;
+            
+            for (int i = 1; i < itemLength; i++)
+            {
+                if (items[0] < items[i])
+                {
+                    first=false;
+                    break;
+                }
+            }
+            if (first) return 0;
+
+            for (int i = 1; i < itemLength-1; i++)
+            {
+                if (items[i] >= items[i - 1])
+                {
+                    var check = true;
+                    for (int j = i+1; j < itemLength; j++)
+                    {
+                        if (items[i] >= items[j])
+                        {
+                            check = false;
+                            break;
+                        }
+                    }
+                    if (check) return i;
+                }
+            }
+
+
+            
+            var last = true;
+            for (int i = 0; i < itemLength - 1; i++)
+            {
+                if (items[i] > items[itemLength - 1])
+                {
+                    last = false;
+                    break;
+                }
+            }
+
+            if (last) return itemLength - 1;
+
+            return -1;
+        }
+
         private static void Main(string[] args)
         {
+           var a = new int[] { 4, 2, 2, 3, 1, 8, 7, 8, 6, 9 };
+           int nIndex = Find(a);
+            Console.WriteLine(nIndex);
+            Console.ReadLine();
+            //string content = "<script></script>";
+
+            //content= Regex.Replace(content, "[<]", "&lt;", RegexOptions.IgnoreCase);
+            //Console.WriteLine(content);
+            //Console.Read();
             //ICat icat = new Cat();
             //var catProxy = new CatProxy(icat);
             //catProxy.Eat();
@@ -56,20 +177,20 @@ namespace ConsoleApp
             //cat.Sleep();
             //Console.Read();
 
-            var builder = new ContainerBuilder();
-            builder.RegisterType<CatInterceptor>();//注册拦截器
-            builder.RegisterType<Cat>().As<ICat>();//注册Cat
-            builder.RegisterType<CatOwner>().InterceptedBy(typeof(CatInterceptor)).EnableClassInterceptors(
-                ProxyGenerationOptions.Default,
-                additionalInterfaces: typeof(ICat));//注册CatOwner并为其添加拦截器和接口
+            //var builder = new ContainerBuilder();
+            //builder.RegisterType<CatInterceptor>();//注册拦截器
+            //builder.RegisterType<Cat>().As<ICat>();//注册Cat
+            //builder.RegisterType<CatOwner>().InterceptedBy(typeof(CatInterceptor)).EnableClassInterceptors(
+            //    ProxyGenerationOptions.Default,
+            //    additionalInterfaces: typeof(ICat));//注册CatOwner并为其添加拦截器和接口
 
-            var container = builder.Build();
+            //var container = builder.Build();
 
-            var cat = container.Resolve<CatOwner>();//获取CatOwner的代理类
-            cat.GetType().GetMethod("Eat").Invoke(cat, null);
-            cat.GetType().GetMethod("Sleep").Invoke(cat, null);
+            //var cat = container.Resolve<CatOwner>();//获取CatOwner的代理类
+            //cat.GetType().GetMethod("Eat").Invoke(cat, null);
+            //cat.GetType().GetMethod("Sleep").Invoke(cat, null);
 
-            Console.Read();
+            //Console.Read();
 
         }
 
