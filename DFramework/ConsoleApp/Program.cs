@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -37,6 +38,14 @@ namespace ConsoleApp
     }
     internal class Program
     {
+        private static void DifferentDataLinkedList()
+        {
+            Node head=new TypedNode<Char>(',');
+            head=new TypedNode<DateTime>(DateTime.Now,head);
+            head=new TypedNode<string>("Today is ",head);
+            Console.WriteLine(head.ToString());
+        }
+
         [Flags]
         public enum Permission
         {
@@ -153,10 +162,12 @@ namespace ConsoleApp
 
         private static void Main(string[] args)
         {
-           var a = new int[] { 4, 2, 2, 3, 1, 8, 7, 8, 6, 9 };
-           int nIndex = Find(a);
-            Console.WriteLine(nIndex);
+            DifferentDataLinkedList();
             Console.ReadLine();
+            //var a = new int[] { 4, 2, 2, 3, 1, 8, 7, 8, 6, 9 };
+            //int nIndex = Find(a);
+            // Console.WriteLine(nIndex);
+            // Console.ReadLine();
             //string content = "<script></script>";
 
             //content= Regex.Replace(content, "[<]", "&lt;", RegexOptions.IgnoreCase);
@@ -1091,6 +1102,35 @@ namespace ConsoleApp
 
             invocation.Method.Invoke(_cat, invocation.Arguments);
 
+        }
+    }
+
+    internal class Node
+    {
+        protected Node m_next;
+
+        public Node(Node next)
+        {
+            m_next = next;
+        }
+    }
+
+    internal sealed class TypedNode<T> : Node
+    {
+        public T m_data;
+
+        public TypedNode(T data):this(data,null)
+        {
+            
+        }
+        public TypedNode(T data, Node next) : base(next)
+        {
+            m_data = data;
+        }
+
+        public override string ToString()
+        {
+            return m_data.ToString() + ((m_next != null) ? m_next.ToString() : string.Empty);
         }
     }
 }

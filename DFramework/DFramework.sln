@@ -111,6 +111,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DCommon", "DCommon\DCommon.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFramework.Interceptor", "DFramework.Interceptor\DFramework.Interceptor.csproj", "{0A3271EB-9C23-4D6C-8550-51D7872A68A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAsync", "ConsoleAsync\ConsoleAsync.csproj", "{90998858-DDCA-4705-B085-F9CB1E5E3625}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -269,6 +271,10 @@ Global
 		{0A3271EB-9C23-4D6C-8550-51D7872A68A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A3271EB-9C23-4D6C-8550-51D7872A68A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A3271EB-9C23-4D6C-8550-51D7872A68A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90998858-DDCA-4705-B085-F9CB1E5E3625}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90998858-DDCA-4705-B085-F9CB1E5E3625}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90998858-DDCA-4705-B085-F9CB1E5E3625}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90998858-DDCA-4705-B085-F9CB1E5E3625}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -321,6 +327,7 @@ Global
 		{1BA6AB22-02C7-4D9D-A14F-5085E71FFB1F} = {96CD18D0-C39A-4A20-A4FF-752DE8385536}
 		{ED9B0EF0-4B72-40E0-93A5-DE2DB38912C0} = {1223258F-7F52-4DED-A241-F9080EFF2168}
 		{0A3271EB-9C23-4D6C-8550-51D7872A68A9} = {85E331E4-3429-467E-BF8E-3D91EA1E6B24}
+		{90998858-DDCA-4705-B085-F9CB1E5E3625} = {237BA69D-CD97-409F-A8F0-4844E38DA19F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF3DD962-7081-4227-B858-00F334489CF0}
