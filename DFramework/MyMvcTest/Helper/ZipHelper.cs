@@ -322,9 +322,14 @@ namespace MyMvcTest.Helper
                         {
                             size = zipStream.Read(data, 0, data.Length);
                             if (size > 0)
-                                fileStream.Write(data, 0, data.Length);
+                                //fileStream.Write(data, 0, data.Length);
+                            {
+                                fileStream.Write(data, 0, size < data.Length ? size : data.Length);
+                            }
                             else
+                            {
                                 break;
+                            }
                         }
                     }
                 }
