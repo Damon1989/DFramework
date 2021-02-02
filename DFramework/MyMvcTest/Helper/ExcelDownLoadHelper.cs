@@ -9,14 +9,314 @@ using NPOI.SS.UserModel;
 using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
 using DCommon;
+using Microsoft.Office.Interop.Excel;
+using MyMvcTest.Controllers;
 
 namespace MyMvcTest.Helper
 {
     public static class ExcelDownLoadHelper
     {
+        /// <summary>
+        /// 下载模板
+        /// </summary>
+        /// <typeparam name="T">动态数据源</typeparam>
+        /// <param name="sheetName">导出模块sheetName名称</param>
+        /// <param name="heads">导出模块表头</param>
+        /// <param name="cellValidations">下拉数据源</param>
+        /// <param name="setFormula">设置公式</param>
+        /// <param name="formatRow">格式化行数</param>
+        /// <returns></returns>
+        public static NpoiMemoryStream GetSimpleFileTemplate<T>(string sheetName
+                                               , List<HeadInfo> heads
+                                               , List<CellValidation<T>> cellValidations
+                                               , Action<ISheet> setFormula
+                                               , int formatRow = 200)
+        {
+
+
+            var workbook = new XSSFWorkbook();
+
+            var sheet = workbook.CreateSheet(sheetName);
+            var style = workbook.CreateCellStyle();
+            style.DataFormat = HSSFDataFormat.GetBuiltinFormat("@");
+            #region set heads
+
+            var newRow = sheet.CreateRow(0);
+            for (var i = 0; i < heads.Count; i++)
+            {
+                sheet.SetColumnWidth(i, heads[i].ColumnWidth);
+                style = GetCellStyle(workbook, heads[i].CellStyle);
+                var cell = newRow.CreateCell(i);
+                cell.CellStyle = style;
+                cell.SetCellValue(heads[i].Name);
+                for (var j = 1; j <= formatRow; j++)
+                {
+                    var row = sheet.GetRow(j) ?? sheet.CreateRow(j);
+                    cell = row.CreateCell(i);
+                    cell.CellStyle = style;
+                    if (i == 0)
+                    {
+                        var value = j < 10 ? "00" + j : (j < 100 ? "0" + j : j.ToString());
+                        cell.SetCellValue(value);
+                    }
+                }
+            }
+            #endregion
+
+
+
+            #region set datasource
+            var dataNum = 0;
+            cellValidations?.ToList().ForEach(item =>
+            {
+
+                var dataSourceSheetName = item.SheetName;
+                dataNum++;
+                var dataSourceSheet = workbook.CreateSheet(dataSourceSheetName);//创建sheet
+
+
+                if (item.FirstList != null && item.FirstList.Any())
+                {
+                    for (var i = 0; i < item.FirstList.Count; i++)
+                    {
+                        var row = dataSourceSheet.GetRow(i) ?? dataSourceSheet.CreateRow(i);//添加行
+
+                        row.CreateCell(0).SetCellValue(item.FirstList[i].Key);//单元格写值
+                        row.CreateCell(1).SetCellValue(item.FirstList[i].Value);//单元格写值
+                    }
+
+
+
+                    #region Range  设置数据源绑定规则
+                    for (var i = 0; i < item.FirstList.Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            var range = workbook.CreateName();
+                            range.NameName = item.SheetName;
+                            range.RefersToFormula = string.Format("{0}!${3}${2}:${3}${1}",
+                                dataSourceSheetName,
+                                item.FirstList.Count,
+                                2,
+                                Index2ColName(i));
+                        }
+                    }
+                    #endregion
+                }
+
+                if (item.SourceList != null && item.SourceList.Any())
+                {
+                    for (int i = 0; i < item.SourceList.Count; i++)
+                    {
+                        var row = dataSourceSheet.GetRow(i) ?? dataSourceSheet.CreateRow(i);//添加行
+                        {
+                            var employee = item.SourceList[i] as ExcelEmployeeInfo;
+                            if (employee != null)
+                            {
+                                row.CreateCell(0).SetCellValue(employee.Email);
+                                row.CreateCell(1).SetCellValue(employee.Code);
+                                row.CreateCell(2).SetCellValue(employee.Name);
+                                row.CreateCell(3).SetCellValue(employee.Company);
+                                row.CreateCell(4).SetCellValue(employee.OrgCd);
+                                row.CreateCell(5).SetCellValue(employee.OrgName);
+                                
+                                
+                            }
+                            
+                        }
+                    }
+
+                    var range = workbook.CreateName();
+                    range.NameName = item.SheetName;
+                    range.RefersToFormula = string.Format("{0}!${3}${2}:${3}${1}",
+                        dataSourceSheetName,
+                        item.SourceList.Count,
+                        2,
+                        Index2ColName(0));
+                    
+                }
+
+
+
+
+                //根据数据源 设置绑定公式
+                setFormula(sheet);
+
+            });
+            #endregion
+
+
+            //设置单元格绑定下拉数据源
+            cellValidations?.ToList().ForEach(item =>
+            {
+                if (item.FirstList != null && item.FirstList.Any())
+                {
+                    if (item.FirstCellLocation != null)
+                    {
+                        var regions = new CellRangeAddressList(item.FirstCellLocation.FirstRow, item.FirstCellLocation.LastRow, item.FirstCellLocation.FirstCol, item.FirstCellLocation.LastCol);//约束范围：c2到c65535
+
+                        var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
+                        var validation =
+                            helper.CreateValidation(
+                                helper.CreateFormulaListConstraint(item.SheetName),
+                                regions);//创建约束
+                        validation.CreateErrorBox("错误", "请按右侧下拉箭头选择!");
+                        validation.ShowErrorBox = true;//显示上面提示
+                        sheet.AddValidationData(validation);//添加进去
+                    }
+
+                }
+
+                if (item.SourceList != null && item.SourceList.Any())
+                {
+                    if (item.FirstCellLocation != null)
+                    {
+                        var regions = new CellRangeAddressList(item.FirstCellLocation.FirstRow, item.FirstCellLocation.LastRow, item.FirstCellLocation.FirstCol, item.FirstCellLocation.LastCol);//约束范围：c2到c65535
+
+                        var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
+                        var validation =
+                            helper.CreateValidation(
+                                helper.CreateFormulaListConstraint(item.SheetName),
+                                regions);//创建约束
+                        validation.CreateErrorBox("错误", "请按右侧下拉箭头选择!");
+                        validation.ShowErrorBox = true;//显示上面提示
+                        sheet.AddValidationData(validation);//添加进去
+                    }
+
+                }
+
+            });
+
+            sheet.ForceFormulaRecalculation = true;
+
+            var memory = new NpoiMemoryStream { AllowClose = false };
+
+            workbook.Write(memory);
+            memory.Flush();
+            memory.Position = 0;    // 指定内存流起始值
+            return memory;
+
+        }
+
+        /// <summary>
+        /// 下载模板
+        /// </summary>
+        /// <param name="sheetName">导出模块sheetName名称</param>
+        /// <param name="heads">导出模块表头</param>
+        /// <param name="cellValidations">下拉数据源</param>
+        /// <param name="setFormula">设置公式</param>
+        /// <param name="formatRow">格式化行数</param>
+        /// <returns></returns>
+        public static NpoiMemoryStream GetSimpleFileTemplate(string sheetName
+                                                     , List<HeadInfo> heads
+                                                     , List<CellValidation> cellValidations
+                                                     , Action<ISheet> setFormula
+                                                     , int formatRow = 200)
+        {
+
+
+            var workbook = new XSSFWorkbook();
+
+            var sheet = workbook.CreateSheet(sheetName);
+            var style = workbook.CreateCellStyle();
+            style.DataFormat = HSSFDataFormat.GetBuiltinFormat("@");
+            #region set heads
+
+            var newRow = sheet.CreateRow(0);
+            for (var i = 0; i < heads.Count; i++)
+            {
+                sheet.SetColumnWidth(i, heads[i].ColumnWidth);
+                 style = GetCellStyle(workbook, heads[i].CellStyle);
+                var cell = newRow.CreateCell(i);
+                cell.CellStyle = style;
+                cell.SetCellValue(heads[i].Name);
+                for (var j = 1; j <= formatRow; j++)
+                {
+                    var row = sheet.GetRow(j) ?? sheet.CreateRow(j);
+                    cell = row.CreateCell(i);
+                    cell.CellStyle = style;
+                    if (i == 0)
+                    {
+                        var value = j < 10 ? "00" + j : (j < 100 ? "0" + j : j.ToString());
+                        cell.SetCellValue(value);
+                    }
+                }
+            }
+            #endregion
+
+
+
+            #region set datasource
+            var dataNum = 0;
+            cellValidations?.ToList().ForEach(item =>
+            {
+                if (item.FirstList == null) return;
+
+                var dataSourceSheetName = item.SheetName;
+                dataNum++;
+                var dataSourceSheet = workbook.CreateSheet(dataSourceSheetName);//创建sheet
+
+                for (var i = 0; i < item.FirstList.Count; i++)
+                {
+                    var row = dataSourceSheet.GetRow(i) ?? dataSourceSheet.CreateRow(i);//添加行
+
+                    row.CreateCell(0).SetCellValue(item.FirstList[i].Key);//单元格写值
+                    row.CreateCell(1).SetCellValue(item.FirstList[i].Value);//单元格写值
+                }
+
+
+                var range = workbook.CreateName();
+                range.NameName = item.SheetName;
+                range.RefersToFormula = string.Format("{0}!${3}${2}:${3}${1}",
+                    dataSourceSheetName,
+                    item.FirstList.Count,
+                    2,
+                    Index2ColName(0));
+
+                //根据数据源 设置绑定公式
+                setFormula(sheet);
+
+            });
+            #endregion
+
+
+            //设置单元格绑定下拉数据源
+            cellValidations?.ToList().ForEach(item =>
+            {
+                if (item.FirstList != null && item.FirstList.Any())
+                {
+                    if (item.FirstCellLocation != null)
+                    {
+                        var regions = new CellRangeAddressList(item.FirstCellLocation.FirstRow, item.FirstCellLocation.LastRow, item.FirstCellLocation.FirstCol, item.FirstCellLocation.LastCol);//约束范围：c2到c65535
+
+                        var helper = new XSSFDataValidationHelper((XSSFSheet)sheet);//获得一个数据验证Helper
+                        var validation =
+                            helper.CreateValidation(
+                                helper.CreateFormulaListConstraint(item.SheetName),
+                                regions);//创建约束
+                        validation.CreateErrorBox("错误", "请按右侧下拉箭头选择!");
+                        validation.ShowErrorBox = true;//显示上面提示
+                        sheet.AddValidationData(validation);//添加进去
+                    }
+
+                }
+                
+            });
+
+            sheet.ForceFormulaRecalculation = true;
+
+            var memory = new NpoiMemoryStream {AllowClose = false};
+
+            workbook.Write(memory);
+            memory.Flush();
+            memory.Position = 0;    // 指定内存流起始值
+            return memory;
+
+        }
+
         public static NpoiMemoryStream GetFileTemplate(string fileName
-                                                     , string[] heads
-                                                     , params CellValidation[] cellValidations)
+                                                    , string[] heads
+                                                    , params CellValidation[] cellValidations)
         {
             var workbook = new XSSFWorkbook();
 
@@ -186,7 +486,7 @@ namespace MyMvcTest.Helper
 
             sheet.ForceFormulaRecalculation = true;
 
-            var memory = new NpoiMemoryStream {AllowClose = false};
+            var memory = new NpoiMemoryStream { AllowClose = false };
 
             workbook.Write(memory);
             memory.Flush();
@@ -194,6 +494,7 @@ namespace MyMvcTest.Helper
             return memory;
 
         }
+
 
         public static NpoiMemoryStream GetFileTemplate(string fileName
                                                      , List<HeadInfo> heads
@@ -660,6 +961,7 @@ namespace MyMvcTest.Helper
         public string[] ListOfValues { get; set; }
         public List<CellData> FirstList { get; set; }
         public List<CellData> SecondList { get; set; }
+        public string SheetName { get; set; }
 
         public CellValidation()
         {
@@ -674,6 +976,18 @@ namespace MyMvcTest.Helper
         public CellValidation(int firstRow, int lastRow, int firstCol, int lastCol, string[] listOfValues)
         : this(new CellLocation(firstRow, lastRow, firstCol, lastCol), listOfValues, null, null, null)
         {
+        }
+
+        public CellValidation(string sourceSheetName, int firstCol, int lastCol,
+            List<CellData> firstList):this(firstCol,lastCol,firstList)
+        {
+            SheetName = sourceSheetName;
+        }
+
+        public CellValidation(int firstCol, int lastCol,
+            List<CellData> firstList):this(firstCol,lastCol,firstList,null)
+        {
+
         }
 
         public CellValidation(int firstCol, int lastCol,
@@ -733,6 +1047,14 @@ namespace MyMvcTest.Helper
 
     }
 
+    public class CellValidation<T> : CellValidation
+    {
+        public CellValidation(string sourceSheetName, int firstCol, int lastCol,List<T> sourceList):base(sourceSheetName, firstCol,lastCol,null)
+        {
+            SourceList = sourceList;
+        }
+        public List<T> SourceList { get; set; }
+    }
     public class CellLocation
     {
         public int FirstRow { get; set; }
@@ -762,12 +1084,17 @@ namespace MyMvcTest.Helper
 
     public class CellContent
     {
+        /// <summary>
+        /// 值为0时，以名称为准
+        /// </summary>
         public int SheetIndex { get; set; }
+        public string SheetName { get; set; }
         public int FirstRow { get; set; }
         public int LastRow { get; set; }
         public int FirstCol { get; set; }
         public int LastCol { get; set; }
         public string[] ListOfValues { get; set; }
+        
 
         public CellContent(int firstRow, int firstCol, string[] listOfValues)
 : this(firstRow, 0, firstCol, 0, listOfValues, 0)
@@ -796,6 +1123,14 @@ namespace MyMvcTest.Helper
             ListOfValues = listOfValues;
             SheetIndex = sheetIndex;
         }
+
+        public CellContent(string sheetName, int firstRow, int firstCol, string[] listOfValues)
+        {
+            SheetName = sheetName;
+            FirstRow = firstRow;
+            FirstCol = firstCol;
+            ListOfValues = listOfValues;
+        }
     }
 
     public class CellData
@@ -822,7 +1157,12 @@ namespace MyMvcTest.Helper
 
         public HeadInfo() { }
 
-        public HeadInfo(string name, CellStyleEnum cellStyle, int columnWidth = 30 * 256)
+        public HeadInfo(string name):this(name, CellStyleEnum.默认)
+        {
+            Name = name;
+        }
+
+        public HeadInfo(string name, CellStyleEnum cellStyle, int columnWidth = 20 * 256)
         {
             Name = name;
             CellStyle = cellStyle;
@@ -838,5 +1178,22 @@ namespace MyMvcTest.Helper
         {
             this.Name = name;
         }
+    }
+
+    public class SheetInfo
+    {
+        public string SheetName { get; set; }
+
+    }
+
+
+    public class ExcelEmployeeInfo
+    {
+        public string Email { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string Company { get; set; }
+        public string OrgCd { get; set; }
+        public string OrgName { get; set; }
     }
 }

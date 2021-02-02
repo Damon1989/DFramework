@@ -16,7 +16,7 @@ namespace MyMvcTest
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "DataTables", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "ExcelFile", action = "DynamicFile", id = UrlParameter.Optional }
             );
         }
     }

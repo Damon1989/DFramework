@@ -403,6 +403,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AxiosController.cs" />
     <Compile Include="Controllers\DataTablesController.cs" />
+    <Compile Include="Controllers\ExcelFileController.cs" />
     <Compile Include="Controllers\FileApiController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
