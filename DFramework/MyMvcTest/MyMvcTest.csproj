@@ -412,6 +412,7 @@
     <Compile Include="Controllers\WebApiClientController.cs" />
     <Compile Include="Controllers\WebConfigController.cs" />
     <Compile Include="Controllers\WebSiteController.cs" />
+    <Compile Include="Controllers\ZipDownLoadController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -499,6 +500,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\File\" />
     <Folder Include="Views\PdfConvert\" />
+    <Folder Include="Views\ZipDownLoad\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

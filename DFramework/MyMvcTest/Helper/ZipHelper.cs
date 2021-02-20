@@ -23,30 +23,51 @@ namespace MyMvcTest.Helper
             var crc = new Crc32();
             try
             {
-                var filePath = Path.Combine(parentFolderName, Path.GetFileName(folderToZip) + "/");
-                zipEntry = new ZipEntry(filePath);
-                zipStream.PutNextEntry(zipEntry);
-                zipStream.Flush();
+                //var filePath = Path.Combine(parentFolderName, Path.GetFileName(folderToZip) + "/");
+                //zipEntry = new ZipEntry(filePath);
+                //zipStream.PutNextEntry(zipEntry);
+                //zipStream.Flush();
 
+                //var files = Directory.GetFiles(folderToZip);
+                //foreach (var file in files)
+                //{
+                //    fileStream = File.OpenRead(file);
+                //    var buffer = new byte[fileStream.Length];
+                //    fileStream.Read(buffer, 0, buffer.Length);
+                //    filePath = Path.Combine(parentFolderName,
+                //        Path.GetFileName(folderToZip) + "/" + Path.GetFileName(file));
+                //    zipEntry = new ZipEntry(filePath)
+                //    {
+                //        DateTime = DateTime.Now,
+                //        Size = fileStream.Length
+                //    };
+                //    fileStream.Close();
+                //    crc.Reset();
+                //    crc.Update(buffer);
+                //    zipEntry.Crc = crc.Value;
+                //    zipStream.PutNextEntry(zipEntry);
+                //    zipStream.Write(buffer, 0, buffer.Length);
+                //}
                 var files = Directory.GetFiles(folderToZip);
                 foreach (var file in files)
                 {
-                    fileStream = File.OpenRead(file);
-                    var buffer = new byte[fileStream.Length];
-                    fileStream.Read(buffer, 0, buffer.Length);
-                    filePath = Path.Combine(parentFolderName,
-                        Path.GetFileName(folderToZip) + "/" + Path.GetFileName(file));
-                    zipEntry = new ZipEntry(filePath)
+                    using (FileStream fs = File.OpenRead(file))
                     {
-                        DateTime = DateTime.Now,
-                        Size = fileStream.Length
-                    };
-                    fileStream.Close();
-                    crc.Reset();
-                    crc.Update(buffer);
-                    zipEntry.Crc = crc.Value;
-                    zipStream.PutNextEntry(zipEntry);
-                    zipStream.Write(buffer, 0, buffer.Length);
+                        byte[] buffer = new byte[4 * 1024];
+                        var filePath = Path.Combine(parentFolderName,
+                                    Path.GetFileName(folderToZip) + "/" + Path.GetFileName(file));
+                        ZipEntry entry = new ZipEntry(filePath);     //此处去掉盘符，如D:\123\1.txt 去掉D:
+                        entry.DateTime = DateTime.Now;
+                        zipStream.PutNextEntry(entry);
+
+                        int sourceBytes;
+                        do
+                        {
+                            sourceBytes = fs.Read(buffer, 0, buffer.Length);
+                            zipStream.Write(buffer, 0, sourceBytes);
+                        } while (sourceBytes > 0);
+                    }
+
                 }
             }
             catch (Exception e)
